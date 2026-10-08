@@ -11,5 +11,8 @@ public class CompraVentaController {
 
     private final CompraVentaService compraVentaService;
 
+    public CompraVentaController(CompraVentaService compraVentaService){
+        this.compraVentaService = compraVentaService;
+    }
     
 }
