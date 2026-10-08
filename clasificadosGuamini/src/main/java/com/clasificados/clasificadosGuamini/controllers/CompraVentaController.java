@@ -9,7 +9,7 @@ import com.clasificados.clasificadosGuamini.services.CompraVentaService;
 @RequestMapping("/api/compraventa")
 public class CompraVentaController {
 
-    
+    private final CompraVentaService compraVentaService;
 
     
 }
