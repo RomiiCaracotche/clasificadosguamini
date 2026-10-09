@@ -26,8 +26,8 @@ public class CompraVentaResponseDto extends AvisoResponseDto {
     private String color;
 
 
-    public CompraVentaResponseDto(Long id, String titulo, String descripcion, LocalDateTime fecha, String localidad, Usuario anunciante) {
-        super(id, titulo, descripcion, fecha, localidad, anunciante);
+    public CompraVentaResponseDto() {
+        super();
     }
 
     public CompraVentaResponseDto(Long id, String titulo, String descripcion, LocalDateTime fecha, String localidad, Usuario anunciante, Categoria categoria, Double precio, EstadoProducto estado, String marca, String modelo, String color) {

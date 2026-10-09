@@ -18,7 +18,7 @@ import com.clasificados.clasificadosGuamini.services.EmpleoService;
 @RequestMapping("/api/empleos")
 public class EmpleoController {
 
-    private EmpleoService empleoService;
+    private final EmpleoService empleoService;
 
     public EmpleoController(EmpleoService empleoService) {
         this.empleoService = empleoService;

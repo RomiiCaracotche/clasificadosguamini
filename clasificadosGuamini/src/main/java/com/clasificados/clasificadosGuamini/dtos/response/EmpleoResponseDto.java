@@ -21,8 +21,8 @@ public class EmpleoResponseDto extends AvisoResponseDto {
     private String requisitos;
     
     
-    public EmpleoResponseDto(Long id, String titulo, String descripcion, LocalDateTime fecha, String localidad, Usuario anunciante) {
-        super(id, titulo, descripcion, fecha, localidad, anunciante);
+    public EmpleoResponseDto() {
+        super();
     }
 
     public EmpleoResponseDto(Long id, String titulo, String descripcion, LocalDateTime fecha, String localidad, Usuario anunciante, TipoEmpleo tipoEmpleo, String rubro, DisponibilidadHoraria disponibilidadHoraria, String requisitos) {

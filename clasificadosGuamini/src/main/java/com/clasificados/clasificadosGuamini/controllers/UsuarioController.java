@@ -18,7 +18,7 @@ import com.clasificados.clasificadosGuamini.services.UsuarioService;
 @RequestMapping("/api/usuarios")
 public class UsuarioController {
  
-    private UsuarioService usuarioService;
+    private final UsuarioService usuarioService;
 
     public UsuarioController(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;

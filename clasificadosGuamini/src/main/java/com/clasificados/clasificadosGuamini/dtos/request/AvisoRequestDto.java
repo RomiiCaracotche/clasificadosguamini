@@ -1,5 +1,7 @@
 package com.clasificados.clasificadosGuamini.dtos.request;
 
+import com.clasificados.clasificadosGuamini.entities.Usuario;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -15,16 +17,16 @@ public class AvisoRequestDto {
     private String localidad;
 
     @NotNull(message = "Este campo es obligatorio")
-    private Long id_Anunciante;
+    private Usuario anunciante;
 
     
     public AvisoRequestDto() {}
 
-    public AvisoRequestDto(String titulo, String descripcion, String localidad, Long id_Anunciante) {
+    public AvisoRequestDto(String titulo, String descripcion, String localidad, Usuario anunciante) {
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.localidad = localidad;
-        this.id_Anunciante = id_Anunciante;
+        this.anunciante = anunciante;
     }
 
     public String getTitulo() {
@@ -51,12 +53,12 @@ public class AvisoRequestDto {
         this.localidad = localidad;
     }
 
-    public Long getId_Anunciante() {
-        return id_Anunciante;
+    public Usuario getAnunciante() {
+        return anunciante;
     }
 
-    public void setId_Anunciante(Long id_Anunciante) {
-        this.id_Anunciante = id_Anunciante;
+    public void setAnunciante(Usuario anunciante) {
+        this.anunciante = anunciante;
     } 
 
 }

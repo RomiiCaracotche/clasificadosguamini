@@ -18,7 +18,7 @@ import com.clasificados.clasificadosGuamini.services.InmuebleService;
 @RequestMapping("/api/inmuebles")
 public class InmuebleController {
 
-    private InmuebleService inmuebleService;
+    private final InmuebleService inmuebleService;
 
     public InmuebleController(InmuebleService inmuebleService) {
         this.inmuebleService = inmuebleService;
