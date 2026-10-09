@@ -1,11 +1,12 @@
 package com.clasificados.clasificadosGuamini.dtos.request;
 
+import com.clasificados.clasificadosGuamini.entities.Usuario;
 import com.clasificados.clasificadosGuamini.enums.Categoria;
 import com.clasificados.clasificadosGuamini.enums.EstadoProducto;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
-public class CompraVentaRequestDto extends AvisoRequestDto{
+public class CompraVentaRequestDto extends AvisoRequestDto {
 
     @NotNull(message = "Este campo es obligatorio")
     private Categoria categoria;
@@ -26,6 +27,16 @@ public class CompraVentaRequestDto extends AvisoRequestDto{
     
     public CompraVentaRequestDto() {
         super();
+    }
+
+    public CompraVentaRequestDto(String titulo, String descripcion, String localidad, Long idAnunciante, Categoria categoria, Double precio, EstadoProducto estado, String marca, String modelo, String color) {
+        super(titulo, descripcion, localidad, idAnunciante);
+        this.categoria = categoria;
+        this.precio = precio;
+        this.estado = estado;
+        this.marca = marca;
+        this.modelo = modelo;
+        this.color = color;
     }
 
     public Categoria getCategoria() {

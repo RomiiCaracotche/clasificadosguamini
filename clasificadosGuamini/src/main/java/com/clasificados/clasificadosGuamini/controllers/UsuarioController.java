@@ -1,6 +1,8 @@
 package com.clasificados.clasificadosGuamini.controllers;
 
 import java.util.List;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,16 +33,18 @@ public class UsuarioController {
 
     @GetMapping("/{id}")
     public ResponseEntity<UsuarioResponseDto> mostrarUsuario(@PathVariable Long id) {
-        return null;
+        UsuarioResponseDto UsuarioDto = usuarioService.mostrarUsuario(id);
+        return ResponseEntity.ok().body(UsuarioDto);
     }
 
     @PostMapping 
-    public ResponseEntity<UsuarioResponseDto> crearUsuario(@RequestBody UsuarioRequestDto empleo){
-        return null;
+    public ResponseEntity<UsuarioResponseDto> crearUsuario(@RequestBody UsuarioRequestDto usuario){
+        UsuarioResponseDto dto = usuarioService.crearUsuario(usuario);
+        return ResponseEntity.status(HttpStatus.CREATED).body(dto);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UsuarioResponseDto> modificarUsuario(@PathVariable Long id, @RequestBody UsuarioRequestDto empleo) {
+    public ResponseEntity<UsuarioResponseDto> modificarUsuario(@PathVariable Long id, @RequestBody UsuarioRequestDto usuario) {
         return null;
     }
 

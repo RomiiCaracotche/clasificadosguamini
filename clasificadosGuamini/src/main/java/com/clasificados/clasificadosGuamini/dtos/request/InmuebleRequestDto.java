@@ -1,6 +1,7 @@
 package com.clasificados.clasificadosGuamini.dtos.request;
 
 import com.clasificados.clasificadosGuamini.entities.Direccion;
+import com.clasificados.clasificadosGuamini.entities.Usuario;
 import com.clasificados.clasificadosGuamini.enums.TipoOperacion;
 import com.clasificados.clasificadosGuamini.enums.TipoVivienda;
 import jakarta.validation.constraints.NotNull;
@@ -49,8 +50,8 @@ public class InmuebleRequestDto extends AvisoRequestDto {
        super();
     }
 
-    public InmuebleRequestDto(String titulo, String descripcion, String localidad, Long id_Anunciante, TipoOperacion tipoOperacion, TipoVivienda tipoVivienda, Double precio, Integer ambientes, Integer habitaciones, Boolean patio, Integer banos, Boolean mascotas, Double expensas, Direccion direccion) {
-        super(titulo, descripcion, localidad, id_Anunciante);
+    public InmuebleRequestDto(String titulo, String descripcion, String localidad, Usuario anunciante, TipoOperacion tipoOperacion, TipoVivienda tipoVivienda, Double precio, Integer ambientes, Integer habitaciones, Boolean patio, Integer banos, Boolean mascotas, Double expensas, Direccion direccion) {
+        super(titulo, descripcion, localidad, anunciante);
         this.tipoOperacion = tipoOperacion;
         this.tipoVivienda = tipoVivienda;
         this.precio = precio;

@@ -1,5 +1,6 @@
 package com.clasificados.clasificadosGuamini.dtos.request;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
 public class UsuarioRequestDto {
@@ -14,6 +15,7 @@ public class UsuarioRequestDto {
     private String nombreUsuario;
 
     @NotBlank(message = "Este campo es obligatorio")
+    @Email 
     private String email;
 
     @NotBlank(message = "Este campo es obligatorio")

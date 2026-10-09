@@ -1,7 +1,6 @@
 package com.clasificados.clasificadosGuamini.dtos.response;
 
 import java.time.LocalDateTime;
-import com.clasificados.clasificadosGuamini.entities.Usuario;
 
 public class AvisoResponseDto {
 
@@ -10,17 +9,17 @@ public class AvisoResponseDto {
     private String descripcion;
     private LocalDateTime fecha = LocalDateTime.now();
     private String localidad;
-    private Usuario anunciante;
+    private Long idAnunciante;
 
     public AvisoResponseDto(){}
     
-    public AvisoResponseDto(Long id, String titulo, String descripcion, LocalDateTime fecha, String localidad, Usuario anunciante) {
+    public AvisoResponseDto(Long id, String titulo, String descripcion, LocalDateTime fecha, String localidad, Long idAnunciante) {
         this.id = id;
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.fecha = fecha;
         this.localidad = localidad;
-        this.anunciante = anunciante;
+        this.idAnunciante = idAnunciante;
     }
 
     public Long getId() {
@@ -63,12 +62,12 @@ public class AvisoResponseDto {
         this.localidad = localidad;
     }
 
-    public Usuario getAnunciante() {
-        return anunciante;
+    public Long getIdAnunciante() {
+        return idAnunciante;
     }
 
-    public void setAnunciante(Usuario anunciante) {
-        this.anunciante = anunciante;
+    public void setIdAnunciante(Long idAnunciante) {
+        this.idAnunciante = idAnunciante;
     }
     
 }

@@ -30,8 +30,8 @@ public class CompraVentaResponseDto extends AvisoResponseDto {
         super();
     }
 
-    public CompraVentaResponseDto(Long id, String titulo, String descripcion, LocalDateTime fecha, String localidad, Usuario anunciante, Categoria categoria, Double precio, EstadoProducto estado, String marca, String modelo, String color) {
-        super(id, titulo, descripcion, fecha, localidad, anunciante);
+    public CompraVentaResponseDto(Long id, String titulo, String descripcion, LocalDateTime fecha, String localidad, Long idAnunciante, Categoria categoria, Double precio, EstadoProducto estado, String marca, String modelo, String color) {
+        super(id, titulo, descripcion, fecha, localidad, idAnunciante);
         this.categoria = categoria;
         this.precio = precio;
         this.estado = estado;
