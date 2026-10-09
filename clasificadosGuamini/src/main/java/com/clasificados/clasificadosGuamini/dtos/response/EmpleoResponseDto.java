@@ -1,36 +1,32 @@
-package com.clasificados.clasificadosGuamini.entities;
+package com.clasificados.clasificadosGuamini.dtos.response;
 
+import java.time.LocalDateTime;
+import com.clasificados.clasificadosGuamini.entities.Usuario;
 import com.clasificados.clasificadosGuamini.enums.DisponibilidadHoraria;
 import com.clasificados.clasificadosGuamini.enums.TipoEmpleo;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
-@Entity 
-public class Empleo extends Aviso {
+public class EmpleoResponseDto extends AvisoResponseDto {
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
+    @NotNull(message = "Este campo es obligatorio")
     private TipoEmpleo tipoEmpleo;
     
-    @Column(nullable = false)
+    @NotBlank(message = "Este campo es obligatorio")
     private String rubro; 
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
+    @NotNull(message = "Este campo es obligatorio")
     private DisponibilidadHoraria disponibilidadHoraria; 
     
-    @Column(columnDefinition = "TEXT")
     private String requisitos;
-
-
-    public Empleo(String titulo, String descripcion, String localidad, Usuario anunciante) {
-        super(titulo, descripcion, localidad, anunciante);
+    
+    
+    public EmpleoResponseDto(Long id, String titulo, String descripcion, LocalDateTime fecha, String localidad, Usuario anunciante) {
+        super(id, titulo, descripcion, fecha, localidad, anunciante);
     }
 
-    public Empleo(String titulo, String descripcion, String localidad, Usuario anunciante, TipoEmpleo tipoEmpleo, String rubro, DisponibilidadHoraria disponibilidadHoraria, String requisitos) {
-        super(titulo, descripcion, localidad, anunciante);
+    public EmpleoResponseDto(Long id, String titulo, String descripcion, LocalDateTime fecha, String localidad, Usuario anunciante, TipoEmpleo tipoEmpleo, String rubro, DisponibilidadHoraria disponibilidadHoraria, String requisitos) {
+        super(id, titulo, descripcion, fecha, localidad, anunciante);
         this.tipoEmpleo = tipoEmpleo;
         this.rubro = rubro;
         this.disponibilidadHoraria = disponibilidadHoraria;

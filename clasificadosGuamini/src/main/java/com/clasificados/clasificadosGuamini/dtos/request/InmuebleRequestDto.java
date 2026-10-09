@@ -1,54 +1,56 @@
-package com.clasificados.clasificadosGuamini.entities;
+package com.clasificados.clasificadosGuamini.dtos.request;
 
+import com.clasificados.clasificadosGuamini.entities.Direccion;
 import com.clasificados.clasificadosGuamini.enums.TipoOperacion;
 import com.clasificados.clasificadosGuamini.enums.TipoVivienda;
-import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 
-@Entity 
-public class Inmueble extends Aviso {
+public class InmuebleRequestDto extends AvisoRequestDto {
 
-    @Column(name = "tipo_operacion", nullable = false)
-    @Enumerated(EnumType.STRING)
+    @NotNull(message = "Este campo es obligatorio")
     private TipoOperacion tipoOperacion;
 
-    @Column(name = "tipo_vivienda", nullable = false)
-    @Enumerated(EnumType.STRING)
+    @NotNull(message = "Este campo es obligatorio")
     private TipoVivienda tipoVivienda;
     
-    @Column(nullable = false)
+    @NotNull(message = "Este campo es obligatorio")
+    @Positive(message = "El valor debe ser mayor a cero")
     private Double precio;
 
-    @Column(nullable = false)
+    @NotNull(message = "Este campo es obligatorio")
+    @Positive(message = "El valor debe ser mayor a cero")
     private Integer ambientes;
 
-    @Column(nullable = false)
+    @NotNull(message = "Este campo es obligatorio")
+    @Positive(message = "El valor debe ser mayor a cero")
     private Integer habitaciones;
 
-    @Column(nullable = false)
+    @NotNull(message = "Este campo es obligatorio")
     private Boolean patio;
 
-    @Column(nullable = false)
+    @NotNull(message = "Este campo es obligatorio")
+    @Positive(message = "El valor debe ser mayor a cero")
     private Integer banos;
 
-    @Column(nullable = false)
+    @NotNull(message = "Este campo es obligatorio")
     private Boolean mascotas;
 
-    @Column(nullable = false)
+    @NotNull(message = "Este campo es obligatorio")
+    @PositiveOrZero(message = "El valor debe ser mayor o igual a cero")
     private Double expensas;
 
-    @Embedded 
+    @NotNull(message = "Este campo es obligatorio")
     private Direccion direccion;
 
-    public Inmueble(String titulo, String descripcion, String localidad, Usuario anunciante) {
-        super(titulo, descripcion, localidad, anunciante);
+    
+    public InmuebleRequestDto() {
+       super();
     }
 
-    public Inmueble(String titulo, String descripcion, String localidad, Usuario anunciante, TipoOperacion tipoOperacion, TipoVivienda tipoVivienda, Double precio, Integer ambientes, Integer habitaciones, Boolean patio, Integer banos, Boolean mascotas, Double expensas, Direccion direccion) {
-        super(titulo, descripcion, localidad, anunciante);
+    public InmuebleRequestDto(String titulo, String descripcion, String localidad, Long id_Anunciante, TipoOperacion tipoOperacion, TipoVivienda tipoVivienda, Double precio, Integer ambientes, Integer habitaciones, Boolean patio, Integer banos, Boolean mascotas, Double expensas, Direccion direccion) {
+        super(titulo, descripcion, localidad, id_Anunciante);
         this.tipoOperacion = tipoOperacion;
         this.tipoVivienda = tipoVivienda;
         this.precio = precio;
@@ -140,5 +142,5 @@ public class Inmueble extends Aviso {
     public void setDireccion(Direccion direccion) {
         this.direccion = direccion;
     }
-    
+
 }

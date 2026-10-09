@@ -1,36 +1,25 @@
-package com.clasificados.clasificadosGuamini.entities;
+package com.clasificados.clasificadosGuamini.dtos.request;
 
 import com.clasificados.clasificadosGuamini.enums.DisponibilidadHoraria;
 import com.clasificados.clasificadosGuamini.enums.TipoEmpleo;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 
-@Entity 
-public class Empleo extends Aviso {
+public class EmpleoRequestDto extends AvisoRequestDto {
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
     private TipoEmpleo tipoEmpleo;
     
-    @Column(nullable = false)
     private String rubro; 
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
     private DisponibilidadHoraria disponibilidadHoraria; 
     
-    @Column(columnDefinition = "TEXT")
     private String requisitos;
 
 
-    public Empleo(String titulo, String descripcion, String localidad, Usuario anunciante) {
-        super(titulo, descripcion, localidad, anunciante);
+    public EmpleoRequestDto(String titulo, String descripcion, String localidad, Long id_Anunciante) {
+        super(titulo, descripcion, localidad, id_Anunciante);
     }
 
-    public Empleo(String titulo, String descripcion, String localidad, Usuario anunciante, TipoEmpleo tipoEmpleo, String rubro, DisponibilidadHoraria disponibilidadHoraria, String requisitos) {
-        super(titulo, descripcion, localidad, anunciante);
+    public EmpleoRequestDto(String titulo, String descripcion, String localidad, Long id_Anunciante, TipoEmpleo tipoEmpleo, String rubro, DisponibilidadHoraria disponibilidadHoraria, String requisitos) {
+        super(titulo, descripcion, localidad, id_Anunciante);
         this.tipoEmpleo = tipoEmpleo;
         this.rubro = rubro;
         this.disponibilidadHoraria = disponibilidadHoraria;

@@ -1,7 +1,7 @@
 package com.clasificados.clasificadosGuamini.enums;
 
 public enum Categoria {
-    ECNOLOGIA,
+    TECNOLOGIA,
     INDUMENTARIA,
     HOGAR_Y_MUEBLES,
     VEHICULOS,

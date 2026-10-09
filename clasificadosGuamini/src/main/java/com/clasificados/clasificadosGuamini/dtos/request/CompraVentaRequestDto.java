@@ -1,24 +1,20 @@
-package com.clasificados.clasificadosGuamini.entities;
+package com.clasificados.clasificadosGuamini.dtos.request;
 
 import com.clasificados.clasificadosGuamini.enums.Categoria;
 import com.clasificados.clasificadosGuamini.enums.EstadoProducto;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
-@Entity 
-public class CompraVenta extends Aviso {
+public class CompraVentaRequestDto extends AvisoRequestDto{
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
+    @NotNull(message = "Este campo es obligatorio")
     private Categoria categoria;
 
-    @Column(nullable = false)
+    @NotNull(message = "Este campo es obligatorio")
+    @Positive(message = "El valor debe ser mayor a cero") 
     private Double precio;
     
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
+    @NotNull(message = "Este campo es obligatorio")
     private EstadoProducto estado;
     
     private String marca;
@@ -27,19 +23,9 @@ public class CompraVenta extends Aviso {
 
     private String color;
 
-
-    public CompraVenta() {
+    
+    public CompraVentaRequestDto() {
         super();
-    }
-
-    public CompraVenta(String titulo, String descripcion, String localidad, Usuario anunciante, Categoria categoria, Double precio, EstadoProducto estado, String marca, String modelo, String color) {
-        super(titulo, descripcion, localidad, anunciante);
-        this.categoria = categoria;
-        this.precio = precio;
-        this.estado = estado;
-        this.marca = marca;
-        this.modelo = modelo;
-        this.color = color;
     }
 
     public Categoria getCategoria() {
@@ -89,5 +75,5 @@ public class CompraVenta extends Aviso {
     public void setColor(String color) {
         this.color = color;
     }
-    
+
 }

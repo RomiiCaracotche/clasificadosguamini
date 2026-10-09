@@ -9,12 +9,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.clasificados.clasificadosGuamini.entities.Inmueble;
-import com.clasificados.clasificadosGuamini.enums.TipoOperacion;
+import com.clasificados.clasificadosGuamini.dtos.request.InmuebleRequestDto;
+import com.clasificados.clasificadosGuamini.dtos.response.InmuebleResponseDto;
 import com.clasificados.clasificadosGuamini.services.InmuebleService;
-import jakarta.validation.Valid;
 
 @RestController 
 @RequestMapping("/api/inmuebles")
@@ -27,32 +25,27 @@ public class InmuebleController {
     }
 
     @GetMapping 
-    public ResponseEntity<List<Inmueble>> listarInmuebles() {
+    public ResponseEntity<List<InmuebleResponseDto>> listarInmuebles() {
         return null;
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Inmueble> listarInmueblePorId(@PathVariable Long id) {
+    public ResponseEntity<InmuebleResponseDto> mostrarInmueble(@PathVariable Long id) {
         return null;
     }
 
-    @GetMapping("/buscar")
-    public ResponseEntity<List<Inmueble>> buscarFiltrosAvanzados(@RequestParam(required = false) String localidad, @RequestParam(required = false) Double precio, @RequestParam(required = false) TipoOperacion tipoOperacion) {
-                return null;
-            }
-
     @PostMapping 
-    public ResponseEntity<Inmueble> crearInmueble(@Valid @RequestBody Inmueble inmueble){
+    public ResponseEntity<InmuebleResponseDto> crearInmueble(@RequestBody InmuebleRequestDto inmueble){
         return null;
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Inmueble> modificarInmueble(@PathVariable Long id, @Valid @RequestBody Inmueble inmueble) {
+    public ResponseEntity<InmuebleResponseDto> modificarInmueble(@PathVariable Long id, @RequestBody InmuebleRequestDto inmueble) {
         return null;
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarInmueblePorId(@PathVariable Long id) {
+    public ResponseEntity<String> eliminarInmueble(@PathVariable Long id) {
         return null;
     }
 }
