@@ -85,9 +85,11 @@ public class UsuarioService {
 
     public boolean validarLogin(String nombreUsuario, String passwordIngresada) {
         Usuario usuario = usuarioRepository.findByNombreUsuario(nombreUsuario);    
+        
         if (usuario == null) {
             return false; 
         }
+        
         //Comparamos la contraseña ingresada con el hash guardado en la base de datos
         boolean passwordValida = passwordEncoder.matches(passwordIngresada, usuario.getPassword());
         return passwordValida;
