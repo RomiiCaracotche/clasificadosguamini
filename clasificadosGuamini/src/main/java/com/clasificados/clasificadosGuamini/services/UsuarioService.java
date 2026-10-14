@@ -1,6 +1,7 @@
 package com.clasificados.clasificadosGuamini.services;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import com.clasificados.clasificadosGuamini.dtos.request.UsuarioRequestDto;
@@ -13,8 +14,11 @@ public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
 
-    public UsuarioService(UsuarioRepository usuarioRepository) {
+    private PasswordEncoder passwordEncoder;
+
+    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public UsuarioResponseDto mostrarUsuario(Long id) {
@@ -23,6 +27,26 @@ public class UsuarioService {
     }
 
     public UsuarioResponseDto crearUsuario(UsuarioRequestDto dto) {
+
+        // Valido si el nombre de usuario ya existe
+        if (usuarioRepository.existsByNombreUsuario(dto.getNombreUsuario())) {
+            throw new RuntimeException("El nombre de usuario ya está en uso.");
+        }
+
+        // Valido si el email ya existe
+        if (usuarioRepository.existsByEmail(dto.getEmail())) {
+            throw new RuntimeException("El correo electrónico ya está registrado.");
+        }
+
+        // Valido si el celular ya existe
+        if (usuarioRepository.existsByCelular(dto.getCelular())) {
+            throw new RuntimeException("El celular ya está registrado.");
+        }
+
+        //Encripto la contrasena con BCrypt
+        String passwordEncriptada = passwordEncoder.encode(dto.getPassword());
+        dto.setPassword(passwordEncriptada);
+
         Usuario usuarioEntity = usuarioRepository.save(mappearDtoAEntity(dto, null));
         return mappearEntityADto(usuarioEntity);
     }
@@ -57,6 +81,16 @@ public class UsuarioService {
         dto.setActivo(entidad.getActivo());
 
         return dto;
+    }
+
+    public boolean validarLogin(String nombreUsuario, String passwordIngresada) {
+        Usuario usuario = usuarioRepository.findByNombreUsuario(nombreUsuario);    
+        if (usuario == null) {
+            return false; 
+        }
+        //Comparamos la contraseña ingresada con el hash guardado en la base de datos
+        boolean passwordValida = passwordEncoder.matches(passwordIngresada, usuario.getPassword());
+        return passwordValida;
     }
 
 }

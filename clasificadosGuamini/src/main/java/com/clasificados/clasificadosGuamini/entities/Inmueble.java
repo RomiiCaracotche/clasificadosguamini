@@ -7,8 +7,10 @@ import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.Table;
 
 @Entity 
+@Table(name ="inmuebles")
 public class Inmueble extends Aviso {
 
     @Column(name = "tipo_operacion", nullable = false)

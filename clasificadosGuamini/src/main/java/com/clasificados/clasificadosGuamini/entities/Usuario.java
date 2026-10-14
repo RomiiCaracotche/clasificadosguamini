@@ -15,8 +15,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 @Entity 
+@Table(name ="usuarios")
 public class Usuario {
 
     @Id 
@@ -29,16 +31,16 @@ public class Usuario {
     @Column(nullable = false)
     private String apellido;
 
-    @Column(name="nombre_usuario", nullable = false)
+    @Column(name="nombre_usuario", nullable = false, unique = true)
     private String nombreUsuario;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String celular;
 
     @Column(nullable = false)
