@@ -5,13 +5,13 @@ import jakarta.validation.constraints.NotNull;
 
 public class AvisoRequestDto {
 
-    @NotBlank(message = "Este campo es obligatorio")
+    @NotBlank(message = "El titulo es obligatorio")
     private String titulo;
 
-    @NotBlank(message = "Este campo es obligatorio")
+    @NotBlank(message = "La descripcion es obligatoria")
     private String descripcion;
 
-    @NotBlank(message = "Este campo es obligatorio")
+    @NotBlank(message = "La localidad es obligatoria")
     private String localidad;
 
     @NotNull(message = "Este campo es obligatorio")

@@ -16,6 +16,8 @@ import com.clasificados.clasificadosGuamini.dtos.request.UsuarioRequestDto;
 import com.clasificados.clasificadosGuamini.dtos.response.UsuarioResponseDto;
 import com.clasificados.clasificadosGuamini.services.UsuarioService;
 
+import jakarta.validation.Valid;
+
 @RestController 
 @RequestMapping("/api/usuarios")
 public class UsuarioController {
@@ -28,7 +30,8 @@ public class UsuarioController {
 
     @GetMapping 
     public ResponseEntity<List<UsuarioResponseDto>> listarUsuarios() {
-        return null;
+        List<UsuarioResponseDto> UsuariosDto = usuarioService.listarUsuarios();
+        return ResponseEntity.ok().body(UsuariosDto);
     }
 
     @GetMapping("/{id}")
@@ -38,13 +41,13 @@ public class UsuarioController {
     }
 
     @PostMapping 
-    public ResponseEntity<UsuarioResponseDto> crearUsuario(@RequestBody UsuarioRequestDto usuario){
+    public ResponseEntity<UsuarioResponseDto> crearUsuario( @Valid @RequestBody UsuarioRequestDto usuario){
         UsuarioResponseDto dto = usuarioService.crearUsuario(usuario);
         return ResponseEntity.status(HttpStatus.CREATED).body(dto);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UsuarioResponseDto> modificarUsuario(@PathVariable Long id, @RequestBody UsuarioRequestDto usuario) {
+    public ResponseEntity<UsuarioResponseDto> modificarUsuario(@PathVariable Long id, @Valid @RequestBody UsuarioRequestDto usuario) {
         return null;
     }
 

@@ -10,39 +10,39 @@ import jakarta.validation.constraints.PositiveOrZero;
 
 public class InmuebleRequestDto extends AvisoRequestDto {
 
-    @NotNull(message = "Este campo es obligatorio")
+    @NotNull(message = "El tipo de operacion es obligatorio")
     private TipoOperacion tipoOperacion;
 
-    @NotNull(message = "Este campo es obligatorio")
+    @NotNull(message = "El tipo de vivienda es obligatorio")
     private TipoVivienda tipoVivienda;
     
-    @NotNull(message = "Este campo es obligatorio")
+    @NotNull(message = "El precio es obligatorio")
     @Positive(message = "El valor debe ser mayor a cero")
     private Double precio;
 
-    @NotNull(message = "Este campo es obligatorio")
+    @NotNull(message = "La cantidad de ambientes es obligatorio")
     @Positive(message = "El valor debe ser mayor a cero")
     private Integer ambientes;
 
-    @NotNull(message = "Este campo es obligatorio")
+    @NotNull(message = "La cantidad de habitaciones es obligatorio")
     @Positive(message = "El valor debe ser mayor a cero")
     private Integer habitaciones;
 
-    @NotNull(message = "Este campo es obligatorio")
+    @NotNull(message = "El patio es obligatorio")
     private Boolean patio;
 
-    @NotNull(message = "Este campo es obligatorio")
+    @NotNull(message = "La cantidad de baños es obligatorio")
     @Positive(message = "El valor debe ser mayor a cero")
     private Integer banos;
 
-    @NotNull(message = "Este campo es obligatorio")
+    @NotNull(message = "El campo admite mascotas es obligatorio")
     private Boolean mascotas;
 
-    @NotNull(message = "Este campo es obligatorio")
+    @NotNull(message = "El campo posee expensas es obligatorio")
     @PositiveOrZero(message = "El valor debe ser mayor o igual a cero")
     private Double expensas;
 
-    @NotNull(message = "Este campo es obligatorio")
+    @NotNull(message = "La direccion es obligatoria")
     private Direccion direccion;
 
     
@@ -50,8 +50,8 @@ public class InmuebleRequestDto extends AvisoRequestDto {
        super();
     }
 
-    public InmuebleRequestDto(String titulo, String descripcion, String localidad, Usuario anunciante, TipoOperacion tipoOperacion, TipoVivienda tipoVivienda, Double precio, Integer ambientes, Integer habitaciones, Boolean patio, Integer banos, Boolean mascotas, Double expensas, Direccion direccion) {
-        super(titulo, descripcion, localidad, anunciante);
+    public InmuebleRequestDto(String titulo, String descripcion, String localidad, Long idAnunciante, TipoOperacion tipoOperacion, TipoVivienda tipoVivienda, Double precio, Integer ambientes, Integer habitaciones, Boolean patio, Integer banos, Boolean mascotas, Double expensas, Direccion direccion) {
+        super(titulo, descripcion, localidad, idAnunciante);
         this.tipoOperacion = tipoOperacion;
         this.tipoVivienda = tipoVivienda;
         this.precio = precio;

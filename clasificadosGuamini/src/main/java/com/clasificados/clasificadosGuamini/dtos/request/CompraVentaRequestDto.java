@@ -1,6 +1,5 @@
 package com.clasificados.clasificadosGuamini.dtos.request;
 
-import com.clasificados.clasificadosGuamini.entities.Usuario;
 import com.clasificados.clasificadosGuamini.enums.Categoria;
 import com.clasificados.clasificadosGuamini.enums.EstadoProducto;
 import jakarta.validation.constraints.NotNull;
@@ -8,14 +7,14 @@ import jakarta.validation.constraints.Positive;
 
 public class CompraVentaRequestDto extends AvisoRequestDto {
 
-    @NotNull(message = "Este campo es obligatorio")
+    @NotNull(message = "La categoria es obligatoria")
     private Categoria categoria;
 
-    @NotNull(message = "Este campo es obligatorio")
+    @NotNull(message = "El precio es obligatorio")
     @Positive(message = "El valor debe ser mayor a cero") 
     private Double precio;
     
-    @NotNull(message = "Este campo es obligatorio")
+    @NotNull(message = "El estado es obligatorio")
     private EstadoProducto estado;
     
     private String marca;

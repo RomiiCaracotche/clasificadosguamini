@@ -1,9 +1,15 @@
 package com.clasificados.clasificadosGuamini.services;
 
+import java.util.List;
+import java.util.stream.Stream;
+
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import com.clasificados.clasificadosGuamini.Exception.dtos.DuplicateResourceExceptionDto;
 import com.clasificados.clasificadosGuamini.dtos.request.UsuarioRequestDto;
 import com.clasificados.clasificadosGuamini.dtos.response.UsuarioResponseDto;
 import com.clasificados.clasificadosGuamini.entities.Usuario;
@@ -21,6 +27,11 @@ public class UsuarioService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    public List<UsuarioResponseDto> listarUsuarios() {
+        List<Usuario> Usuarios = usuarioRepository.findAll();
+        return Usuarios.stream().map(e -> mappearEntityADto(e)).toList();
+    }
+    
     public UsuarioResponseDto mostrarUsuario(Long id) {
         Usuario usuarioEntity = usuarioRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No se encontró el id: " + id));
         return mappearEntityADto(usuarioEntity);
@@ -28,19 +39,19 @@ public class UsuarioService {
 
     public UsuarioResponseDto crearUsuario(UsuarioRequestDto dto) {
 
-        // Valido si el nombre de usuario ya existe
         if (usuarioRepository.existsByNombreUsuario(dto.getNombreUsuario())) {
-            throw new RuntimeException("El nombre de usuario ya está en uso.");
+            /* throw new RuntimeException("El nombre de usuario ya está en uso."); */
+            throw new DuplicateResourceExceptionDto("El nombre de usuario ya esta registrado");
         }
 
-        // Valido si el email ya existe
         if (usuarioRepository.existsByEmail(dto.getEmail())) {
-            throw new RuntimeException("El correo electrónico ya está registrado.");
+            /* throw new RuntimeException("El correo electrónico ya está registrado."); */
+            throw new DuplicateResourceExceptionDto("El email ya esta registrado");
         }
 
-        // Valido si el celular ya existe
         if (usuarioRepository.existsByCelular(dto.getCelular())) {
-            throw new RuntimeException("El celular ya está registrado.");
+            /* throw new RuntimeException("El celular ya está registrado."); */
+            throw new DuplicateResourceExceptionDto("El celular ya esta registrado");
         }
 
         //Encripto la contrasena con BCrypt

@@ -5,26 +5,26 @@ import jakarta.validation.constraints.NotBlank;
 
 public class UsuarioRequestDto {
 
-    @NotBlank(message = "Este campo es obligatorio")
+    @NotBlank(message = "El nombre es obligatorio")
     private String nombre;
 
-    @NotBlank(message = "Este campo es obligatorio")
+    @NotBlank(message = "El apellido es obligatorio")
     private String apellido;
 
-    @NotBlank(message = "Este campo es obligatorio")
+    @NotBlank(message = "El nombre de usuario es obligatorio")
     private String nombreUsuario;
 
-    @NotBlank(message = "Este campo es obligatorio")
+    @NotBlank(message = "El email es obligatorio")
     @Email 
     private String email;
 
-    @NotBlank(message = "Este campo es obligatorio")
+    @NotBlank(message = "La contraseña es obligatoria")
     private String password;
 
-    @NotBlank(message = "Este campo es obligatorio")
+    @NotBlank(message = "El numero de celular es obligatorio")
     private String celular;
 
-    @NotBlank(message = "Este campo es obligatorio")
+    @NotBlank(message = "La localidad es obligatoria")
     private String localidad;
 
 
