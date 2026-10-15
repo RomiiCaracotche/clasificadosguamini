@@ -1,7 +1,6 @@
 package com.clasificados.clasificadosGuamini.controllers;
 
 import java.util.List;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -41,18 +40,21 @@ public class UsuarioController {
     }
 
     @PostMapping 
-    public ResponseEntity<UsuarioResponseDto> crearUsuario( @Valid @RequestBody UsuarioRequestDto usuario){
-        UsuarioResponseDto dto = usuarioService.crearUsuario(usuario);
-        return ResponseEntity.status(HttpStatus.CREATED).body(dto);
+    public ResponseEntity<UsuarioResponseDto> crearUsuario(@Valid @RequestBody UsuarioRequestDto dto){
+        UsuarioResponseDto usuarioDto = usuarioService.crearUsuario(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioDto);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UsuarioResponseDto> modificarUsuario(@PathVariable Long id, @Valid @RequestBody UsuarioRequestDto usuario) {
-        return null;
+    public ResponseEntity<UsuarioResponseDto> modificarUsuario(@PathVariable Long id, @Valid @RequestBody UsuarioRequestDto dto) {
+        UsuarioResponseDto usuarioDto = usuarioService.modificarUsuario(id, dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioDto);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> eliminarUsuario(@PathVariable Long id) {
-        return null;
+        String usuarioEliminado = usuarioService.eliminarUsuario(id);
+        return ResponseEntity.ok(usuarioEliminado);
     }
+    
 }

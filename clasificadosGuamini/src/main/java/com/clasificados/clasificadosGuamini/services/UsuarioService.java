@@ -1,15 +1,12 @@
 package com.clasificados.clasificadosGuamini.services;
 
 import java.util.List;
-import java.util.stream.Stream;
-
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
 import com.clasificados.clasificadosGuamini.Exception.dtos.DuplicateResourceExceptionDto;
+import com.clasificados.clasificadosGuamini.Exception.dtos.ResourceNotFoundExceptionDto;
 import com.clasificados.clasificadosGuamini.dtos.request.UsuarioRequestDto;
 import com.clasificados.clasificadosGuamini.dtos.response.UsuarioResponseDto;
 import com.clasificados.clasificadosGuamini.entities.Usuario;
@@ -61,6 +58,19 @@ public class UsuarioService {
         Usuario usuarioEntity = usuarioRepository.save(mappearDtoAEntity(dto, null));
         return mappearEntityADto(usuarioEntity);
     }
+
+    public UsuarioResponseDto modificarUsuario(Long id, UsuarioRequestDto dtoModificado){
+        Usuario existeId = usuarioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundExceptionDto("Usuario con id " + id + " no encontrado"));
+        Usuario usuarioModificado = usuarioRepository.save(mappearDtoAEntity(dtoModificado, existeId));
+        return mappearEntityADto(usuarioModificado);
+    }
+
+    public String eliminarUsuario(Long id){
+        Usuario existeId = usuarioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundExceptionDto("Usuario con id " + id + " no encontrado"));
+        usuarioRepository.delete(existeId);
+        return "El usuario con id " + id + " se elimino correctamente";
+    }
+
 
     private Usuario mappearDtoAEntity(UsuarioRequestDto dto, Usuario entidadExiste) {
         if(entidadExiste == null) {
