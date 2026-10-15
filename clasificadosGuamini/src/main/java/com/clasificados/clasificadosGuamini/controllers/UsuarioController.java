@@ -48,7 +48,7 @@ public class UsuarioController {
     @PutMapping("/{id}")
     public ResponseEntity<UsuarioResponseDto> modificarUsuario(@PathVariable Long id, @Valid @RequestBody UsuarioRequestDto dto) {
         UsuarioResponseDto usuarioDto = usuarioService.modificarUsuario(id, dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioDto);
+        return ResponseEntity.ok(usuarioDto);
     }
 
     @DeleteMapping("/{id}")

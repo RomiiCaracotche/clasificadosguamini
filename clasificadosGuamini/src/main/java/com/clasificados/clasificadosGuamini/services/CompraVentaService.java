@@ -4,6 +4,8 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import com.clasificados.clasificadosGuamini.Exception.dtos.ResourceNotFoundException;
 import com.clasificados.clasificadosGuamini.dtos.request.CompraVentaRequestDto;
 import com.clasificados.clasificadosGuamini.dtos.response.CompraVentaResponseDto;
 import com.clasificados.clasificadosGuamini.entities.CompraVenta;
@@ -28,7 +30,7 @@ public class CompraVentaService {
     }
 
     public CompraVentaResponseDto mostrarCompraVenta(Long id) {
-        CompraVenta compraVentaEntity = compraVentaRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No se encontró el id: " + id));
+        CompraVenta compraVentaEntity = compraVentaRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No se encontró la compraventa con id: " + id));
         return mappearEntityADto(compraVentaEntity);
     }
 
@@ -38,15 +40,15 @@ public class CompraVentaService {
     }
 
     public CompraVentaResponseDto modificarCompraVenta(Long id, CompraVentaRequestDto compraventaDto) {
-        CompraVenta compraVentaEntidad = compraVentaRepository.findById(id).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND, "No se encontró el id: " + id));
+        CompraVenta compraVentaEntidad = compraVentaRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("No se encontró la compraventa con id: " + id));
         CompraVenta compraVentaEntityModificada = compraVentaRepository.save(mappearDtoAEntity(compraventaDto, compraVentaEntidad));
         return mappearEntityADto(compraVentaEntityModificada);
     }
 
     public String eliminarCompraVenta(Long id){
-        CompraVenta compraVenta = compraVentaRepository.findById(id).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND, "No se encontró el id: " + id));
+        CompraVenta compraVenta = compraVentaRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("No se encontró la compraventa con id: " + id));
         compraVentaRepository.delete(compraVenta);
-        return "La compraventa se eliminó correctamente";
+        return "La compraventa con id " + id + " se eliminó correctamente";
     }
 
 

@@ -16,12 +16,17 @@ public class SecurityConfig {
     }
 
     /* Permite peticiones a la ruta /usuarios sin estar autenticado */
+    /* Una vez que tengo JSON web tokens lo modifico */
+    /* Una vez que tengo JSON web tokens lo modifico */
+    /* Una vez que tengo JSON web tokens lo modifico */
+    /* Una vez que tengo JSON web tokens lo modifico */
+    /* Una vez que tengo JSON web tokens lo modifico */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .csrf(csrf -> csrf.disable()) // Desactiva CSRF para pruebas en Postman
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/usuarios/**").permitAll() // Permite acceso libre a este endpoint
+                .requestMatchers("/api/**").permitAll() // Permite acceso libre a este endpoint
                 .anyRequest().authenticated() // El resto de peticiones sí requieren autenticación
             );
         

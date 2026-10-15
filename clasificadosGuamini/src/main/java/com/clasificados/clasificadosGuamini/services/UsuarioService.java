@@ -5,8 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import com.clasificados.clasificadosGuamini.Exception.dtos.DuplicateResourceExceptionDto;
-import com.clasificados.clasificadosGuamini.Exception.dtos.ResourceNotFoundExceptionDto;
+import com.clasificados.clasificadosGuamini.Exception.dtos.DuplicateResourceException;
+import com.clasificados.clasificadosGuamini.Exception.dtos.ResourceNotFoundException;
 import com.clasificados.clasificadosGuamini.dtos.request.UsuarioRequestDto;
 import com.clasificados.clasificadosGuamini.dtos.response.UsuarioResponseDto;
 import com.clasificados.clasificadosGuamini.entities.Usuario;
@@ -37,18 +37,13 @@ public class UsuarioService {
     public UsuarioResponseDto crearUsuario(UsuarioRequestDto dto) {
 
         if (usuarioRepository.existsByNombreUsuario(dto.getNombreUsuario())) {
-            /* throw new RuntimeException("El nombre de usuario ya está en uso."); */
-            throw new DuplicateResourceExceptionDto("El nombre de usuario ya esta registrado");
+            throw new DuplicateResourceException("El nombre de usuario ya esta registrado");
         }
-
         if (usuarioRepository.existsByEmail(dto.getEmail())) {
-            /* throw new RuntimeException("El correo electrónico ya está registrado."); */
-            throw new DuplicateResourceExceptionDto("El email ya esta registrado");
+            throw new DuplicateResourceException("El email ya esta registrado");
         }
-
         if (usuarioRepository.existsByCelular(dto.getCelular())) {
-            /* throw new RuntimeException("El celular ya está registrado."); */
-            throw new DuplicateResourceExceptionDto("El celular ya esta registrado");
+            throw new DuplicateResourceException("El celular ya esta registrado");
         }
 
         //Encripto la contrasena con BCrypt
@@ -60,13 +55,13 @@ public class UsuarioService {
     }
 
     public UsuarioResponseDto modificarUsuario(Long id, UsuarioRequestDto dtoModificado){
-        Usuario existeId = usuarioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundExceptionDto("Usuario con id " + id + " no encontrado"));
+        Usuario existeId = usuarioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No se encontro el Usuario con id: " + id));
         Usuario usuarioModificado = usuarioRepository.save(mappearDtoAEntity(dtoModificado, existeId));
         return mappearEntityADto(usuarioModificado);
     }
 
     public String eliminarUsuario(Long id){
-        Usuario existeId = usuarioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundExceptionDto("Usuario con id " + id + " no encontrado"));
+        Usuario existeId = usuarioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No se encontro el Usuario con id: " + id));
         usuarioRepository.delete(existeId);
         return "El usuario con id " + id + " se elimino correctamente";
     }
