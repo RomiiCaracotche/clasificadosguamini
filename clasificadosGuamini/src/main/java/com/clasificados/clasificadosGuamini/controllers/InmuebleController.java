@@ -1,6 +1,7 @@
 package com.clasificados.clasificadosGuamini.controllers;
 
 import java.util.List;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,28 +25,33 @@ public class InmuebleController {
         this.inmuebleService = inmuebleService;
     }
 
-    @GetMapping 
+    @GetMapping("/")
     public ResponseEntity<List<InmuebleResponseDto>> listarInmuebles() {
-        return null;
+        List<InmuebleResponseDto> listaInmuebles = inmuebleService.listarInmuebles();
+        return ResponseEntity.ok().body(listaInmuebles);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<InmuebleResponseDto> mostrarInmueble(@PathVariable Long id) {
-        return null;
+        InmuebleResponseDto inmueble = inmuebleService.mostrarInmueble(id);
+        return ResponseEntity.ok().body(inmueble);
     }
 
     @PostMapping 
     public ResponseEntity<InmuebleResponseDto> crearInmueble(@RequestBody InmuebleRequestDto inmueble){
-        return null;
+        InmuebleResponseDto dto = inmuebleService.crearInmueble(inmueble);
+        return ResponseEntity.status(HttpStatus.CREATED).body(dto);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<InmuebleResponseDto> modificarInmueble(@PathVariable Long id, @RequestBody InmuebleRequestDto inmueble) {
-        return null;
+        InmuebleResponseDto dto = inmuebleService.modificarInmueble(id, inmueble);
+        return ResponseEntity.ok().body(dto);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> eliminarInmueble(@PathVariable Long id) {
-        return null;
+        String inmuebleEliminado = inmuebleService.eliminarInmueble(id);
+        return ResponseEntity.ok().body(inmuebleEliminado);
     }
 }
