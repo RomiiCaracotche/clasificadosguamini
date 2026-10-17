@@ -2,7 +2,6 @@ package com.clasificados.clasificadosGuamini.dtos.response;
 
 import java.time.LocalDateTime;
 import com.clasificados.clasificadosGuamini.entities.Direccion;
-import com.clasificados.clasificadosGuamini.entities.Usuario;
 import com.clasificados.clasificadosGuamini.enums.TipoOperacion;
 import com.clasificados.clasificadosGuamini.enums.TipoVivienda;
 
@@ -33,8 +32,8 @@ public class InmuebleResponseDto extends AvisoResponseDto {
        super();
     }
 
-    public InmuebleResponseDto(Long id, String titulo, String descripcion, LocalDateTime fecha, String localidad, Usuario anunciante, TipoOperacion tipoOperacion, TipoVivienda tipoVivienda, Double precio, Integer ambientes, Integer habitaciones, Boolean patio, Integer banos, Boolean mascotas, Double expensas, Direccion direccion) {
-        super(id, titulo, descripcion, fecha, localidad, anunciante);
+    public InmuebleResponseDto(Long id, String titulo, String descripcion, LocalDateTime fecha, String localidad, Long idAnunciante, TipoOperacion tipoOperacion, TipoVivienda tipoVivienda, Double precio, Integer ambientes, Integer habitaciones, Boolean patio, Integer banos, Boolean mascotas, Double expensas, Direccion direccion) {
+        super(id, titulo, descripcion, fecha, localidad, idAnunciante);
         this.tipoOperacion = tipoOperacion;
         this.tipoVivienda = tipoVivienda;
         this.precio = precio;

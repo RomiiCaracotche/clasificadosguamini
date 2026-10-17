@@ -10,6 +10,8 @@ public class UsuarioResponseDto {
 
     private String apellido;
 
+    private String dni;
+
     private String nombreUsuario;
 
     private String email;
@@ -25,10 +27,11 @@ public class UsuarioResponseDto {
 
     public UsuarioResponseDto() {}
 
-    public UsuarioResponseDto(Long id, String nombre, String apellido, String nombreUsuario, String email, String celular, String localidad, LocalDateTime fechaRegistro, Boolean activo) {
+    public UsuarioResponseDto(Long id, String nombre, String apellido, String dni, String nombreUsuario, String email, String celular, String localidad, LocalDateTime fechaRegistro, Boolean activo) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
+        this.dni = dni;
         this.nombreUsuario = nombreUsuario;
         this.email = email;
         this.celular = celular;
@@ -108,5 +111,15 @@ public class UsuarioResponseDto {
     public void setActivo(Boolean activo) {
         this.activo = activo;
     }
+
+    public String getDni() {
+        return dni;
+    }
+
+    public void setDni(String dni) {
+        this.dni = dni;
+    }
+
+    
 
 }

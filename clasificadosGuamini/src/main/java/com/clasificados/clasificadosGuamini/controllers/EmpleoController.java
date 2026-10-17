@@ -1,6 +1,7 @@
 package com.clasificados.clasificadosGuamini.controllers;
 
 import java.util.List;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,28 +25,34 @@ public class EmpleoController {
         this.empleoService = empleoService;
     }
 
-    @GetMapping 
+    @GetMapping("/")
     public ResponseEntity<List<EmpleoResponseDto>> listarEmpleos() {
-        return null;
+        List<EmpleoResponseDto> listaEmpleados = empleoService.listarEmpleos();
+        return ResponseEntity.ok().body(listaEmpleados);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<EmpleoResponseDto> mostrarEmpleo(@PathVariable Long id) {
-        return null;
+        EmpleoResponseDto dto = empleoService.mostrarEmpleo(id);
+        return ResponseEntity.ok().body(dto);
     }
 
     @PostMapping 
     public ResponseEntity<EmpleoResponseDto> crearEmpleo(@RequestBody EmpleoRequestDto empleo){
-        return null;
+        EmpleoResponseDto dto = empleoService.crearEmpleo(empleo);
+        return ResponseEntity.status(HttpStatus.CREATED).body(dto);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<EmpleoResponseDto> modificarEmpleo(@PathVariable Long id, @RequestBody EmpleoRequestDto empleo) {
-        return null;
+        EmpleoResponseDto dto = empleoService.modificarEmpleo(id, empleo);
+        return ResponseEntity.ok().body(dto);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> eliminarEmpleo(@PathVariable Long id) {
-        return null;
+        String empleoEliminado = empleoService.eliminarEmpleo(id);
+        return ResponseEntity.ok().body(empleoEliminado);
     }
+
 }

@@ -11,6 +11,9 @@ public class UsuarioRequestDto {
     @NotBlank(message = "El apellido es obligatorio")
     private String apellido;
 
+    @NotBlank(message = "El numero de documento es obligatorio")
+    private String dni;
+
     @NotBlank(message = "El nombre de usuario es obligatorio")
     private String nombreUsuario;
 
@@ -30,9 +33,10 @@ public class UsuarioRequestDto {
 
     public UsuarioRequestDto() {}
 
-    public UsuarioRequestDto(String nombre, String apellido, String nombreUsuario, String email, String password, String celular, String localidad) {
+    public UsuarioRequestDto(String nombre, String apellido, String dni, String nombreUsuario, String email, String password, String celular, String localidad) {
         this.nombre = nombre;
         this.apellido = apellido;
+        this.dni = dni;
         this.nombreUsuario = nombreUsuario;
         this.email = email;
         this.password = password;
@@ -54,6 +58,14 @@ public class UsuarioRequestDto {
 
     public void setApellido(String apellido) {
         this.apellido = apellido;
+    }
+
+    public String getDni() {
+        return dni;
+    }
+
+    public void setDni(String dni) {
+        this.dni = dni;
     }
 
     public String getNombreUsuario() {

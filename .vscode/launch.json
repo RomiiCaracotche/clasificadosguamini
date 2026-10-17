@@ -1,0 +1,19 @@
+/* variable de entorno con el token */
+/* Configurar como variable de entorno en el servidor (suele llamarse Environment, Environment Variables o Config Vars) */
+
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "ClasificadosGuaminiApplication",
+            "request": "launch",
+            "mainClass": "com.clasificados.clasificadosGuamini.ClasificadosGuaminiApplication",
+            "projectName": "clasificadosGuamini",
+            "env": {
+                "JWT_SECRET": "YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXoxMjM0NTY3ODkwYWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXo=",
+                "ADMIN": "37423361"
+            }
+        }
+    ]
+}

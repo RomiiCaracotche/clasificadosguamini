@@ -2,6 +2,9 @@ package com.clasificados.clasificadosGuamini.services;
 
 import java.util.List;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -13,7 +16,7 @@ import com.clasificados.clasificadosGuamini.entities.Usuario;
 import com.clasificados.clasificadosGuamini.repositories.UsuarioRepository;
 
 @Service
-public class UsuarioService {
+public class UsuarioService implements UserDetailsService {
 
     private final UsuarioRepository usuarioRepository;
 
@@ -36,6 +39,9 @@ public class UsuarioService {
 
     public UsuarioResponseDto crearUsuario(UsuarioRequestDto dto) {
 
+        if (usuarioRepository.existsByDni(dto.getDni())) {
+            throw new DuplicateResourceException("El numero de documento ya esta registrado");
+        }
         if (usuarioRepository.existsByNombreUsuario(dto.getNombreUsuario())) {
             throw new DuplicateResourceException("El nombre de usuario ya esta registrado");
         }
@@ -66,21 +72,26 @@ public class UsuarioService {
         return "El usuario con id " + id + " se elimino correctamente";
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String nombreUsuario) throws UsernameNotFoundException {
+         Usuario usuarioEntity = usuarioRepository.findByNombreUsuario(nombreUsuario).orElseThrow(() -> new ResourceNotFoundException("No se encontro el Usuario con nombre de usuario: " + nombreUsuario));   
+        return usuarioEntity; 
+    }
 
-    private Usuario mappearDtoAEntity(UsuarioRequestDto dto, Usuario entidadExiste) {
-        if(entidadExiste == null) {
-            entidadExiste = new Usuario();
+    private Usuario mappearDtoAEntity(UsuarioRequestDto dto, Usuario entityExiste) {
+        if(entityExiste == null) {
+            entityExiste = new Usuario();
         }
         
-        entidadExiste.setNombre(dto.getNombre());
-        entidadExiste.setApellido(dto.getApellido());
-        entidadExiste.setNombreUsuario(dto.getNombreUsuario());
-        entidadExiste.setPassword(dto.getPassword());
-        entidadExiste.setEmail(dto.getEmail());
-        entidadExiste.setCelular(dto.getCelular());
-        entidadExiste.setLocalidad(dto.getLocalidad());
+        entityExiste.setNombre(dto.getNombre());
+        entityExiste.setApellido(dto.getApellido());
+        entityExiste.setNombreUsuario(dto.getNombreUsuario());
+        entityExiste.setPassword(dto.getPassword());
+        entityExiste.setEmail(dto.getEmail());
+        entityExiste.setCelular(dto.getCelular());
+        entityExiste.setLocalidad(dto.getLocalidad());
 
-        return entidadExiste;
+        return entityExiste;
     }
 
     private UsuarioResponseDto mappearEntityADto(Usuario entidad) {
@@ -100,12 +111,10 @@ public class UsuarioService {
     }
 
     public boolean validarLogin(String nombreUsuario, String passwordIngresada) {
-        Usuario usuario = usuarioRepository.findByNombreUsuario(nombreUsuario);    
-        
+        Usuario usuario = usuarioRepository.findByNombreUsuario(nombreUsuario).orElseThrow(() -> new ResourceNotFoundException("No se encontro el Usuario con nombre de usuario: " + nombreUsuario));   ;    
         if (usuario == null) {
             return false; 
-        }
-        
+        } 
         //Comparamos la contraseña ingresada con el hash guardado en la base de datos
         boolean passwordValida = passwordEncoder.matches(passwordIngresada, usuario.getPassword());
         return passwordValida;

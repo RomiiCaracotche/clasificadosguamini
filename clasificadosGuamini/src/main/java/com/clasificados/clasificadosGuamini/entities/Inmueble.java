@@ -45,8 +45,8 @@ public class Inmueble extends Aviso {
     @Embedded 
     private Direccion direccion;
 
-    public Inmueble(String titulo, String descripcion, String localidad, Usuario anunciante) {
-        super(titulo, descripcion, localidad, anunciante);
+    public Inmueble() {
+        super();
     }
 
     public Inmueble(String titulo, String descripcion, String localidad, Usuario anunciante, TipoOperacion tipoOperacion, TipoVivienda tipoVivienda, Double precio, Integer ambientes, Integer habitaciones, Boolean patio, Integer banos, Boolean mascotas, Double expensas, Direccion direccion) {

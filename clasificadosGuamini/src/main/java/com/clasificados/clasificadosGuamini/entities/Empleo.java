@@ -27,8 +27,8 @@ public class Empleo extends Aviso {
     private String requisitos;
 
 
-    public Empleo(String titulo, String descripcion, String localidad, Usuario anunciante) {
-        super(titulo, descripcion, localidad, anunciante);
+    public Empleo() {
+        super();
     }
 
     public Empleo(String titulo, String descripcion, String localidad, Usuario anunciante, TipoEmpleo tipoEmpleo, String rubro, DisponibilidadHoraria disponibilidadHoraria, String requisitos) {

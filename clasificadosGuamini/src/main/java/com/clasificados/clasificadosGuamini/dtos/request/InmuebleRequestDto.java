@@ -1,7 +1,6 @@
 package com.clasificados.clasificadosGuamini.dtos.request;
 
 import com.clasificados.clasificadosGuamini.entities.Direccion;
-import com.clasificados.clasificadosGuamini.entities.Usuario;
 import com.clasificados.clasificadosGuamini.enums.TipoOperacion;
 import com.clasificados.clasificadosGuamini.enums.TipoVivienda;
 import jakarta.validation.constraints.NotNull;

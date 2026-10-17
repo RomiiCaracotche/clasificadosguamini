@@ -1,7 +1,6 @@
 package com.clasificados.clasificadosGuamini.dtos.response;
 
 import java.time.LocalDateTime;
-import com.clasificados.clasificadosGuamini.entities.Usuario;
 import com.clasificados.clasificadosGuamini.enums.Categoria;
 import com.clasificados.clasificadosGuamini.enums.EstadoProducto;
 import jakarta.validation.constraints.NotNull;

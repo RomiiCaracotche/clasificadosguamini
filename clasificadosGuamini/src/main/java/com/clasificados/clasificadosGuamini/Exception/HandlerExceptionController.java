@@ -51,13 +51,13 @@ public class HandlerExceptionController {
     //PERSONALIZADAS
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ErrorDto> RrsourceNotFoundExceptionDto(ResourceNotFoundException ex) {
+    public ResponseEntity<ErrorDto> RersourceNotFoundException(ResourceNotFoundException ex) {
         ErrorDto error = new ErrorDto(ex.getMessage(), "404");
         return ResponseEntity.status(404).body(error);
     }
 
     @ExceptionHandler(DuplicateResourceException.class)
-    public ResponseEntity<ErrorDto> duplicateResourceExceptionDto(DuplicateResourceException ex) {
+    public ResponseEntity<ErrorDto> duplicateResourceException(DuplicateResourceException ex) {
     ErrorDto error = new ErrorDto(ex.getMessage(), "409");  
     return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
     }

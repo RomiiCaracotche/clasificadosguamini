@@ -1,7 +1,6 @@
 package com.clasificados.clasificadosGuamini.dtos.response;
 
 import java.time.LocalDateTime;
-import com.clasificados.clasificadosGuamini.entities.Usuario;
 import com.clasificados.clasificadosGuamini.enums.DisponibilidadHoraria;
 import com.clasificados.clasificadosGuamini.enums.TipoEmpleo;
 import jakarta.validation.constraints.NotBlank;
@@ -25,8 +24,8 @@ public class EmpleoResponseDto extends AvisoResponseDto {
         super();
     }
 
-    public EmpleoResponseDto(Long id, String titulo, String descripcion, LocalDateTime fecha, String localidad, Usuario anunciante, TipoEmpleo tipoEmpleo, String rubro, DisponibilidadHoraria disponibilidadHoraria, String requisitos) {
-        super(id, titulo, descripcion, fecha, localidad, anunciante);
+    public EmpleoResponseDto(Long id, String titulo, String descripcion, LocalDateTime fecha, String localidad, Long idAnunciante, TipoEmpleo tipoEmpleo, String rubro, DisponibilidadHoraria disponibilidadHoraria, String requisitos) {
+        super(id, titulo, descripcion, fecha, localidad, idAnunciante);
         this.tipoEmpleo = tipoEmpleo;
         this.rubro = rubro;
         this.disponibilidadHoraria = disponibilidadHoraria;

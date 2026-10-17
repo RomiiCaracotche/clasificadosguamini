@@ -19,7 +19,7 @@ public class AvisoController {
         this.avisoService = avisoService;
     }
 
-    // 1. LISTAR TODO: Devuelve inmuebles, productos y empleos mezclados
+    // 1. LISTAR TODO (inmuebles, productos y empleos)
     @GetMapping
     public ResponseEntity<List<AvisoResponseDto>> listarTodosLosAvisos() {
         return null;

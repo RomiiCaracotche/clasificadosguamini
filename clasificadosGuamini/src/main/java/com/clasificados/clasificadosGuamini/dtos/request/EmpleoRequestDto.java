@@ -1,6 +1,5 @@
 package com.clasificados.clasificadosGuamini.dtos.request;
 
-import com.clasificados.clasificadosGuamini.entities.Usuario;
 import com.clasificados.clasificadosGuamini.enums.DisponibilidadHoraria;
 import com.clasificados.clasificadosGuamini.enums.TipoEmpleo;
 
@@ -19,8 +18,8 @@ public class EmpleoRequestDto extends AvisoRequestDto {
         super();
     }
 
-    public EmpleoRequestDto(String titulo, String descripcion, String localidad, Usuario anunciante, TipoEmpleo tipoEmpleo, String rubro, DisponibilidadHoraria disponibilidadHoraria, String requisitos) {
-        super(titulo, descripcion, localidad, anunciante);
+    public EmpleoRequestDto(String titulo, String descripcion, String localidad, Long idAnunciante, TipoEmpleo tipoEmpleo, String rubro, DisponibilidadHoraria disponibilidadHoraria, String requisitos) {
+        super(titulo, descripcion, localidad, idAnunciante);
         this.tipoEmpleo = tipoEmpleo;
         this.rubro = rubro;
         this.disponibilidadHoraria = disponibilidadHoraria;

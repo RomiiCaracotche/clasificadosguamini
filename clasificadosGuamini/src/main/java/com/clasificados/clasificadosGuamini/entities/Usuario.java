@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import config.AdminConfig;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,7 +23,7 @@ import jakarta.persistence.Table;
 
 @Entity 
 @Table(name ="usuarios")
-public class Usuario {
+public class Usuario implements UserDetails {
 
     @Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,6 +34,9 @@ public class Usuario {
 
     @Column(nullable = false)
     private String apellido;
+
+    @Column(nullable = false)
+    private String dni;
 
     @Column(name="nombre_usuario", nullable = false, unique = true)
     private String nombreUsuario;
@@ -65,10 +72,11 @@ public class Usuario {
 
     public Usuario() {}
 
-    public Usuario(Long id, String nombre, String apellido, String nombreUsuario, String email, String password, String celular, String localidad, LocalDateTime fechaRegistro, Boolean activo) {
+    public Usuario(Long id, String nombre, String apellido, String dni, String nombreUsuario, String email, String password, String celular, String localidad, LocalDateTime fechaRegistro, Boolean activo) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
+        this.dni = dni;
         this.nombreUsuario = nombreUsuario;
         this.email = email;
         this.password = password;
@@ -173,5 +181,39 @@ public class Usuario {
     public void setFavoritos(Set<Aviso> favoritos) {
         this.favoritos = favoritos;
     }
+
+    public String getDni() {
+        return dni;
+    }
+
+    public void setDni(String dni) {
+        this.dni = dni;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email; // O el campo que uses para iniciar sesión (ej. email)
+    }
+
+    @Override
+    public List<? extends GrantedAuthority> getAuthorities() {
+        if (AdminConfig.esAdmin(this.getDni())) {
+            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        }
+        // Todos los demás usuarios registrados se consideran consumidores
+        return List.of(new SimpleGrantedAuthority("ROLE_CONSUMIDOR"));
+    }
+
+
+
+    
+    /* Proteger endpoints específicos
+    .requestMatchers("/admin/**").hasRole("ADMIN")
+    . requestMatchers("/api/pedidos/**").hasRole("CONSUMIDOR") */
+
+    /* En tus controladores
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/panel-control")
+    public ResponseEntity<?> panelAdmin() { ... } */
     
 }
