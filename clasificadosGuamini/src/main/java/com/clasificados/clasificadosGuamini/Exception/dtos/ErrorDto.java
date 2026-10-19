@@ -1,4 +1,4 @@
-package com.clasificados.clasificadosGuamini.Exception.dtos;
+package com.clasificados.clasificadosGuamini.exception.dtos;
 
 import java.time.LocalDateTime;
 

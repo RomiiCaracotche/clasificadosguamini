@@ -25,7 +25,7 @@ public class InmuebleController {
         this.inmuebleService = inmuebleService;
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<InmuebleResponseDto>> listarInmuebles() {
         List<InmuebleResponseDto> listaInmuebles = inmuebleService.listarInmuebles();
         return ResponseEntity.ok().body(listaInmuebles);

@@ -49,8 +49,8 @@ public class InmuebleRequestDto extends AvisoRequestDto {
        super();
     }
 
-    public InmuebleRequestDto(String titulo, String descripcion, String localidad, Long idAnunciante, TipoOperacion tipoOperacion, TipoVivienda tipoVivienda, Double precio, Integer ambientes, Integer habitaciones, Boolean patio, Integer banos, Boolean mascotas, Double expensas, Direccion direccion) {
-        super(titulo, descripcion, localidad, idAnunciante);
+    public InmuebleRequestDto(String titulo, String descripcion, String localidad, TipoOperacion tipoOperacion, TipoVivienda tipoVivienda, Double precio, Integer ambientes, Integer habitaciones, Boolean patio, Integer banos, Boolean mascotas, Double expensas, Direccion direccion) {
+        super(titulo, descripcion, localidad);
         this.tipoOperacion = tipoOperacion;
         this.tipoVivienda = tipoVivienda;
         this.precio = precio;

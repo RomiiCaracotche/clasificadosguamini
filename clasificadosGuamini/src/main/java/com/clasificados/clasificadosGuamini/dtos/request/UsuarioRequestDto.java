@@ -2,6 +2,7 @@ package com.clasificados.clasificadosGuamini.dtos.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 public class UsuarioRequestDto {
 
@@ -15,6 +16,7 @@ public class UsuarioRequestDto {
     private String dni;
 
     @NotBlank(message = "El nombre de usuario es obligatorio")
+    @Size(min=5, max=12)
     private String nombreUsuario;
 
     @NotBlank(message = "El email es obligatorio")
@@ -22,6 +24,7 @@ public class UsuarioRequestDto {
     private String email;
 
     @NotBlank(message = "La contraseña es obligatoria")
+    @Size(min=8, max=12)
     private String password;
 
     @NotBlank(message = "El numero de celular es obligatorio")
@@ -30,10 +33,12 @@ public class UsuarioRequestDto {
     @NotBlank(message = "La localidad es obligatoria")
     private String localidad;
 
+    private boolean admin;
+
 
     public UsuarioRequestDto() {}
 
-    public UsuarioRequestDto(String nombre, String apellido, String dni, String nombreUsuario, String email, String password, String celular, String localidad) {
+    public UsuarioRequestDto(String nombre, String apellido, String dni, String nombreUsuario, String email, String password, String celular, String localidad, boolean admin) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.dni = dni;
@@ -42,8 +47,10 @@ public class UsuarioRequestDto {
         this.password = password;
         this.celular = celular;
         this.localidad = localidad;
+        this.admin = admin;
     }
 
+    
     public String getNombre() {
         return nombre;
     }
@@ -106,6 +113,14 @@ public class UsuarioRequestDto {
 
     public void setLocalidad(String localidad) {
         this.localidad = localidad;
+    }
+
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
     }
 
 }

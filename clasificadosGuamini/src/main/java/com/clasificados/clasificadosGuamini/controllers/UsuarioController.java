@@ -1,8 +1,11 @@
 package com.clasificados.clasificadosGuamini.controllers;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,32 +32,36 @@ public class UsuarioController {
 
     @GetMapping 
     public ResponseEntity<List<UsuarioResponseDto>> listarUsuarios() {
-        List<UsuarioResponseDto> UsuariosDto = usuarioService.listarUsuarios();
-        return ResponseEntity.ok().body(UsuariosDto);
+        return ResponseEntity.ok().body(usuarioService.listarUsuarios());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<UsuarioResponseDto> mostrarUsuario(@PathVariable Long id) {
-        UsuarioResponseDto UsuarioDto = usuarioService.mostrarUsuario(id);
-        return ResponseEntity.ok().body(UsuarioDto);
+        return ResponseEntity.ok().body(usuarioService.mostrarUsuario(id));
     }
 
     @PostMapping 
-    public ResponseEntity<UsuarioResponseDto> crearUsuario(@Valid @RequestBody UsuarioRequestDto dto){
-        UsuarioResponseDto usuarioDto = usuarioService.crearUsuario(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioDto);
+    public ResponseEntity<?> crearUsuario(@Valid @RequestBody UsuarioRequestDto dto, BindingResult result){
+        if(result.hasFieldErrors()) {
+            return validation(result);
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.crearUsuario(dto));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<UsuarioResponseDto> modificarUsuario(@PathVariable Long id, @Valid @RequestBody UsuarioRequestDto dto) {
-        UsuarioResponseDto usuarioDto = usuarioService.modificarUsuario(id, dto);
-        return ResponseEntity.ok(usuarioDto);
+        return ResponseEntity.ok(usuarioService.modificarUsuario(id, dto));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> eliminarUsuario(@PathVariable Long id) {
-        String usuarioEliminado = usuarioService.eliminarUsuario(id);
-        return ResponseEntity.ok(usuarioEliminado);
+        return ResponseEntity.ok(usuarioService.eliminarUsuario(id));
+    }
+
+    private ResponseEntity<?> validation(BindingResult result) {
+        Map<String, String> errors = new HashMap<>();
+        result.getFieldErrors().forEach(err -> errors.put(err.getField(), "El campo " + err.getField() + " " + err.getDefaultMessage()));
+        return ResponseEntity.badRequest().body(errors);
     }
     
 }

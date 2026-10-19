@@ -24,10 +24,12 @@ public class UsuarioResponseDto {
 
     private Boolean activo;
 
+    private boolean admin;
+
 
     public UsuarioResponseDto() {}
 
-    public UsuarioResponseDto(Long id, String nombre, String apellido, String dni, String nombreUsuario, String email, String celular, String localidad, LocalDateTime fechaRegistro, Boolean activo) {
+    public UsuarioResponseDto(Long id, String nombre, String apellido, String dni, String nombreUsuario, String email, String celular, String localidad, LocalDateTime fechaRegistro, Boolean activo, boolean admin) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -38,6 +40,7 @@ public class UsuarioResponseDto {
         this.localidad = localidad;
         this.fechaRegistro = fechaRegistro;
         this.activo = activo;
+        this.admin = admin;
     }
 
     public Long getId() {
@@ -120,6 +123,12 @@ public class UsuarioResponseDto {
         this.dni = dni;
     }
 
-    
+    public boolean isAdmin() {
+        return admin;
+    }
 
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
+    }
+    
 }

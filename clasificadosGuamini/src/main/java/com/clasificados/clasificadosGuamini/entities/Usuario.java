@@ -5,10 +5,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import config.AdminConfig;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,10 +16,12 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
+import jakarta.persistence.UniqueConstraint;
 
 @Entity 
 @Table(name ="usuarios")
-public class Usuario implements UserDetails {
+public class Usuario {
 
     @Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -70,9 +68,22 @@ public class Usuario implements UserDetails {
     @OneToMany (mappedBy = "anunciante", orphanRemoval = true)
     private List<Aviso> avisos = new ArrayList<>();
 
+    @ManyToMany 
+    @JoinTable(
+        name="usuarios_roles",
+        joinColumns=@JoinColumn(name="usuario_id"),
+        inverseJoinColumns = @JoinColumn(name="rol_id"),
+        uniqueConstraints={@UniqueConstraint(columnNames = {"usuario_id", "rol_id"})}
+    )
+    private List<Rol> roles;
+
+    @Transient 
+    private boolean admin;
+
+
     public Usuario() {}
 
-    public Usuario(Long id, String nombre, String apellido, String dni, String nombreUsuario, String email, String password, String celular, String localidad, LocalDateTime fechaRegistro, Boolean activo) {
+    public Usuario(Long id, String nombre, String apellido, String dni, String nombreUsuario, String email, String password, String celular, String localidad, LocalDateTime fechaRegistro, Boolean activo, List<Rol> roles) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -84,7 +95,9 @@ public class Usuario implements UserDetails {
         this.localidad = localidad;
         this.fechaRegistro = fechaRegistro;
         this.activo = activo;
+        this.roles = roles;
     }
+
 
     public Long getId() {
         return id;
@@ -190,30 +203,20 @@ public class Usuario implements UserDetails {
         this.dni = dni;
     }
 
-    @Override
-    public String getUsername() {
-        return this.email; // O el campo que uses para iniciar sesión (ej. email)
+    public List<Rol> getRoles() {
+        return roles;
     }
 
-    @Override
-    public List<? extends GrantedAuthority> getAuthorities() {
-        if (AdminConfig.esAdmin(this.getDni())) {
-            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"));
-        }
-        // Todos los demás usuarios registrados se consideran consumidores
-        return List.of(new SimpleGrantedAuthority("ROLE_CONSUMIDOR"));
+    public void setRoles(List<Rol> roles) {
+        this.roles = roles;
     }
 
+    public boolean isAdmin() {
+        return admin;
+    }
 
-
-    
-    /* Proteger endpoints específicos
-    .requestMatchers("/admin/**").hasRole("ADMIN")
-    . requestMatchers("/api/pedidos/**").hasRole("CONSUMIDOR") */
-
-    /* En tus controladores
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/panel-control")
-    public ResponseEntity<?> panelAdmin() { ... } */
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
+    }
     
 }

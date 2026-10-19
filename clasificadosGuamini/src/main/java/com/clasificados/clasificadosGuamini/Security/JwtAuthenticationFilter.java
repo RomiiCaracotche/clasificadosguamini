@@ -1,4 +1,4 @@
-package com.clasificados.clasificadosGuamini.Security;
+package com.clasificados.clasificadosGuamini.security;
 
 import java.io.IOException;
 import org.springframework.context.annotation.Lazy;
@@ -15,9 +15,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Component
-public class JwtAuthenticationFilter extends OncePerRequestFilter {
+public class JwtAuthenticationFilter  {
 
-    private JwtService jwtService;
+    /* private JwtService jwtService;
     
     private UserDetailsService userDetailsService;
 
@@ -57,5 +57,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
         }
         filterChain.doFilter(request, response);
-    }
+    } */
 }

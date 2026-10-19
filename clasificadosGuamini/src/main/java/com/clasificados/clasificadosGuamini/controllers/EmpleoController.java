@@ -25,7 +25,7 @@ public class EmpleoController {
         this.empleoService = empleoService;
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<EmpleoResponseDto>> listarEmpleos() {
         List<EmpleoResponseDto> listaEmpleados = empleoService.listarEmpleos();
         return ResponseEntity.ok().body(listaEmpleados);

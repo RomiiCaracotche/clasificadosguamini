@@ -18,8 +18,8 @@ public class EmpleoRequestDto extends AvisoRequestDto {
         super();
     }
 
-    public EmpleoRequestDto(String titulo, String descripcion, String localidad, Long idAnunciante, TipoEmpleo tipoEmpleo, String rubro, DisponibilidadHoraria disponibilidadHoraria, String requisitos) {
-        super(titulo, descripcion, localidad, idAnunciante);
+    public EmpleoRequestDto(String titulo, String descripcion, String localidad, TipoEmpleo tipoEmpleo, String rubro, DisponibilidadHoraria disponibilidadHoraria, String requisitos) {
+        super(titulo, descripcion, localidad);
         this.tipoEmpleo = tipoEmpleo;
         this.rubro = rubro;
         this.disponibilidadHoraria = disponibilidadHoraria;

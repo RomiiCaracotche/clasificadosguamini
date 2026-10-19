@@ -27,7 +27,7 @@ public class CompraVentaController {
         this.compraVentaService = compraVentaService;
     }
     
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<CompraVentaResponseDto>> listarCompraVentas() {
         List<CompraVentaResponseDto> listaCompraVenta = compraVentaService.listarCompraVentas();
         return ResponseEntity.ok(listaCompraVenta);

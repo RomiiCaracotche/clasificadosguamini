@@ -28,8 +28,8 @@ public class CompraVentaRequestDto extends AvisoRequestDto {
         super();
     }
 
-    public CompraVentaRequestDto(String titulo, String descripcion, String localidad, Long idAnunciante, Categoria categoria, Double precio, EstadoProducto estado, String marca, String modelo, String color) {
-        super(titulo, descripcion, localidad, idAnunciante);
+    public CompraVentaRequestDto(String titulo, String descripcion, String localidad, Categoria categoria, Double precio, EstadoProducto estado, String marca, String modelo, String color) {
+        super(titulo, descripcion, localidad);
         this.categoria = categoria;
         this.precio = precio;
         this.estado = estado;

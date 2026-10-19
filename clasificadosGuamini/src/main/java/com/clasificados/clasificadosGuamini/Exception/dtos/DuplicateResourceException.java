@@ -1,4 +1,4 @@
-package com.clasificados.clasificadosGuamini.Exception.dtos;
+package com.clasificados.clasificadosGuamini.exception.dtos;
 
 public class DuplicateResourceException extends RuntimeException {
     

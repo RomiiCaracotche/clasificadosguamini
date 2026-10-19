@@ -1,4 +1,4 @@
-package com.clasificados.clasificadosGuamini.Exception;
+package com.clasificados.clasificadosGuamini.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -6,9 +6,11 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
-import com.clasificados.clasificadosGuamini.Exception.dtos.DuplicateResourceException;
-import com.clasificados.clasificadosGuamini.Exception.dtos.ErrorDto;
-import com.clasificados.clasificadosGuamini.Exception.dtos.ResourceNotFoundException;
+
+import com.clasificados.clasificadosGuamini.exception.dtos.DuplicateResourceException;
+import com.clasificados.clasificadosGuamini.exception.dtos.ErrorDto;
+import com.clasificados.clasificadosGuamini.exception.dtos.ResourceNotFoundException;
+
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.access.AccessDeniedException;
 
