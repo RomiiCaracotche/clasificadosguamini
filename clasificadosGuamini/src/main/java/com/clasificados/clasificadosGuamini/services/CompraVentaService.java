@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.clasificados.clasificadosGuamini.dtos.request.CompraVentaRequestDto;
 import com.clasificados.clasificadosGuamini.dtos.response.CompraVentaResponseDto;
 import com.clasificados.clasificadosGuamini.entities.CompraVenta;
+import com.clasificados.clasificadosGuamini.entities.Usuario;
 import com.clasificados.clasificadosGuamini.exception.dtos.ResourceNotFoundException;
 import com.clasificados.clasificadosGuamini.mapStruct.CompraVentaMapper;
 import com.clasificados.clasificadosGuamini.repositories.CompraVentaRepository;
@@ -36,9 +37,12 @@ public class CompraVentaService {
     }
 
     @Transactional
-    public CompraVentaResponseDto crearCompraVenta(CompraVentaRequestDto compraventaDto) {
-        CompraVenta compraVenta = compraVentaRepository.save(compraVentaMapper.toEntity(compraventaDto));
-        return compraVentaMapper.toDto(compraVenta);
+    public CompraVentaResponseDto crearCompraVenta(String nombreUsuarioActual, CompraVentaRequestDto compraventaDto) {
+        Usuario usuario = usuarioRepository.findByNombreUsuario(nombreUsuarioActual).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        CompraVenta compraventa = compraVentaMapper.toEntity(compraventaDto);
+        compraventa.setAnunciante(usuario);
+        CompraVenta compraVentaGuardada = compraVentaRepository.save(compraventa);
+        return compraVentaMapper.toDto(compraVentaGuardada);
     }
 
     @Transactional

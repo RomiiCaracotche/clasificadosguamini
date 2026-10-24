@@ -33,12 +33,12 @@ public class UsuarioRequestDto {
     @NotBlank(message = "La localidad es obligatoria")
     private String localidad;
 
-    private boolean admin;
+    private Boolean admin = false;
 
 
     public UsuarioRequestDto() {}
 
-    public UsuarioRequestDto(String nombre, String apellido, String dni, String nombreUsuario, String email, String password, String celular, String localidad, boolean admin) {
+    public UsuarioRequestDto(String nombre, String apellido, String dni, String nombreUsuario, String email, String password, String celular, String localidad) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.dni = dni;
@@ -47,7 +47,6 @@ public class UsuarioRequestDto {
         this.password = password;
         this.celular = celular;
         this.localidad = localidad;
-        this.admin = admin;
     }
 
     
@@ -115,11 +114,11 @@ public class UsuarioRequestDto {
         this.localidad = localidad;
     }
 
-    public boolean isAdmin() {
+    public Boolean isAdmin() {
         return admin;
     }
 
-    public void setAdmin(boolean admin) {
+    public void setAdmin(Boolean admin) {
         this.admin = admin;
     }
 

@@ -16,8 +16,6 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
-import jakarta.persistence.UniqueConstraint;
 
 @Entity 
 @Table(name ="usuarios")
@@ -68,22 +66,13 @@ public class Usuario {
     @OneToMany (mappedBy = "anunciante", orphanRemoval = true)
     private List<Aviso> avisos = new ArrayList<>();
 
-    @ManyToMany 
-    @JoinTable(
-        name="usuarios_roles",
-        joinColumns=@JoinColumn(name="usuario_id"),
-        inverseJoinColumns = @JoinColumn(name="rol_id"),
-        uniqueConstraints={@UniqueConstraint(columnNames = {"usuario_id", "rol_id"})}
-    )
-    private List<Rol> roles;
-
-    @Transient 
-    private boolean admin;
+    @Column(nullable = false)
+    private Boolean admin = false;
 
 
     public Usuario() {}
 
-    public Usuario(Long id, String nombre, String apellido, String dni, String nombreUsuario, String email, String password, String celular, String localidad, LocalDateTime fechaRegistro, Boolean activo, List<Rol> roles) {
+    public Usuario(Long id, String nombre, String apellido, String dni, String nombreUsuario, String email, String password, String celular, String localidad, LocalDateTime fechaRegistro, Boolean activo) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -95,7 +84,7 @@ public class Usuario {
         this.localidad = localidad;
         this.fechaRegistro = fechaRegistro;
         this.activo = activo;
-        this.roles = roles;
+        this.admin = false;
     }
 
 
@@ -171,7 +160,7 @@ public class Usuario {
         this.fechaRegistro = fechaRegistro;
     }
 
-    public Boolean getActivo() {
+    public Boolean isActivo() {
         return activo;
     }
 
@@ -203,20 +192,12 @@ public class Usuario {
         this.dni = dni;
     }
 
-    public List<Rol> getRoles() {
-        return roles;
+    public Boolean isAdmin() { 
+        return admin != null ? admin : false;
     }
 
-    public void setRoles(List<Rol> roles) {
-        this.roles = roles;
-    }
-
-    public boolean isAdmin() {
-        return admin;
-    }
-
-    public void setAdmin(boolean admin) {
-        this.admin = admin;
+    public void setAdmin(Boolean admin) {
+        this.admin = admin != null ? admin : false;
     }
     
 }

@@ -1,8 +1,13 @@
 package com.clasificados.clasificadosGuamini.entities;
 
 import java.time.LocalDateTime;
+
+import com.clasificados.clasificadosGuamini.enums.EstadoAviso;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -33,17 +38,22 @@ public abstract class Aviso {
     @Column(nullable = false)
     private String localidad;
 
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private EstadoAviso estado = EstadoAviso.PENDIENTE;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario anunciante;
 
     public Aviso() {}
 
-    public Aviso(String titulo, String descripcion, String localidad, Usuario anunciante) {
+    public Aviso(String titulo, String descripcion, String localidad, EstadoAviso estado, Usuario anunciante) {
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.localidad = localidad;
         this.anunciante = anunciante;
+        this.estado = estado;
     }
 
     public Long getId() {
@@ -92,6 +102,14 @@ public abstract class Aviso {
 
     public void setAnunciante(Usuario anunciante) {
         this.anunciante = anunciante;
+    }
+
+    public EstadoAviso getEstado() {
+        return estado;
+    }
+
+    public void setEstado(EstadoAviso estado) {
+        this.estado = estado;
     }
 
 }

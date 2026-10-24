@@ -1,5 +1,6 @@
 package com.clasificados.clasificadosGuamini.controllers;
 
+import java.security.Principal;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,8 +41,9 @@ public class CompraVentaController {
     }
 
     @PostMapping
-    public ResponseEntity<CompraVentaResponseDto> crearCompraVenta(@Valid @RequestBody CompraVentaRequestDto compraventa) {
-        CompraVentaResponseDto dto = compraVentaService.crearCompraVenta(compraventa);
+    public ResponseEntity<CompraVentaResponseDto> crearCompraVenta(@Valid @RequestBody CompraVentaRequestDto compraventa, Principal principal) {
+        String nombreUsuarioActual = principal.getName();
+        CompraVentaResponseDto dto = compraVentaService.crearCompraVenta(nombreUsuarioActual, compraventa);
         return ResponseEntity.status(HttpStatus.CREATED).body(dto);
     }
 

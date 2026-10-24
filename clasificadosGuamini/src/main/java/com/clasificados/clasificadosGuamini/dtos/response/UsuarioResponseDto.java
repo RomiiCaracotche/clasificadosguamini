@@ -24,12 +24,12 @@ public class UsuarioResponseDto {
 
     private Boolean activo;
 
-    private boolean admin;
+    private Boolean admin;
 
 
     public UsuarioResponseDto() {}
 
-    public UsuarioResponseDto(Long id, String nombre, String apellido, String dni, String nombreUsuario, String email, String celular, String localidad, LocalDateTime fechaRegistro, Boolean activo, boolean admin) {
+    public UsuarioResponseDto(Long id, String nombre, String apellido, String dni, String nombreUsuario, String email, String celular, String localidad, LocalDateTime fechaRegistro, Boolean activo, Boolean admin) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -123,11 +123,11 @@ public class UsuarioResponseDto {
         this.dni = dni;
     }
 
-    public boolean isAdmin() {
+    public Boolean isAdmin() {
         return admin;
     }
 
-    public void setAdmin(boolean admin) {
+    public void setAdmin(Boolean admin) {
         this.admin = admin;
     }
     
