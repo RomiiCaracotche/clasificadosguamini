@@ -2,6 +2,7 @@ package com.clasificados.clasificadosGuamini.controllers.Admin;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,4 +37,10 @@ public class UsuarioAdminController {
         return ResponseEntity.noContent().build();
     }
     
+    @GetMapping("/cantidad")
+    public ResponseEntity<Long> cantidadUsuarios() {
+       Long total = usuarioAdminService.cantidadUsuarios();
+        return ResponseEntity.ok().body(total);
+    }
+
 }

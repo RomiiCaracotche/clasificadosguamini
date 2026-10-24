@@ -1,7 +1,6 @@
 package com.clasificados.clasificadosGuamini.security;
 
 import java.io.IOException;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -13,9 +12,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.stereotype.Component;
 import com.clasificados.clasificadosGuamini.dtos.request.LoginRequestDto;
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.FilterChain;
@@ -59,7 +56,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                         .toList();
 
         Claims claims = Jwts.claims()
-                        .add("authorities", new ObjectMapper().writeValueAsString(roles))
+                        .add("authorities", roles) 
                         .build();
 
         String token = Jwts.builder()

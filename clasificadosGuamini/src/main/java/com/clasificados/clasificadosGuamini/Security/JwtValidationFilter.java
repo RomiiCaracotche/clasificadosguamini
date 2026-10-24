@@ -2,19 +2,16 @@ package com.clasificados.clasificadosGuamini.security;
 
 import static com.clasificados.clasificadosGuamini.security.TokenJwtConfig.*;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
@@ -47,6 +44,7 @@ public class JwtValidationFilter extends BasicAuthenticationFilter {
             Claims claims = Jwts.parser().verifyWith(SECRET_KEY).build().parseSignedClaims(token).getPayload();
             String username = claims.getSubject();
 
+            @SuppressWarnings("unchecked")
             // Suponiendo que tus authorities están en los claims como una lista de strings
             List<String> roles = claims.get("authorities", List.class);
 
@@ -70,10 +68,7 @@ public class JwtValidationFilter extends BasicAuthenticationFilter {
             body.put("message", "El token JWT es invalido");
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             response.setContentType(CONTENT_TYPE);
-            response.getWriter().write(new ObjectMapper().writeValueAsString(body));
-            // Opcional: limpiar el contexto o manejar la excepción si el token es inválido o expiró
-            /* SecurityContextHolder.clearContext(); */
-            
+            response.getWriter().write(new ObjectMapper().writeValueAsString(body));            
         }
     }
 

@@ -2,12 +2,9 @@ package com.clasificados.clasificadosGuamini.services.Admin;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
-import com.clasificados.clasificadosGuamini.dtos.request.AvisoRequestDto;
 import com.clasificados.clasificadosGuamini.dtos.response.AvisoResponseDto;
 import com.clasificados.clasificadosGuamini.entities.Aviso;
 import com.clasificados.clasificadosGuamini.entities.CompraVenta;
@@ -18,8 +15,10 @@ import com.clasificados.clasificadosGuamini.mapStruct.CompraVentaMapper;
 import com.clasificados.clasificadosGuamini.mapStruct.EmpleoMapper;
 import com.clasificados.clasificadosGuamini.mapStruct.InmuebleMapper;
 import com.clasificados.clasificadosGuamini.repositories.AvisoRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service 
+@Transactional(readOnly = true)
 public class AvisoAdminService {
 
     private AvisoRepository avisoRepository;
@@ -34,7 +33,7 @@ public class AvisoAdminService {
         this.compraVentaMapper = compraVentaMapper;
     }
 
-
+    @Transactional(readOnly = true)
     public List<AvisoResponseDto> listarPendientes() {
         List<Aviso> avisosPendientes = avisoRepository.findByEstado(EstadoAviso.PENDIENTE);
         
@@ -50,17 +49,23 @@ public class AvisoAdminService {
         }).collect(Collectors.toList());
     }
 
+    @Transactional
     public void aprobarAviso(Long id) {
         Aviso aviso = avisoRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No se encontró el aviso con id: " + id));
         aviso.setEstado(EstadoAviso.APROBADO);
         avisoRepository.save(aviso);
     }
 
+    @Transactional
     public void rechazarAviso(Long id) {
         Aviso aviso = avisoRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No se encontró el aviso con id: " + id));
         aviso.setEstado(EstadoAviso.RECHAZADO);
         avisoRepository.save(aviso);
     }
 
-    
+    @Transactional
+    public long cantidadAvisos() {
+        return avisoRepository.count();
+    }
+
 }

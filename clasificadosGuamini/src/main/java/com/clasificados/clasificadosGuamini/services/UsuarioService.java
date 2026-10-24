@@ -12,9 +12,7 @@ import com.clasificados.clasificadosGuamini.entities.Usuario;
 import com.clasificados.clasificadosGuamini.exception.dtos.DuplicateResourceException;
 import com.clasificados.clasificadosGuamini.exception.dtos.ResourceNotFoundException;
 import com.clasificados.clasificadosGuamini.mapStruct.UsuarioMapper;
-import com.clasificados.clasificadosGuamini.repositories.RolRepository;
 import com.clasificados.clasificadosGuamini.repositories.UsuarioRepository;
-
 
 @Service
 @Transactional(readOnly = true)
