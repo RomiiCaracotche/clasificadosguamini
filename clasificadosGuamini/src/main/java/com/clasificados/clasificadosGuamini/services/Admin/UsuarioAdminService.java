@@ -5,17 +5,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import com.clasificados.clasificadosGuamini.entities.Usuario;
 import com.clasificados.clasificadosGuamini.repositories.UsuarioRepository;
+
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.transaction.annotation.Transactional;
 
 @Service 
 @Transactional(readOnly = true)
+@RequiredArgsConstructor
 public class UsuarioAdminService {
     
     private UsuarioRepository usuarioRepository;
-
-    public UsuarioAdminService(UsuarioRepository usuarioRepository) {
-        this.usuarioRepository = usuarioRepository;
-    }
 
     @Transactional
     public void cambiarRolUsuario(Long id) {

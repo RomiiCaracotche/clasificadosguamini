@@ -7,9 +7,19 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity 
 @Table(name ="empleos")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 public class Empleo extends Aviso {
 
     @Column(nullable = false)
@@ -25,50 +35,5 @@ public class Empleo extends Aviso {
     
     @Column(columnDefinition = "TEXT")
     private String requisitos;
-
-
-    public Empleo() {
-        super();
-    }
-
-    public Empleo(String titulo, String descripcion, String localidad, Usuario anunciante, TipoEmpleo tipoEmpleo, String rubro, DisponibilidadHoraria disponibilidadHoraria, String requisitos) {
-        super(titulo, descripcion, localidad, anunciante);
-        this.tipoEmpleo = tipoEmpleo;
-        this.rubro = rubro;
-        this.disponibilidadHoraria = disponibilidadHoraria;
-        this.requisitos = requisitos;
-    }
-
-    public TipoEmpleo getTipoEmpleo() {
-        return tipoEmpleo;
-    }
-
-    public void setTipoEmpleo(TipoEmpleo tipoEmpleo) {
-        this.tipoEmpleo = tipoEmpleo;
-    }
-
-    public String getRubro() {
-        return rubro;
-    }
-
-    public void setRubro(String rubro) {
-        this.rubro = rubro;
-    }
-
-    public DisponibilidadHoraria getDisponibilidadHoraria() {
-        return disponibilidadHoraria;
-    }
-
-    public void setDisponibilidadHoraria(DisponibilidadHoraria disponibilidadHoraria) {
-        this.disponibilidadHoraria = disponibilidadHoraria;
-    }
-
-    public String getRequisitos() {
-        return requisitos;
-    }
-
-    public void setRequisitos(String requisitos) {
-        this.requisitos = requisitos;
-    }
 
 }

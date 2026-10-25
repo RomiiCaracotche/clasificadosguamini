@@ -15,15 +15,14 @@ import com.clasificados.clasificadosGuamini.dtos.request.InmuebleRequestDto;
 import com.clasificados.clasificadosGuamini.dtos.response.InmuebleResponseDto;
 import com.clasificados.clasificadosGuamini.services.InmuebleService;
 
+import lombok.RequiredArgsConstructor;
+
 @RestController 
 @RequestMapping("/api/inmuebles")
+@RequiredArgsConstructor
 public class InmuebleController {
 
     private final InmuebleService inmuebleService;
-
-    public InmuebleController(InmuebleService inmuebleService) {
-        this.inmuebleService = inmuebleService;
-    }
 
     @GetMapping
     public ResponseEntity<List<InmuebleResponseDto>> listarInmuebles() {

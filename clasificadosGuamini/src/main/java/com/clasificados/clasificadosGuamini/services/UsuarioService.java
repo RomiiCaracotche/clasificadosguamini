@@ -13,20 +13,16 @@ import com.clasificados.clasificadosGuamini.exception.dtos.DuplicateResourceExce
 import com.clasificados.clasificadosGuamini.exception.dtos.ResourceNotFoundException;
 import com.clasificados.clasificadosGuamini.mapStruct.UsuarioMapper;
 import com.clasificados.clasificadosGuamini.repositories.UsuarioRepository;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @Transactional(readOnly = true)
+@RequiredArgsConstructor
 public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
     private PasswordEncoder passwordEncoder;
     private UsuarioMapper usuarioMapper;
-
-    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder, UsuarioMapper usuarioMapper) {
-        this.usuarioRepository = usuarioRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.usuarioMapper = usuarioMapper;
-    }
 
     public List<UsuarioResponseDto> listarUsuarios() {
         List<Usuario> Usuarios = usuarioRepository.findAll();

@@ -17,14 +17,25 @@ import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity 
-@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name ="avisos")
+@Inheritance(strategy = InheritanceType.JOINED)
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public abstract class Aviso {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
     private Long id;
 
     @Column(nullable = false, length = 100)
@@ -45,71 +56,5 @@ public abstract class Aviso {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario anunciante;
-
-    public Aviso() {}
-
-    public Aviso(String titulo, String descripcion, String localidad, EstadoAviso estado, Usuario anunciante) {
-        this.titulo = titulo;
-        this.descripcion = descripcion;
-        this.localidad = localidad;
-        this.anunciante = anunciante;
-        this.estado = estado;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitulo() {
-        return titulo;
-    }
-
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
-    public LocalDateTime getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(LocalDateTime fecha) {
-        this.fecha = fecha;
-    }
-
-    public String getLocalidad() {
-        return localidad;
-    }
-
-    public void setLocalidad(String localidad) {
-        this.localidad = localidad;
-    }
-
-    public Usuario getAnunciante() {
-        return anunciante;
-    }
-
-    public void setAnunciante(Usuario anunciante) {
-        this.anunciante = anunciante;
-    }
-
-    public EstadoAviso getEstado() {
-        return estado;
-    }
-
-    public void setEstado(EstadoAviso estado) {
-        this.estado = estado;
-    }
 
 }

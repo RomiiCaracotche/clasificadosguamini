@@ -8,9 +8,19 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity 
 @Table(name ="inmuebles")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 public class Inmueble extends Aviso {
 
     @Column(name = "tipo_operacion", nullable = false)
@@ -44,103 +54,5 @@ public class Inmueble extends Aviso {
 
     @Embedded 
     private Direccion direccion;
-
-    public Inmueble() {
-        super();
-    }
-
-    public Inmueble(String titulo, String descripcion, String localidad, Usuario anunciante, TipoOperacion tipoOperacion, TipoVivienda tipoVivienda, Double precio, Integer ambientes, Integer habitaciones, Boolean patio, Integer banos, Boolean mascotas, Double expensas, Direccion direccion) {
-        super(titulo, descripcion, localidad, anunciante);
-        this.tipoOperacion = tipoOperacion;
-        this.tipoVivienda = tipoVivienda;
-        this.precio = precio;
-        this.ambientes = ambientes;
-        this.habitaciones = habitaciones;
-        this.patio = patio;
-        this.banos = banos;
-        this.mascotas = mascotas;
-        this.expensas = expensas;
-        this.direccion = direccion;
-    }
-
-    public TipoOperacion getTipoOperacion() {
-        return tipoOperacion;
-    }
-
-    public void setTipoOperacion(TipoOperacion tipoOperacion) {
-        this.tipoOperacion = tipoOperacion;
-    }
-
-    public TipoVivienda getTipoVivienda() {
-        return tipoVivienda;
-    }
-
-    public void setTipoVivienda(TipoVivienda tipoVivienda) {
-        this.tipoVivienda = tipoVivienda;
-    }
-
-    public Double getPrecio() {
-        return precio;
-    }
-
-    public void setPrecio(Double precio) {
-        this.precio = precio;
-    }
-
-    public Integer getAmbientes() {
-        return ambientes;
-    }
-
-    public void setAmbientes(Integer ambientes) {
-        this.ambientes = ambientes;
-    }
-
-    public Integer getHabitaciones() {
-        return habitaciones;
-    }
-
-    public void setHabitaciones(Integer habitaciones) {
-        this.habitaciones = habitaciones;
-    }
-
-    public Boolean getPatio() {
-        return patio;
-    }
-
-    public void setPatio(Boolean patio) {
-        this.patio = patio;
-    }
-
-    public Integer getBanos() {
-        return banos;
-    }
-
-    public void setBanos(Integer banos) {
-        this.banos = banos;
-    }
-
-    public Boolean getMascotas() {
-        return mascotas;
-    }
-
-    public void setMascotas(Boolean mascotas) {
-        this.mascotas = mascotas;
-    }
-
-    public Double getExpensas() {
-        return expensas;
-    }
-
-    public void setExpensas(Double expensas) {
-        this.expensas = expensas;
-    }
-
-    public Direccion getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(Direccion direccion) {
-        this.direccion = direccion;
-    }
     
 }

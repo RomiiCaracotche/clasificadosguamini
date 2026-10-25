@@ -15,15 +15,14 @@ import com.clasificados.clasificadosGuamini.dtos.request.EmpleoRequestDto;
 import com.clasificados.clasificadosGuamini.dtos.response.EmpleoResponseDto;
 import com.clasificados.clasificadosGuamini.services.EmpleoService;
 
+import lombok.RequiredArgsConstructor;
+
 @RestController 
 @RequestMapping("/api/empleos")
+@RequiredArgsConstructor
 public class EmpleoController {
 
     private final EmpleoService empleoService;
-
-    public EmpleoController(EmpleoService empleoService) {
-        this.empleoService = empleoService;
-    }
 
     @GetMapping
     public ResponseEntity<List<EmpleoResponseDto>> listarEmpleos() {

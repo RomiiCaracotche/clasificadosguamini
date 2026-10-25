@@ -1,6 +1,6 @@
 package com.clasificados.clasificadosGuamini.enums;
 
-public enum EstadoProducto {
+public enum CondicionProducto {
     NUEVO, 
     USADO, 
     PARA_REPUESTO

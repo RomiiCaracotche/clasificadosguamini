@@ -6,7 +6,15 @@ import com.clasificados.clasificadosGuamini.enums.TipoVivienda;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
+@Data 
+@EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
+@AllArgsConstructor
 public class InmuebleRequestDto extends AvisoRequestDto {
 
     @NotNull(message = "El tipo de operacion es obligatorio")
@@ -43,104 +51,5 @@ public class InmuebleRequestDto extends AvisoRequestDto {
 
     @NotNull(message = "La direccion es obligatoria")
     private Direccion direccion;
-
-    
-    public InmuebleRequestDto() {
-       super();
-    }
-
-    public InmuebleRequestDto(String titulo, String descripcion, String localidad, TipoOperacion tipoOperacion, TipoVivienda tipoVivienda, Double precio, Integer ambientes, Integer habitaciones, Boolean patio, Integer banos, Boolean mascotas, Double expensas, Direccion direccion) {
-        super(titulo, descripcion, localidad);
-        this.tipoOperacion = tipoOperacion;
-        this.tipoVivienda = tipoVivienda;
-        this.precio = precio;
-        this.ambientes = ambientes;
-        this.habitaciones = habitaciones;
-        this.patio = patio;
-        this.banos = banos;
-        this.mascotas = mascotas;
-        this.expensas = expensas;
-        this.direccion = direccion;
-    }
-
-    public TipoOperacion getTipoOperacion() {
-        return tipoOperacion;
-    }
-
-    public void setTipoOperacion(TipoOperacion tipoOperacion) {
-        this.tipoOperacion = tipoOperacion;
-    }
-
-    public TipoVivienda getTipoVivienda() {
-        return tipoVivienda;
-    }
-
-    public void setTipoVivienda(TipoVivienda tipoVivienda) {
-        this.tipoVivienda = tipoVivienda;
-    }
-
-    public Double getPrecio() {
-        return precio;
-    }
-
-    public void setPrecio(Double precio) {
-        this.precio = precio;
-    }
-
-    public Integer getAmbientes() {
-        return ambientes;
-    }
-
-    public void setAmbientes(Integer ambientes) {
-        this.ambientes = ambientes;
-    }
-
-    public Integer getHabitaciones() {
-        return habitaciones;
-    }
-
-    public void setHabitaciones(Integer habitaciones) {
-        this.habitaciones = habitaciones;
-    }
-
-    public Boolean getPatio() {
-        return patio;
-    }
-
-    public void setPatio(Boolean patio) {
-        this.patio = patio;
-    }
-
-    public Integer getBanos() {
-        return banos;
-    }
-
-    public void setBanos(Integer banos) {
-        this.banos = banos;
-    }
-
-    public Boolean getMascotas() {
-        return mascotas;
-    }
-
-    public void setMascotas(Boolean mascotas) {
-        this.mascotas = mascotas;
-    }
-
-    public Double getExpensas() {
-        return expensas;
-    }
-
-    public void setExpensas(Double expensas) {
-        this.expensas = expensas;
-    }
-
-    public Direccion getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(Direccion direccion) {
-        this.direccion = direccion;
-    }
 
 }

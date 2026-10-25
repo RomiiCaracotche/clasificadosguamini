@@ -12,20 +12,16 @@ import com.clasificados.clasificadosGuamini.entities.Usuario;
 import com.clasificados.clasificadosGuamini.mapStruct.EmpleoMapper;
 import com.clasificados.clasificadosGuamini.repositories.EmpleoRepository;
 import com.clasificados.clasificadosGuamini.repositories.UsuarioRepository;
+import lombok.RequiredArgsConstructor;
 
 @Service 
 @Transactional(readOnly = true)
+@RequiredArgsConstructor
 public class EmpleoService {
 
     private final EmpleoRepository empleoRepository;
     private final UsuarioRepository usuarioRepository;
     private EmpleoMapper empleoMapper;
-
-    public EmpleoService(EmpleoRepository empleoRepository, UsuarioRepository usuarioRepository, EmpleoMapper empleoMapper) {
-        this.empleoRepository = empleoRepository;
-        this.usuarioRepository = usuarioRepository;
-        this.empleoMapper = empleoMapper;
-    }
 
     public List<EmpleoResponseDto> listarEmpleos() {
         List<Empleo> listaEmpleos = empleoRepository.findAll();

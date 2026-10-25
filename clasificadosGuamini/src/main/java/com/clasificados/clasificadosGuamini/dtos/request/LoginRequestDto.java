@@ -2,7 +2,13 @@ package com.clasificados.clasificadosGuamini.dtos.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data 
+@NoArgsConstructor
+@AllArgsConstructor
 public class LoginRequestDto {
     
     @NotBlank(message = "El nombre de usuario es obligatorio")
@@ -13,26 +19,4 @@ public class LoginRequestDto {
     @Size(min=8, max=12)  
     private String password;
 
-    public LoginRequestDto() {}
-
-    public LoginRequestDto(String nombreUsuario, String password) {
-        this.nombreUsuario = nombreUsuario;
-        this.password = password;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    } 
-
-    public String getNombreUsuario() {
-        return nombreUsuario;
-    }
-
-    public void setNombreUsuario(String nombreUsuario) {
-        this.nombreUsuario = nombreUsuario;
-    } 
 }

@@ -10,6 +10,8 @@ import com.clasificados.clasificadosGuamini.dtos.request.CompraVentaRequestDto;
 import com.clasificados.clasificadosGuamini.dtos.response.CompraVentaResponseDto;
 import com.clasificados.clasificadosGuamini.services.CompraVentaService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,13 +22,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController 
 @RequestMapping("/api/compraventas")
+@RequiredArgsConstructor
 public class CompraVentaController {
 
     private final CompraVentaService compraVentaService;
-
-    public CompraVentaController(CompraVentaService compraVentaService){
-        this.compraVentaService = compraVentaService;
-    }
     
     @GetMapping
     public ResponseEntity<List<CompraVentaResponseDto>> listarCompraVentas() {

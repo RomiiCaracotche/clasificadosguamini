@@ -11,20 +11,16 @@ import com.clasificados.clasificadosGuamini.exception.dtos.ResourceNotFoundExcep
 import com.clasificados.clasificadosGuamini.mapStruct.CompraVentaMapper;
 import com.clasificados.clasificadosGuamini.repositories.CompraVentaRepository;
 import com.clasificados.clasificadosGuamini.repositories.UsuarioRepository;
+import lombok.RequiredArgsConstructor;
 
 @Service 
 @Transactional(readOnly = true)
+@RequiredArgsConstructor
 public class CompraVentaService {
 
     private final CompraVentaRepository compraVentaRepository;
     private final UsuarioRepository usuarioRepository;
     private CompraVentaMapper compraVentaMapper;
-
-    public CompraVentaService(CompraVentaRepository compraVentaRepository, UsuarioRepository usuarioRepository, CompraVentaMapper compraVentaMapper) {
-        this.compraVentaRepository = compraVentaRepository;
-        this.usuarioRepository = usuarioRepository;
-        this.compraVentaMapper = compraVentaMapper;
-    }
 
     public List<CompraVentaResponseDto> listarCompraVentas() {
         List<CompraVenta> listaCompraVenta = compraVentaRepository.findAll();

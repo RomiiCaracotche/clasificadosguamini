@@ -15,23 +15,18 @@ import com.clasificados.clasificadosGuamini.mapStruct.CompraVentaMapper;
 import com.clasificados.clasificadosGuamini.mapStruct.EmpleoMapper;
 import com.clasificados.clasificadosGuamini.mapStruct.InmuebleMapper;
 import com.clasificados.clasificadosGuamini.repositories.AvisoRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service 
 @Transactional(readOnly = true)
+@RequiredArgsConstructor
 public class AvisoAdminService {
 
     private AvisoRepository avisoRepository;
     private final InmuebleMapper inmuebleMapper;
     private final EmpleoMapper empleoMapper;
     private final CompraVentaMapper compraVentaMapper;
-
-    public AvisoAdminService(AvisoRepository avisoRepository, InmuebleMapper inmuebleMapper, EmpleoMapper empleoMapper, CompraVentaMapper compraVentaMapper) {
-        this.avisoRepository = avisoRepository;
-        this.inmuebleMapper = inmuebleMapper;
-        this.empleoMapper = empleoMapper;
-        this.compraVentaMapper = compraVentaMapper;
-    }
 
     @Transactional(readOnly = true)
     public List<AvisoResponseDto> listarPendientes() {

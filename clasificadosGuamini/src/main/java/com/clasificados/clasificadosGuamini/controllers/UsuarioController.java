@@ -19,16 +19,15 @@ import com.clasificados.clasificadosGuamini.dtos.request.UsuarioRequestDto;
 import com.clasificados.clasificadosGuamini.dtos.response.UsuarioResponseDto;
 import com.clasificados.clasificadosGuamini.services.UsuarioService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
 @RestController 
 @RequestMapping("/api/usuarios")
+    @RequiredArgsConstructor
+
 public class UsuarioController {
  
     private final UsuarioService usuarioService;
-
-    public UsuarioController(UsuarioService usuarioService) {
-        this.usuarioService = usuarioService;
-    }
 
     @GetMapping 
     @PreAuthorize("hasRole('ADMIN')")

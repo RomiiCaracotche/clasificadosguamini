@@ -8,5 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface AvisoRepository extends JpaRepository<Aviso,Long> {
 
     List<Aviso> findByEstado(EstadoAviso estado);
+    List<Aviso> findByTituloContainingIgnoreCase(String palabraClave);
 
 }

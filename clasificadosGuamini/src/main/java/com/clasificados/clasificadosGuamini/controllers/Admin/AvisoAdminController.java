@@ -10,17 +10,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.clasificados.clasificadosGuamini.dtos.response.AvisoResponseDto;
 import com.clasificados.clasificadosGuamini.services.Admin.AvisoAdminService;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/admin/avisos")
 @PreAuthorize("hasRole('ADMIN')") 
+@RequiredArgsConstructor
 public class AvisoAdminController {
 
     private AvisoAdminService avisoAdminService;
-
-    public AvisoAdminController(AvisoAdminService avisoAdminService) {
-        this.avisoAdminService = avisoAdminService;
-    }
 
     @GetMapping("/pendientes")
     public ResponseEntity<List<AvisoResponseDto>> listarPendientes() {

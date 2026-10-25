@@ -8,16 +8,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.clasificados.clasificadosGuamini.services.Admin.UsuarioAdminService;
 
+import lombok.RequiredArgsConstructor;
+
 @RestController 
 @RequestMapping("/api/admin/usuarios")
 @PreAuthorize("hasRole('ADMIN')")
+@RequiredArgsConstructor
 public class UsuarioAdminController {
     
     private UsuarioAdminService usuarioAdminService;
-
-    public UsuarioAdminController(UsuarioAdminService usuarioAdminService) {
-        this.usuarioAdminService = usuarioAdminService;
-    }
 
     @PatchMapping("/rol")
     public ResponseEntity<Void> cambiarRolUsuario(Long id) {

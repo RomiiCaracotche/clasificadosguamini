@@ -11,20 +11,16 @@ import com.clasificados.clasificadosGuamini.entities.Inmueble;
 import com.clasificados.clasificadosGuamini.mapStruct.InmuebleMapper;
 import com.clasificados.clasificadosGuamini.repositories.InmuebleRepository;
 import com.clasificados.clasificadosGuamini.repositories.UsuarioRepository;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @Transactional(readOnly = true)
+@RequiredArgsConstructor
 public class InmuebleService {
 
     private final InmuebleRepository inmuebleRepository;
     private final UsuarioRepository usuarioRepository;
     private InmuebleMapper inmuebleMapper;
-
-    public InmuebleService(InmuebleRepository inmuebleRepository, UsuarioRepository usuarioRepository, InmuebleMapper inmuebleMapper){
-        this.inmuebleRepository = inmuebleRepository;
-        this.usuarioRepository = usuarioRepository;
-        this.inmuebleMapper = inmuebleMapper;
-    }
 
     public List<InmuebleResponseDto> listarInmuebles() {
         List<Inmueble> listaInmuebles = inmuebleRepository.findAll();
