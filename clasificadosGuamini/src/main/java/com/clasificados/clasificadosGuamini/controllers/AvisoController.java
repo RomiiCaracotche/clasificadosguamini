@@ -17,4 +17,16 @@ public class AvisoController {
 
     private final AvisoService avisoService;
 
+    @GetMapping
+    public ResponseEntity<List<AvisoResponseDto>> listarTodosLosAvisos() {
+        List<AvisoResponseDto> avisos = avisoService.listarTodos();
+        return ResponseEntity.ok(avisos);
+    }
+
+    @GetMapping("/buscar")
+    public ResponseEntity<List<AvisoResponseDto>> buscarGlobal(@RequestParam String palabraClave) {
+        List<AvisoResponseDto> resultados = avisoService.buscarPorTitulo(palabraClave);
+        return ResponseEntity.ok(resultados);
+    }
+    
 }
