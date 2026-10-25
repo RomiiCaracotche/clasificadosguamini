@@ -1,18 +1,14 @@
 package com.clasificados.clasificadosGuamini.mapStruct;
 
+import java.util.List;
 import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
-import com.clasificados.clasificadosGuamini.dtos.request.AvisoRequestDto;
 import com.clasificados.clasificadosGuamini.dtos.response.AvisoResponseDto;
 import com.clasificados.clasificadosGuamini.entities.Aviso;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {InmuebleMapper.class, EmpleoMapper.class, CompraVentaMapper.class})
 public interface AvisoMapper {
 
-    AvisoResponseDto toDto(Aviso entity);
+    AvisoResponseDto toResponseDto(Aviso aviso);
 
-    Aviso toEntity(AvisoRequestDto dto);
-
-    void updateEntityFromDto(AvisoRequestDto dto, @MappingTarget Aviso entity);
-
+    List<AvisoResponseDto> toResponseDtoList(List<Aviso> avisos);
 }

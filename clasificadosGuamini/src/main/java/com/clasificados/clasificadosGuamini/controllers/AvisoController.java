@@ -24,9 +24,9 @@ public class AvisoController {
     }
 
     @GetMapping("/buscar")
-    public ResponseEntity<List<AvisoResponseDto>> buscarGlobal(@RequestParam String palabraClave) {
-        List<AvisoResponseDto> resultados = avisoService.buscarPorTitulo(palabraClave);
+    public ResponseEntity<List<AvisoResponseDto>> buscarPorPalabraClave(@RequestParam String palabraClave) {
+        List<AvisoResponseDto> resultados = avisoService.buscarPorPalabraClave(palabraClave);
         return ResponseEntity.ok(resultados);
     }
-    
+
 }
