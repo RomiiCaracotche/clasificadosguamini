@@ -23,7 +23,7 @@ public class CompraVentaRequestDto extends AvisoRequestDto {
     private Double precio;
     
     @NotNull(message = "El estado es obligatorio")
-    private CondicionProducto estado;
+    private CondicionProducto condicion;
     
     private String marca;
     

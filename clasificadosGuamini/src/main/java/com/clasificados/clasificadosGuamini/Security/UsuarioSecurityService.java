@@ -2,9 +2,6 @@ package com.clasificados.clasificadosGuamini.security;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.GrantedAuthority;
@@ -29,12 +26,12 @@ public class UsuarioSecurityService implements UserDetailsService {
     public UserDetails loadUserByUsername(String nombreUsuario) throws UsernameNotFoundException {
         Usuario usuarioExiste = usuarioRepository.findByNombreUsuario(nombreUsuario).orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
 
-        String rol = usuarioExiste.isAdmin() ? "ROLE_ADMIN" : "ROLE_USER";
+        String rol = usuarioExiste.getAdmin() ? "ROLE_ADMIN" : "ROLE_USER";
         
         //Creamos la lista de autoridades que Spring Security exige
         List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority(rol));
 
-        return new org.springframework.security.core.userdetails.User(usuarioExiste.getNombreUsuario(), usuarioExiste.getPassword(), usuarioExiste.isActivo(), true, true, true, authorities);
+        return new org.springframework.security.core.userdetails.User(usuarioExiste.getNombreUsuario(), usuarioExiste.getPassword(), usuarioExiste.getActivo(), true, true, true, authorities);
     }
 
 }

@@ -10,7 +10,6 @@ import com.clasificados.clasificadosGuamini.dtos.response.InmuebleResponseDto;
 import com.clasificados.clasificadosGuamini.entities.Inmueble;
 import com.clasificados.clasificadosGuamini.mapStruct.InmuebleMapper;
 import com.clasificados.clasificadosGuamini.repositories.InmuebleRepository;
-import com.clasificados.clasificadosGuamini.repositories.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -19,7 +18,6 @@ import lombok.RequiredArgsConstructor;
 public class InmuebleService {
 
     private final InmuebleRepository inmuebleRepository;
-    private final UsuarioRepository usuarioRepository;
     private InmuebleMapper inmuebleMapper;
 
     public List<InmuebleResponseDto> listarInmuebles() {

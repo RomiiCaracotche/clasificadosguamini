@@ -8,10 +8,8 @@ import org.springframework.web.server.ResponseStatusException;
 import com.clasificados.clasificadosGuamini.dtos.request.EmpleoRequestDto;
 import com.clasificados.clasificadosGuamini.dtos.response.EmpleoResponseDto;
 import com.clasificados.clasificadosGuamini.entities.Empleo;
-import com.clasificados.clasificadosGuamini.entities.Usuario;
 import com.clasificados.clasificadosGuamini.mapStruct.EmpleoMapper;
 import com.clasificados.clasificadosGuamini.repositories.EmpleoRepository;
-import com.clasificados.clasificadosGuamini.repositories.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service 
@@ -20,7 +18,6 @@ import lombok.RequiredArgsConstructor;
 public class EmpleoService {
 
     private final EmpleoRepository empleoRepository;
-    private final UsuarioRepository usuarioRepository;
     private EmpleoMapper empleoMapper;
 
     public List<EmpleoResponseDto> listarEmpleos() {
@@ -35,7 +32,7 @@ public class EmpleoService {
 
     @Transactional 
     public EmpleoResponseDto crearEmpleo(EmpleoRequestDto dto){
-        Empleo empleo = empleoRepository.save(empleoMapper.toEntity(Empleodto));
+        Empleo empleo = empleoRepository.save(empleoMapper.toEntity(dto));
         return empleoMapper.toDto(empleo);
     }
 

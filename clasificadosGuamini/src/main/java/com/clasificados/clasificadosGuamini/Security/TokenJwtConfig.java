@@ -1,10 +1,7 @@
 package com.clasificados.clasificadosGuamini.security;
 
-import java.nio.charset.StandardCharsets;
 import javax.crypto.SecretKey;
-
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
 
 public class TokenJwtConfig {
 
