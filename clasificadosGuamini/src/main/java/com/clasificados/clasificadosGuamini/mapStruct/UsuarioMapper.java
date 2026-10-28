@@ -15,9 +15,10 @@ public interface UsuarioMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "fechaRegistro", ignore = true)
-    @Mapping(target = "activo", ignore = true)
     @Mapping(target = "favoritos", ignore = true)
     @Mapping(target = "avisos", ignore = true)
+    @Mapping(target = "admin", constant = "false")
+    @Mapping(target = "activo", constant = "true")
     Usuario toEntity(UsuarioRequestDto dto);
 
     @Mapping(target = "id", ignore = true)
@@ -25,6 +26,7 @@ public interface UsuarioMapper {
     @Mapping(target = "activo", ignore = true)
     @Mapping(target = "favoritos", ignore = true)
     @Mapping(target = "avisos", ignore = true)
+    @Mapping(target = "admin", ignore = true)
     void updateEntityFromDto(UsuarioRequestDto dto, @MappingTarget Usuario entity);
 }
 

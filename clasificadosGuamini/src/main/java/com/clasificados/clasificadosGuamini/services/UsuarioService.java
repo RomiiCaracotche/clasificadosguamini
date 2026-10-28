@@ -1,17 +1,22 @@
 package com.clasificados.clasificadosGuamini.services;
 
 import java.util.List;
-import org.springframework.http.HttpStatus;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 import com.clasificados.clasificadosGuamini.dtos.request.UsuarioRequestDto;
+import com.clasificados.clasificadosGuamini.dtos.response.AvisoResponseDto;
 import com.clasificados.clasificadosGuamini.dtos.response.UsuarioResponseDto;
+import com.clasificados.clasificadosGuamini.entities.Aviso;
 import com.clasificados.clasificadosGuamini.entities.Usuario;
 import com.clasificados.clasificadosGuamini.exception.dtos.DuplicateResourceException;
 import com.clasificados.clasificadosGuamini.exception.dtos.ResourceNotFoundException;
+import com.clasificados.clasificadosGuamini.mapStruct.AvisoMapper;
 import com.clasificados.clasificadosGuamini.mapStruct.UsuarioMapper;
+import com.clasificados.clasificadosGuamini.repositories.AvisoRepository;
 import com.clasificados.clasificadosGuamini.repositories.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -21,8 +26,10 @@ import lombok.RequiredArgsConstructor;
 public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
-    private PasswordEncoder passwordEncoder;
-    private UsuarioMapper usuarioMapper;
+    private final AvisoRepository avisoRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final UsuarioMapper usuarioMapper;
+    private final AvisoMapper avisoMapper;
 
     public List<UsuarioResponseDto> listarUsuarios() {
         List<Usuario> Usuarios = usuarioRepository.findAll();
@@ -30,7 +37,7 @@ public class UsuarioService {
     }
     
     public UsuarioResponseDto mostrarUsuario(Long id) {
-        Usuario usuarioEntity = usuarioRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No se encontró el id: " + id));
+        Usuario usuarioEntity = usuarioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No se encontró el usuario con el id: " + id));
         return usuarioMapper.toDto(usuarioEntity);
     }
 
@@ -53,9 +60,34 @@ public class UsuarioService {
 
     @Transactional
     public String eliminarUsuario(Long id){
-        Usuario existeId = usuarioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No se encontro el Usuario con id: " + id));
+        Usuario existeId = usuarioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No se encontro el usuario con id: " + id));
         usuarioRepository.delete(existeId);
         return "El usuario con id " + id + " se elimino correctamente";
+    }
+
+    @Transactional
+    public void agregarFavorito(Long idUsuario, Long idAviso) {
+        Usuario usuario = usuarioRepository.findById(idUsuario).orElseThrow(() -> new ResourceNotFoundException("No se encontro el usuario con id: " + idUsuario));
+        Aviso aviso = avisoRepository.findById(idAviso).orElseThrow(() -> new ResourceNotFoundException("No se encontro el aviso con id: " + idAviso));
+        usuario.agregarFavorito(aviso);
+        usuarioRepository.save(usuario);
+    }
+
+    @Transactional
+    public void eliminarFavorito(Long idUsuario, Long idAviso) {
+        Usuario usuario = usuarioRepository.findById(idUsuario).orElseThrow(() -> new ResourceNotFoundException("No se encontro el usuario con id: " + idUsuario));
+                
+        Aviso aviso = avisoRepository.findById(idAviso).orElseThrow(() -> new ResourceNotFoundException("No se encontro el aviso con id: " + idAviso));
+
+        usuario.quitarFavorito(aviso);
+        usuarioRepository.save(usuario);
+    }
+
+    @Transactional(readOnly = true)
+    public Set<AvisoResponseDto> obtenerFavoritos(Long idUsuario) {
+        Usuario usuario = usuarioRepository.findByIdWithFavoritos(idUsuario).orElseThrow(() -> new ResourceNotFoundException("No se encontro el usuario con id: " + idUsuario));
+        Set<AvisoResponseDto> favoritos = usuario.getFavoritos().stream().map(aviso -> avisoMapper.toResponseDto(aviso)).collect(Collectors.toSet());
+        return favoritos;
     }
 
 

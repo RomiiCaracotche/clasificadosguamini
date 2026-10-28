@@ -3,6 +3,7 @@ package com.clasificados.clasificadosGuamini.controllers;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.clasificados.clasificadosGuamini.dtos.request.UsuarioRequestDto;
+import com.clasificados.clasificadosGuamini.dtos.response.AvisoResponseDto;
 import com.clasificados.clasificadosGuamini.dtos.response.UsuarioResponseDto;
 import com.clasificados.clasificadosGuamini.services.UsuarioService;
 import jakarta.validation.Valid;
@@ -23,8 +25,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController 
 @RequestMapping("/api/usuarios")
-    @RequiredArgsConstructor
-
+@RequiredArgsConstructor
 public class UsuarioController {
  
     private final UsuarioService usuarioService;
@@ -58,6 +59,26 @@ public class UsuarioController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> eliminarUsuario(@PathVariable Long id) {
         return ResponseEntity.ok(usuarioService.eliminarUsuario(id));
+    }
+
+
+    
+    @PostMapping("/{idUsuario}/favoritos/{idAviso}")
+    public ResponseEntity<Void> agregarFavorito(@PathVariable Long idUsuario, @PathVariable Long idAviso) {
+        usuarioService.agregarFavorito(idUsuario, idAviso);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{idUsuario}/favoritos/{idAviso}")
+    public ResponseEntity<Void> eliminarFavorito(@PathVariable Long idUsuario, @PathVariable Long idAviso) {
+        usuarioService.eliminarFavorito(idUsuario, idAviso);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{idUsuario}/favoritos")
+    public ResponseEntity<Set<AvisoResponseDto>> obtenerFavoritos(@PathVariable Long idUsuario) {
+        Set<AvisoResponseDto> favoritos = usuarioService.obtenerFavoritos(idUsuario);
+        return ResponseEntity.ok(favoritos);
     }
 
     private ResponseEntity<?> validation(BindingResult result) {

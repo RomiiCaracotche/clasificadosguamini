@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 public class EmpleoService {
 
     private final EmpleoRepository empleoRepository;
-    private EmpleoMapper empleoMapper;
+    private final EmpleoMapper empleoMapper;
 
     public List<EmpleoResponseDto> listarEmpleos() {
         List<Empleo> listaEmpleos = empleoRepository.findAll();

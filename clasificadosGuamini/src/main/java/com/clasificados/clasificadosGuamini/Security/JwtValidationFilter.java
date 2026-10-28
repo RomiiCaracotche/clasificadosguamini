@@ -71,5 +71,4 @@ public class JwtValidationFilter extends BasicAuthenticationFilter {
             response.getWriter().write(new ObjectMapper().writeValueAsString(body));            
         }
     }
-
 }

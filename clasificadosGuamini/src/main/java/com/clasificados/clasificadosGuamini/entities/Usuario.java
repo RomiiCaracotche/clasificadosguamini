@@ -82,4 +82,13 @@ public class Usuario {
     @Column(nullable = false)
     private Boolean admin = false;
     
+
+    public void agregarFavorito(Aviso aviso) {
+        this.favoritos.add(aviso);
+    }
+
+    public void quitarFavorito(Aviso aviso) {
+        this.favoritos.remove(aviso);
+    }
+
 }

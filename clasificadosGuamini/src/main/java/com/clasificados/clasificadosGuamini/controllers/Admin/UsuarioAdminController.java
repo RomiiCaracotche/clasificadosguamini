@@ -4,10 +4,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.clasificados.clasificadosGuamini.services.Admin.UsuarioAdminService;
-
 import lombok.RequiredArgsConstructor;
 
 @RestController 
@@ -16,23 +16,23 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UsuarioAdminController {
     
-    private UsuarioAdminService usuarioAdminService;
+    private final UsuarioAdminService usuarioAdminService;
 
-    @PatchMapping("/rol")
-    public ResponseEntity<Void> cambiarRolUsuario(Long id) {
-        usuarioAdminService.cambiarRolUsuario(id);
+    @PatchMapping("/rol/{id}")
+    public ResponseEntity<Void> cambiarRolUsuario(@PathVariable("id") Long idUsuario) {
+        usuarioAdminService.cambiarRolUsuario(idUsuario);
         return ResponseEntity.noContent().build(); 
     }
 
-    @PatchMapping("/deshabilitar")
-    public ResponseEntity<Void> deshabilitarUsuario(Long id) {
-        usuarioAdminService.deshabilitarUsuario(id);
+    @PatchMapping("/deshabilitar/{id}")
+    public ResponseEntity<Void> deshabilitarUsuario(@PathVariable("id") Long idUsuario) {
+        usuarioAdminService.deshabilitarUsuario(idUsuario);
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping("/habilitar")
-    public ResponseEntity<Void> habilitarUsuario(Long id) {
-        usuarioAdminService.habilitarUsuario(id);
+    @PatchMapping("/habilitar/{id}")
+    public ResponseEntity<Void> habilitarUsuario(@PathVariable("id") Long idUsuario) {
+        usuarioAdminService.habilitarUsuario(idUsuario);
         return ResponseEntity.noContent().build();
     }
     

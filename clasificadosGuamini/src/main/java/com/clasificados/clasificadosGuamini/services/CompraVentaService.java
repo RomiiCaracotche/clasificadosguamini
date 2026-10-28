@@ -20,7 +20,7 @@ public class CompraVentaService {
 
     private final CompraVentaRepository compraVentaRepository;
     private final UsuarioRepository usuarioRepository;
-    private CompraVentaMapper compraVentaMapper;
+    private final CompraVentaMapper compraVentaMapper;
 
     public List<CompraVentaResponseDto> listarCompraVentas() {
         List<CompraVenta> listaCompraVenta = compraVentaRepository.findAll();
@@ -35,7 +35,7 @@ public class CompraVentaService {
     @Transactional
     public CompraVentaResponseDto crearCompraVenta(String nombreUsuarioActual, CompraVentaRequestDto compraventaDto) {
         Usuario usuario = usuarioRepository.findByNombreUsuario(nombreUsuarioActual).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-        CompraVenta compraventa = compraVentaMapper.toEntity(compraventaDto);
+        CompraVenta compraventa = compraVentaMapper.toEntity(compraventaDto, usuario);
         compraventa.setAnunciante(usuario);
         CompraVenta compraVentaGuardada = compraVentaRepository.save(compraventa);
         return compraVentaMapper.toDto(compraVentaGuardada);

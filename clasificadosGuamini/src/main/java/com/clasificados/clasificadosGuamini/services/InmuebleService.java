@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 public class InmuebleService {
 
     private final InmuebleRepository inmuebleRepository;
-    private InmuebleMapper inmuebleMapper;
+    private final InmuebleMapper inmuebleMapper;
 
     public List<InmuebleResponseDto> listarInmuebles() {
         List<Inmueble> listaInmuebles = inmuebleRepository.findAll();
