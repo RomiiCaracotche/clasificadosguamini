@@ -9,6 +9,7 @@ import com.clasificados.clasificadosGuamini.dtos.request.InmuebleRequestDto;
 import com.clasificados.clasificadosGuamini.dtos.response.InmuebleResponseDto;
 import com.clasificados.clasificadosGuamini.entities.Inmueble;
 import com.clasificados.clasificadosGuamini.entities.Usuario;
+import com.clasificados.clasificadosGuamini.exception.personalizadas.InternalServerException;
 import com.clasificados.clasificadosGuamini.mapStruct.InmuebleMapper;
 import com.clasificados.clasificadosGuamini.repositories.InmuebleRepository;
 import com.clasificados.clasificadosGuamini.repositories.UsuarioRepository;
@@ -59,7 +60,7 @@ public class InmuebleService {
         boolean esAdmin = usuario.getAdmin();   
 
         if (!esAnunciante && !esAdmin) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "No tienes permiso para eliminar este aviso");
+            throw new InternalServerException("No tienes permiso para eliminar este aviso");
         }
         
         inmuebleRepository.delete(inmueble);

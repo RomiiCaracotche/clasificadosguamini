@@ -2,7 +2,7 @@ package com.clasificados.clasificadosGuamini.services.Admin;
 
 import org.springframework.stereotype.Service;
 import com.clasificados.clasificadosGuamini.entities.Usuario;
-import com.clasificados.clasificadosGuamini.exception.dtos.ResourceNotFoundException;
+import com.clasificados.clasificadosGuamini.exception.personalizadas.ResourceNotFoundException;
 import com.clasificados.clasificadosGuamini.repositories.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;

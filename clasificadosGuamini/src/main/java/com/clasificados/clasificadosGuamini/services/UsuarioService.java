@@ -3,7 +3,6 @@ package com.clasificados.clasificadosGuamini.services;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,8 +11,8 @@ import com.clasificados.clasificadosGuamini.dtos.response.AvisoResponseDto;
 import com.clasificados.clasificadosGuamini.dtos.response.UsuarioResponseDto;
 import com.clasificados.clasificadosGuamini.entities.Aviso;
 import com.clasificados.clasificadosGuamini.entities.Usuario;
-import com.clasificados.clasificadosGuamini.exception.dtos.DuplicateResourceException;
-import com.clasificados.clasificadosGuamini.exception.dtos.ResourceNotFoundException;
+import com.clasificados.clasificadosGuamini.exception.personalizadas.DuplicateResourceException;
+import com.clasificados.clasificadosGuamini.exception.personalizadas.ResourceNotFoundException;
 import com.clasificados.clasificadosGuamini.mapStruct.AvisoMapper;
 import com.clasificados.clasificadosGuamini.mapStruct.UsuarioMapper;
 import com.clasificados.clasificadosGuamini.repositories.AvisoRepository;

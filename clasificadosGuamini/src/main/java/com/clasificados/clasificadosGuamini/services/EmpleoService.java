@@ -9,10 +9,10 @@ import com.clasificados.clasificadosGuamini.dtos.request.EmpleoRequestDto;
 import com.clasificados.clasificadosGuamini.dtos.response.EmpleoResponseDto;
 import com.clasificados.clasificadosGuamini.entities.Empleo;
 import com.clasificados.clasificadosGuamini.entities.Usuario;
+import com.clasificados.clasificadosGuamini.exception.personalizadas.InternalServerException;
 import com.clasificados.clasificadosGuamini.mapStruct.EmpleoMapper;
 import com.clasificados.clasificadosGuamini.repositories.EmpleoRepository;
 import com.clasificados.clasificadosGuamini.repositories.UsuarioRepository;
-
 import lombok.RequiredArgsConstructor;
 
 @Service 
@@ -60,7 +60,7 @@ public class EmpleoService {
         boolean esAdmin = usuario.getAdmin();   
         
         if (!esAnunciante && !esAdmin) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "No tienes permiso para eliminar este aviso");
+            throw new InternalServerException("No tienes permiso para eliminar este aviso");
         }
 
         empleoRepository.delete(empleo);

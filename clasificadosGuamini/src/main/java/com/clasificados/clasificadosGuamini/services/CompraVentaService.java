@@ -1,17 +1,14 @@
 package com.clasificados.clasificadosGuamini.services;
 
 import java.util.List;
-
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
-
 import com.clasificados.clasificadosGuamini.dtos.request.CompraVentaRequestDto;
 import com.clasificados.clasificadosGuamini.dtos.response.CompraVentaResponseDto;
 import com.clasificados.clasificadosGuamini.entities.CompraVenta;
 import com.clasificados.clasificadosGuamini.entities.Usuario;
-import com.clasificados.clasificadosGuamini.exception.dtos.ResourceNotFoundException;
+import com.clasificados.clasificadosGuamini.exception.personalizadas.InternalServerException;
+import com.clasificados.clasificadosGuamini.exception.personalizadas.ResourceNotFoundException;
 import com.clasificados.clasificadosGuamini.mapStruct.CompraVentaMapper;
 import com.clasificados.clasificadosGuamini.repositories.CompraVentaRepository;
 import com.clasificados.clasificadosGuamini.repositories.UsuarioRepository;
@@ -62,7 +59,7 @@ public class CompraVentaService {
         boolean esAdmin = usuario.getAdmin();   
         
         if (!esAnunciante && !esAdmin) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "No tienes permiso para eliminar este aviso");
+            throw new InternalServerException("No tienes permiso para eliminar este aviso");
         }
         
         compraVentaRepository.delete(compraventa);

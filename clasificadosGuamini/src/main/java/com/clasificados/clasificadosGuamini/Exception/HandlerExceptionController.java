@@ -5,12 +5,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.servlet.NoHandlerFoundException;
-
-import com.clasificados.clasificadosGuamini.exception.dtos.DuplicateResourceException;
 import com.clasificados.clasificadosGuamini.exception.dtos.ErrorDto;
-import com.clasificados.clasificadosGuamini.exception.dtos.ResourceNotFoundException;
-
+import com.clasificados.clasificadosGuamini.exception.personalizadas.DuplicateResourceException;
+import com.clasificados.clasificadosGuamini.exception.personalizadas.InternalServerException;
+import com.clasificados.clasificadosGuamini.exception.personalizadas.ResourceNotFoundException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.access.AccessDeniedException;
 
@@ -35,20 +33,7 @@ public class HandlerExceptionController {
         ErrorDto error = new ErrorDto("No tienen permiso para realizar esta accion", "403");
         return ResponseEntity.status(403).body(error);
     }
-
-    @ExceptionHandler(NoHandlerFoundException.class)
-    public ResponseEntity<ErrorDto> noHandlerFoundException(NoHandlerFoundException ex) {
-        ErrorDto error = new ErrorDto("Recurso no encontrado", "404");
-        return ResponseEntity.status(404).body(error);
-    } 
-
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorDto> handleGeneralException(Exception ex) {
-        ErrorDto error = new ErrorDto("Ocurrió un error interno en el servidor", "500");
-        return ResponseEntity.status(500).body(error);
-    }
-
-    
+ 
 
     //PERSONALIZADAS
 
@@ -60,8 +45,14 @@ public class HandlerExceptionController {
 
     @ExceptionHandler(DuplicateResourceException.class)
     public ResponseEntity<ErrorDto> duplicateResourceException(DuplicateResourceException ex) {
-    ErrorDto error = new ErrorDto(ex.getMessage(), "409");  
-    return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+        ErrorDto error = new ErrorDto(ex.getMessage(), "409");  
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+    }
+
+    @ExceptionHandler({Exception.class, InternalServerException.class})
+    public ResponseEntity<ErrorDto> internalServerException(Exception ex) {
+        ErrorDto error = new ErrorDto(ex.getMessage(), "500"); 
+        return ResponseEntity.status(500).body(error);
     }
 
 }
