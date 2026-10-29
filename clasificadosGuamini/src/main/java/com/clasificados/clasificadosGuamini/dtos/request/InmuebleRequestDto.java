@@ -1,6 +1,5 @@
 package com.clasificados.clasificadosGuamini.dtos.request;
 
-import com.clasificados.clasificadosGuamini.entities.Direccion;
 import com.clasificados.clasificadosGuamini.enums.TipoOperacion;
 import com.clasificados.clasificadosGuamini.enums.TipoVivienda;
 import jakarta.validation.constraints.NotNull;
@@ -50,6 +49,6 @@ public class InmuebleRequestDto extends AvisoRequestDto {
     private Double expensas;
 
     @NotNull(message = "La direccion es obligatoria")
-    private Direccion direccion;
+    private String direccion;
 
 }

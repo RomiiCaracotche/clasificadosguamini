@@ -1,9 +1,7 @@
 package com.clasificados.clasificadosGuamini.entities;
 
 import java.time.LocalDateTime;
-
 import com.clasificados.clasificadosGuamini.enums.EstadoAviso;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

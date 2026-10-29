@@ -1,5 +1,6 @@
 package com.clasificados.clasificadosGuamini.controllers;
 
+import java.security.Principal;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import com.clasificados.clasificadosGuamini.dtos.request.InmuebleRequestDto;
 import com.clasificados.clasificadosGuamini.dtos.response.InmuebleResponseDto;
 import com.clasificados.clasificadosGuamini.services.InmuebleService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController 
@@ -32,13 +34,13 @@ public class InmuebleController {
 
     @GetMapping("/{id}")
     public ResponseEntity<InmuebleResponseDto> mostrarInmueble(@PathVariable Long id) {
-        InmuebleResponseDto inmueble = inmuebleService.mostrarInmueble(id);
-        return ResponseEntity.ok().body(inmueble);
+        InmuebleResponseDto dto = inmuebleService.mostrarInmueble(id);
+        return ResponseEntity.ok().body(dto);
     }
 
     @PostMapping 
-    public ResponseEntity<InmuebleResponseDto> crearInmueble(@RequestBody InmuebleRequestDto inmueble){
-        InmuebleResponseDto dto = inmuebleService.crearInmueble(inmueble);
+    public ResponseEntity<InmuebleResponseDto> crearInmueble(@Valid @RequestBody InmuebleRequestDto inmueble, Principal principal){
+        InmuebleResponseDto dto = inmuebleService.crearInmueble(principal.getName(), inmueble);
         return ResponseEntity.status(HttpStatus.CREATED).body(dto);
     }
 
@@ -49,8 +51,8 @@ public class InmuebleController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> eliminarInmueble(@PathVariable Long id) {
-        String inmuebleEliminado = inmuebleService.eliminarInmueble(id);
-        return ResponseEntity.ok().body(inmuebleEliminado);
+    public ResponseEntity<String> eliminarInmueble(@PathVariable Long id, Principal principal) {
+        String inmueble = inmuebleService.eliminarInmueble(principal.getName(), id);
+        return ResponseEntity.ok().body(inmueble);
     }
 }

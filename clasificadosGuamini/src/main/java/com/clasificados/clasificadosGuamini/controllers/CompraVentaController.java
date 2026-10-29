@@ -11,7 +11,6 @@ import com.clasificados.clasificadosGuamini.dtos.response.CompraVentaResponseDto
 import com.clasificados.clasificadosGuamini.services.CompraVentaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,8 +40,7 @@ public class CompraVentaController {
 
     @PostMapping
     public ResponseEntity<CompraVentaResponseDto> crearCompraVenta(@Valid @RequestBody CompraVentaRequestDto compraventa, Principal principal) {
-        String nombreUsuarioActual = principal.getName();
-        CompraVentaResponseDto dto = compraVentaService.crearCompraVenta(nombreUsuarioActual, compraventa);
+        CompraVentaResponseDto dto = compraVentaService.crearCompraVenta(principal.getName(), compraventa);
         return ResponseEntity.status(HttpStatus.CREATED).body(dto);
     }
 
@@ -53,9 +51,9 @@ public class CompraVentaController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> eliminarCompraVenta(@PathVariable Long id){
-        String elimino = compraVentaService.eliminarCompraVenta(id);
-        return ResponseEntity.ok(elimino);
+    public ResponseEntity<String> eliminarCompraVenta(@PathVariable Long id, Principal principal){
+        String compraventa = compraVentaService.eliminarCompraVenta(principal.getName(), id);
+        return ResponseEntity.ok(compraventa);
     }
     
 }

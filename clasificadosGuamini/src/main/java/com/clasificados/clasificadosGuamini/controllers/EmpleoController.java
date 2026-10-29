@@ -1,5 +1,6 @@
 package com.clasificados.clasificadosGuamini.controllers;
 
+import java.security.Principal;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import com.clasificados.clasificadosGuamini.dtos.request.EmpleoRequestDto;
 import com.clasificados.clasificadosGuamini.dtos.response.EmpleoResponseDto;
 import com.clasificados.clasificadosGuamini.services.EmpleoService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController 
@@ -37,8 +39,8 @@ public class EmpleoController {
     }
 
     @PostMapping 
-    public ResponseEntity<EmpleoResponseDto> crearEmpleo(@RequestBody EmpleoRequestDto empleo){
-        EmpleoResponseDto dto = empleoService.crearEmpleo(empleo);
+    public ResponseEntity<EmpleoResponseDto> crearEmpleo(@Valid @RequestBody EmpleoRequestDto empleo, Principal principal){
+        EmpleoResponseDto dto = empleoService.crearEmpleo(principal.getName(), empleo);
         return ResponseEntity.status(HttpStatus.CREATED).body(dto);
     }
 
@@ -49,9 +51,9 @@ public class EmpleoController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> eliminarEmpleo(@PathVariable Long id) {
-        String empleoEliminado = empleoService.eliminarEmpleo(id);
-        return ResponseEntity.ok().body(empleoEliminado);
+    public ResponseEntity<String> eliminarEmpleo(@PathVariable Long id, Principal principal) {
+        String empleo = empleoService.eliminarEmpleo(principal.getName(), id);
+        return ResponseEntity.ok().body(empleo);
     }
 
 }

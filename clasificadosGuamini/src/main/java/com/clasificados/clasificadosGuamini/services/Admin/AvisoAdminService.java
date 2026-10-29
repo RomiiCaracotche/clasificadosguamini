@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class AvisoAdminService {
 
-    private AvisoRepository avisoRepository;
+    private final AvisoRepository avisoRepository;
     private final InmuebleMapper inmuebleMapper;
     private final EmpleoMapper empleoMapper;
     private final CompraVentaMapper compraVentaMapper;
@@ -31,17 +31,30 @@ public class AvisoAdminService {
     @Transactional(readOnly = true)
     public List<AvisoResponseDto> listarPendientes() {
         List<Aviso> avisosPendientes = avisoRepository.findByEstado(EstadoAviso.PENDIENTE);
-        
-        return avisosPendientes.stream().map(aviso -> {
-            if (aviso instanceof Inmueble) {
-                return (AvisoResponseDto) inmuebleMapper.toDto((Inmueble) aviso);
-            } else if (aviso instanceof Empleo) {
-                return (AvisoResponseDto) empleoMapper.toDto((Empleo) aviso);
-            } else if (aviso instanceof CompraVenta) {
-                return (AvisoResponseDto) compraVentaMapper.toDto((CompraVenta) aviso);
-            }
-            throw new IllegalStateException("Tipo de aviso desconocido: " + aviso.getClass()); 
-        }).collect(Collectors.toList());
+        return avisosPendientes.stream().map(this::mapearInstancia).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<AvisoResponseDto> listarAprobados() {
+        List<Aviso> avisosAprobados = avisoRepository.findByEstado(EstadoAviso.APROBADO);
+        return avisosAprobados.stream().map(this::mapearInstancia).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<AvisoResponseDto> listarRechazados() {
+        List<Aviso> avisosRechazados = avisoRepository.findByEstado(EstadoAviso.RECHAZADO);
+        return avisosRechazados.stream().map(this::mapearInstancia).collect(Collectors.toList());
+    }
+
+    private AvisoResponseDto mapearInstancia(Aviso aviso) {
+        if (aviso instanceof Inmueble) {
+            return inmuebleMapper.toDto((Inmueble) aviso);
+        } else if (aviso instanceof Empleo) {
+            return empleoMapper.toDto((Empleo) aviso);
+        } else if (aviso instanceof CompraVenta) {
+            return compraVentaMapper.toDto((CompraVenta) aviso);
+        }
+        throw new IllegalStateException("Tipo de aviso desconocido: " + aviso.getClass());
     }
 
     @Transactional

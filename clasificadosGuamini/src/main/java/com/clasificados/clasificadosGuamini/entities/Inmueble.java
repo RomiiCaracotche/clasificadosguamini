@@ -3,7 +3,6 @@ package com.clasificados.clasificadosGuamini.entities;
 import com.clasificados.clasificadosGuamini.enums.TipoOperacion;
 import com.clasificados.clasificadosGuamini.enums.TipoVivienda;
 import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -50,7 +49,7 @@ public class Inmueble extends Aviso {
     @Column(nullable = false)
     private Double expensas;
 
-    @Embedded 
-    private Direccion direccion;
+    @Column(nullable = false)
+    private String direccion;
     
 }

@@ -1,6 +1,5 @@
 package com.clasificados.clasificadosGuamini.dtos.response;
 
-import com.clasificados.clasificadosGuamini.entities.Direccion;
 import com.clasificados.clasificadosGuamini.enums.TipoOperacion;
 import com.clasificados.clasificadosGuamini.enums.TipoVivienda;
 import lombok.AllArgsConstructor;
@@ -30,6 +29,6 @@ public class InmuebleResponseDto extends AvisoResponseDto {
 
     private Double expensas;
 
-    private Direccion direccion;
+    private String direccion;
 
 }

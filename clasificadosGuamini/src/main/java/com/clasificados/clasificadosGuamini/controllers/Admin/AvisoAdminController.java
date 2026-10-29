@@ -18,20 +18,30 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AvisoAdminController {
 
-    private AvisoAdminService avisoAdminService;
+    private final AvisoAdminService avisoAdminService;
 
     @GetMapping("/pendientes")
     public ResponseEntity<List<AvisoResponseDto>> listarPendientes() {
         return ResponseEntity.ok().body(avisoAdminService.listarPendientes());
     }
 
-    @PatchMapping("/{id}/aprobar")
+    @GetMapping("/aprobados")
+    public ResponseEntity<List<AvisoResponseDto>> listarAprobados() {
+        return ResponseEntity.ok().body(avisoAdminService.listarAprobados());
+    }
+
+    @GetMapping("/rechazados")
+    public ResponseEntity<List<AvisoResponseDto>> listarRechazados() {
+        return ResponseEntity.ok().body(avisoAdminService.listarRechazados());
+    }
+
+    @PatchMapping("/aprobar/{id}")
     public ResponseEntity<Void> aprobarAviso(@PathVariable Long id) {
         avisoAdminService.aprobarAviso(id);
         return ResponseEntity.noContent().build(); 
     }
 
-    @PatchMapping("/{id}/rechazar") 
+    @PatchMapping("/rechazar/{id}") 
     public ResponseEntity<Void> rechazarAviso(@PathVariable Long id) {
         avisoAdminService.rechazarAviso(id);
         return ResponseEntity.noContent().build();

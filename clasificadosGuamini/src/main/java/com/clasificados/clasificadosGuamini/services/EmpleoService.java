@@ -8,8 +8,11 @@ import org.springframework.web.server.ResponseStatusException;
 import com.clasificados.clasificadosGuamini.dtos.request.EmpleoRequestDto;
 import com.clasificados.clasificadosGuamini.dtos.response.EmpleoResponseDto;
 import com.clasificados.clasificadosGuamini.entities.Empleo;
+import com.clasificados.clasificadosGuamini.entities.Usuario;
 import com.clasificados.clasificadosGuamini.mapStruct.EmpleoMapper;
 import com.clasificados.clasificadosGuamini.repositories.EmpleoRepository;
+import com.clasificados.clasificadosGuamini.repositories.UsuarioRepository;
+
 import lombok.RequiredArgsConstructor;
 
 @Service 
@@ -18,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 public class EmpleoService {
 
     private final EmpleoRepository empleoRepository;
+    private final UsuarioRepository usuarioRepository;
     private final EmpleoMapper empleoMapper;
 
     public List<EmpleoResponseDto> listarEmpleos() {
@@ -31,9 +35,12 @@ public class EmpleoService {
     }
 
     @Transactional 
-    public EmpleoResponseDto crearEmpleo(EmpleoRequestDto dto){
-        Empleo empleo = empleoRepository.save(empleoMapper.toEntity(dto));
-        return empleoMapper.toDto(empleo);
+    public EmpleoResponseDto crearEmpleo(String nombreUsuarioActual, EmpleoRequestDto dto){
+        Usuario usuario = usuarioRepository.findByNombreUsuario(nombreUsuarioActual).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        Empleo empleo = empleoMapper.toEntity(dto, usuario);
+        empleo.setAnunciante(usuario);
+        Empleo empleoGuardado = empleoRepository.save(empleo);
+        return empleoMapper.toDto(empleoGuardado);
     }
 
     @Transactional 
@@ -45,9 +52,18 @@ public class EmpleoService {
     }
 
     @Transactional 
-    public String eliminarEmpleo(Long id) {
-        Empleo existeEmpleo = empleoRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No se encontró el empleo con id: " + id));
-        empleoRepository.delete(existeEmpleo);
+    public String eliminarEmpleo(String nombreUsuarioActual, Long id) {
+        Usuario usuario = usuarioRepository.findByNombreUsuario(nombreUsuarioActual).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        Empleo empleo = empleoRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No se encontró el empleo con id: " + id));
+        
+        boolean esAnunciante = empleo.getAnunciante().getId().equals(usuario.getId());
+        boolean esAdmin = usuario.getAdmin();   
+        
+        if (!esAnunciante && !esAdmin) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "No tienes permiso para eliminar este aviso");
+        }
+
+        empleoRepository.delete(empleo);
         return "El empleo con id " + id + " se elimino correctamente";
     }
 
