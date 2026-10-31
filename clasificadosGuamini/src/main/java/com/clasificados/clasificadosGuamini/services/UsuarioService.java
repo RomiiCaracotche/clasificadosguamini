@@ -11,6 +11,7 @@ import com.clasificados.clasificadosGuamini.dtos.response.AvisoResponseDto;
 import com.clasificados.clasificadosGuamini.dtos.response.UsuarioResponseDto;
 import com.clasificados.clasificadosGuamini.entities.Aviso;
 import com.clasificados.clasificadosGuamini.entities.Usuario;
+import com.clasificados.clasificadosGuamini.exception.personalizadas.BadRequestException;
 import com.clasificados.clasificadosGuamini.exception.personalizadas.DuplicateResourceException;
 import com.clasificados.clasificadosGuamini.exception.personalizadas.ResourceNotFoundException;
 import com.clasificados.clasificadosGuamini.mapStruct.AvisoMapper;
@@ -50,11 +51,11 @@ public class UsuarioService {
 
     @Transactional
     public UsuarioResponseDto modificarUsuario(Long id, UsuarioRequestDto dtoModificado){
-        Usuario usuarioExistente = usuarioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No se encontro el Usuario con id: " + id));
-        validarCamposUnicosAlModificar(dtoModificado, usuarioExistente);
-        usuarioMapper.updateEntityFromDto(dtoModificado, usuarioExistente);
-        Usuario usuarioGuardado = usuarioRepository.save(usuarioExistente);
-        return usuarioMapper.toDto(usuarioGuardado);
+        Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No se encontro el Usuario con id: " + id));
+        validarCamposUnicosAlModificar(dtoModificado, usuario);
+        usuarioMapper.updateEntityFromDto(dtoModificado, usuario);
+        /* Usuario usuarioGuardado = usuarioRepository.save(usuarioExistente); */
+        return usuarioMapper.toDto(usuario);
     }
 
     @Transactional
@@ -64,31 +65,36 @@ public class UsuarioService {
         return "El usuario con id " + id + " se elimino correctamente";
     }
 
+
+    //FAVORITOS
+
     @Transactional
-    public void agregarFavorito(Long idUsuario, Long idAviso) {
-        Usuario usuario = usuarioRepository.findById(idUsuario).orElseThrow(() -> new ResourceNotFoundException("No se encontro el usuario con id: " + idUsuario));
+    public void agregarFavorito(String nombreUsuarioActual, Long idAviso) {
+        Usuario usuario = usuarioRepository.findByNombreUsuario(nombreUsuarioActual).orElseThrow(() -> new ResourceNotFoundException("No se encontro el usuario"));
         Aviso aviso = avisoRepository.findById(idAviso).orElseThrow(() -> new ResourceNotFoundException("No se encontro el aviso con id: " + idAviso));
+        if(usuario.getId().equals(aviso.getAnunciante().getId())) {
+            throw new BadRequestException("No podes agregar a favoritos un aviso tuyo");
+        }
         usuario.agregarFavorito(aviso);
-        usuarioRepository.save(usuario);
+        /* usuarioRepository.save(usuario); */
     }
 
     @Transactional
-    public void eliminarFavorito(Long idUsuario, Long idAviso) {
-        Usuario usuario = usuarioRepository.findById(idUsuario).orElseThrow(() -> new ResourceNotFoundException("No se encontro el usuario con id: " + idUsuario));
-                
+    public void eliminarFavorito(String nombreUsuarioActual, Long idAviso) {
+        Usuario usuario = usuarioRepository.findByNombreUsuario(nombreUsuarioActual).orElseThrow(() -> new ResourceNotFoundException("No se encontro el usuario"));
         Aviso aviso = avisoRepository.findById(idAviso).orElseThrow(() -> new ResourceNotFoundException("No se encontro el aviso con id: " + idAviso));
-
         usuario.quitarFavorito(aviso);
-        usuarioRepository.save(usuario);
+        /* usuarioRepository.save(usuario); */
     }
 
     @Transactional(readOnly = true)
-    public Set<AvisoResponseDto> obtenerFavoritos(Long idUsuario) {
-        Usuario usuario = usuarioRepository.findByIdWithFavoritos(idUsuario).orElseThrow(() -> new ResourceNotFoundException("No se encontro el usuario con id: " + idUsuario));
-        Set<AvisoResponseDto> favoritos = usuario.getFavoritos().stream().map(aviso -> avisoMapper.toResponseDto(aviso)).collect(Collectors.toSet());
-        return favoritos;
+    public Set<AvisoResponseDto> obtenerFavoritos(String nombreUsuarioActual) {
+        Usuario usuario = usuarioRepository.findByNombreUsuarioWithFavoritos(nombreUsuarioActual).orElseThrow(() -> new ResourceNotFoundException("No se encontro el usuario"));
+        return usuario.getFavoritos().stream().map(aviso -> avisoMapper.toResponseDto(aviso)).collect(Collectors.toSet());
     }
 
+
+    // METODOS PRIVADOS
 
     private void validarCamposUnicosAlCrear(UsuarioRequestDto dto) {
         if (usuarioRepository.existsByDni(dto.getDni())) {

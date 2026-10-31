@@ -13,4 +13,5 @@ public interface AvisoMapper {
     AvisoResponseDto toResponseDto(Aviso aviso);
 
     List<AvisoResponseDto> toResponseDtoList(List<Aviso> avisos);
+    
 }

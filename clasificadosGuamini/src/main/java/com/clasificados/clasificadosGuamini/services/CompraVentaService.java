@@ -7,11 +7,11 @@ import com.clasificados.clasificadosGuamini.dtos.request.CompraVentaRequestDto;
 import com.clasificados.clasificadosGuamini.dtos.response.CompraVentaResponseDto;
 import com.clasificados.clasificadosGuamini.entities.CompraVenta;
 import com.clasificados.clasificadosGuamini.entities.Usuario;
-import com.clasificados.clasificadosGuamini.exception.personalizadas.InternalServerException;
 import com.clasificados.clasificadosGuamini.exception.personalizadas.ResourceNotFoundException;
 import com.clasificados.clasificadosGuamini.mapStruct.CompraVentaMapper;
 import com.clasificados.clasificadosGuamini.repositories.CompraVentaRepository;
 import com.clasificados.clasificadosGuamini.repositories.UsuarioRepository;
+import com.clasificados.clasificadosGuamini.utils.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 
 @Service 
@@ -22,6 +22,7 @@ public class CompraVentaService {
     private final CompraVentaRepository compraVentaRepository;
     private final UsuarioRepository usuarioRepository;
     private final CompraVentaMapper compraVentaMapper;
+    private final SecurityUtils securityUtils;
 
     public List<CompraVentaResponseDto> listarCompraVentas() {
         List<CompraVenta> listaCompraVenta = compraVentaRepository.findAll();
@@ -43,25 +44,18 @@ public class CompraVentaService {
     }
 
     @Transactional
-    public CompraVentaResponseDto modificarCompraVenta(Long id, CompraVentaRequestDto dtoModificado) {
-        CompraVenta compraVentaExistente = compraVentaRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("No se encontró la compraventa con id: " + id));
-        compraVentaMapper.updateEntityFromDto(dtoModificado, compraVentaExistente);
-        CompraVenta compraVentaEntityGuardada = compraVentaRepository.save(compraVentaExistente);
-        return compraVentaMapper.toDto(compraVentaEntityGuardada);
+    public CompraVentaResponseDto modificarCompraVenta(String nombreUsuarioActual, Long id, CompraVentaRequestDto dtoModificado) {
+        securityUtils.verificarPropietarioOAdmin(nombreUsuarioActual, id);
+        CompraVenta compraventa = compraVentaRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("No se encontró la compraventa con id: " + id));
+        compraVentaMapper.updateEntityFromDto(dtoModificado, compraventa);
+        /* CompraVenta compraVentaEntityGuardada = compraVentaRepository.save(compraventa); */
+        return compraVentaMapper.toDto(compraventa);
     }
 
     @Transactional
     public String eliminarCompraVenta(String nombreUsuarioActual, Long id){
-        Usuario usuario = usuarioRepository.findByNombreUsuario(nombreUsuarioActual).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        securityUtils.verificarPropietarioOAdmin(nombreUsuarioActual, id);
         CompraVenta compraventa = compraVentaRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("No se encontró la compraventa con id: " + id));
-        
-        boolean esAnunciante = compraventa.getAnunciante().getId().equals(usuario.getId());
-        boolean esAdmin = usuario.getAdmin();   
-        
-        if (!esAnunciante && !esAdmin) {
-            throw new InternalServerException("No tienes permiso para eliminar este aviso");
-        }
-        
         compraVentaRepository.delete(compraventa);
         return "La compraventa con id " + id + " se eliminó correctamente";
     }

@@ -45,8 +45,8 @@ public class EmpleoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<EmpleoResponseDto> modificarEmpleo(@PathVariable Long id, @RequestBody EmpleoRequestDto empleo) {
-        EmpleoResponseDto dto = empleoService.modificarEmpleo(id, empleo);
+    public ResponseEntity<EmpleoResponseDto> modificarEmpleo(@PathVariable Long id, @RequestBody EmpleoRequestDto empleo, Principal principal) {
+        EmpleoResponseDto dto = empleoService.modificarEmpleo(principal.getName(), id, empleo);
         return ResponseEntity.ok().body(dto);
     }
 

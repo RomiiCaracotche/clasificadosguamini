@@ -4,7 +4,10 @@ public enum DisponibilidadHoraria {
     FULL_TIME,          
     PART_TIME,         
     FIN_DE_SEMANA,      
-    NOCURNO,            
+    NOCURNO,    
+    MANANA,
+    TARDE, 
+    NOCHE,        
     POR_HORA,          
     CONVENIR 
 }

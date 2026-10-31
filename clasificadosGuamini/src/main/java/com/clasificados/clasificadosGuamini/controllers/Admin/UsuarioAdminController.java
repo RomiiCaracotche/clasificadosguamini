@@ -1,5 +1,6 @@
 package com.clasificados.clasificadosGuamini.controllers.Admin;
 
+import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,6 +8,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.clasificados.clasificadosGuamini.dtos.response.AvisoResponseDto;
 import com.clasificados.clasificadosGuamini.services.Admin.UsuarioAdminService;
 import lombok.RequiredArgsConstructor;
 
@@ -34,6 +36,11 @@ public class UsuarioAdminController {
     public ResponseEntity<Void> habilitarUsuario(@PathVariable("id") Long idUsuario) {
         usuarioAdminService.habilitarUsuario(idUsuario);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/avisos/{id}")
+    public ResponseEntity<List<AvisoResponseDto>> AvisosPorUsuario(@PathVariable("id") Long idUsuario) {
+        return ResponseEntity.ok().body(usuarioAdminService.AvisosPorUsuario(idUsuario));
     }
     
     @GetMapping("/cantidad")

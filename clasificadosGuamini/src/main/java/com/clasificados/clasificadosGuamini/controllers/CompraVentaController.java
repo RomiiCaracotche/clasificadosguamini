@@ -45,8 +45,8 @@ public class CompraVentaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CompraVentaResponseDto> modificarCompraVenta(@PathVariable Long id, @Valid @RequestBody CompraVentaRequestDto compraventa) {
-        CompraVentaResponseDto dto = compraVentaService.modificarCompraVenta(id, compraventa);
+    public ResponseEntity<CompraVentaResponseDto> modificarCompraVenta(@PathVariable Long id, @Valid @RequestBody CompraVentaRequestDto compraventa, Principal principal) {
+        CompraVentaResponseDto dto = compraVentaService.modificarCompraVenta(principal.getName(), id, compraventa);
         return ResponseEntity.ok(dto);
     }
 

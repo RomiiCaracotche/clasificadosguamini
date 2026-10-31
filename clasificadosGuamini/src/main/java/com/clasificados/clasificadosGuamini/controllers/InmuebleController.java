@@ -45,8 +45,8 @@ public class InmuebleController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<InmuebleResponseDto> modificarInmueble(@PathVariable Long id, @RequestBody InmuebleRequestDto inmueble) {
-        InmuebleResponseDto dto = inmuebleService.modificarInmueble(id, inmueble);
+    public ResponseEntity<InmuebleResponseDto> modificarInmueble(@PathVariable Long id, @RequestBody InmuebleRequestDto inmueble, Principal principal) {
+        InmuebleResponseDto dto = inmuebleService.modificarInmueble(principal.getName(), id, inmueble);
         return ResponseEntity.ok().body(dto);
     }
 

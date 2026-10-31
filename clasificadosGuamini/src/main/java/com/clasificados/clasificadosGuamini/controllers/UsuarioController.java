@@ -1,5 +1,6 @@
 package com.clasificados.clasificadosGuamini.controllers;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,24 +63,28 @@ public class UsuarioController {
     }
 
 
-    
-    @PostMapping("/{idUsuario}/favoritos/{idAviso}")
-    public ResponseEntity<Void> agregarFavorito(@PathVariable Long idUsuario, @PathVariable Long idAviso) {
-        usuarioService.agregarFavorito(idUsuario, idAviso);
+    //FAVORITOS
+
+    @PostMapping("/favoritos/{idAviso}")
+    public ResponseEntity<Void> agregarFavorito(@PathVariable Long idAviso, Principal principal) {
+        usuarioService.agregarFavorito(principal.getName(), idAviso);
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/{idUsuario}/favoritos/{idAviso}")
-    public ResponseEntity<Void> eliminarFavorito(@PathVariable Long idUsuario, @PathVariable Long idAviso) {
-        usuarioService.eliminarFavorito(idUsuario, idAviso);
+    @DeleteMapping("/favoritos/{idAviso}")
+    public ResponseEntity<Void> eliminarFavorito(@PathVariable Long idAviso, Principal principal) {
+        usuarioService.eliminarFavorito(principal.getName(), idAviso);
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/{idUsuario}/favoritos")
-    public ResponseEntity<Set<AvisoResponseDto>> obtenerFavoritos(@PathVariable Long idUsuario) {
-        Set<AvisoResponseDto> favoritos = usuarioService.obtenerFavoritos(idUsuario);
+    @GetMapping("/favoritos")
+    public ResponseEntity<Set<AvisoResponseDto>> obtenerFavoritos(Principal principal) {
+        Set<AvisoResponseDto> favoritos = usuarioService.obtenerFavoritos(principal.getName());
         return ResponseEntity.ok(favoritos);
     }
+
+    
+    // METODOS PRIVADOS 
 
     private ResponseEntity<?> validation(BindingResult result) {
         Map<String, String> errors = new HashMap<>();

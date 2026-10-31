@@ -27,7 +27,7 @@ public class Empleo extends Aviso {
     @Column(nullable = false)
     private String rubro; 
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 500)
     @Enumerated(EnumType.STRING)
     private DisponibilidadHoraria disponibilidadHoraria; 
     
