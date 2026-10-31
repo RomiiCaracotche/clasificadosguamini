@@ -31,6 +31,12 @@ public class CompraVentaController {
     private final CompraVentaService compraVentaService;
     
     @GetMapping
+    public ResponseEntity<List<CompraVentaResponseDto>> listarCompraVentasActivas() {
+        List<CompraVentaResponseDto> listaCompraVenta = compraVentaService.listarCompraVentasActivas();
+        return ResponseEntity.ok(listaCompraVenta);
+    }
+
+    @GetMapping("/todas")
     public ResponseEntity<List<CompraVentaResponseDto>> listarCompraVentas() {
         List<CompraVentaResponseDto> listaCompraVenta = compraVentaService.listarCompraVentas();
         return ResponseEntity.ok(listaCompraVenta);

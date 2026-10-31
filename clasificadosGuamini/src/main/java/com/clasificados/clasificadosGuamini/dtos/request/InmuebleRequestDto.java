@@ -1,10 +1,12 @@
 package com.clasificados.clasificadosGuamini.dtos.request;
 
+import java.util.List;
 import com.clasificados.clasificadosGuamini.enums.TipoOperacion;
 import com.clasificados.clasificadosGuamini.enums.TipoVivienda;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -50,5 +52,8 @@ public class InmuebleRequestDto extends AvisoRequestDto {
 
     @NotNull(message = "La direccion es obligatoria")
     private String direccion;
+
+    @Size(min = 1, max = 5, message = "Debe subir entre 1 y 5 imágenes") 
+    private List<String> imagenes;
 
 }

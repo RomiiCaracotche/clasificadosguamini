@@ -1,7 +1,9 @@
 package com.clasificados.clasificadosGuamini.services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
@@ -9,6 +11,7 @@ import com.clasificados.clasificadosGuamini.dtos.request.EmpleoRequestDto;
 import com.clasificados.clasificadosGuamini.dtos.response.EmpleoResponseDto;
 import com.clasificados.clasificadosGuamini.entities.Empleo;
 import com.clasificados.clasificadosGuamini.entities.Usuario;
+import com.clasificados.clasificadosGuamini.enums.EstadoAviso;
 import com.clasificados.clasificadosGuamini.enums.TipoEmpleo;
 import com.clasificados.clasificadosGuamini.mapStruct.EmpleoMapper;
 import com.clasificados.clasificadosGuamini.repositories.EmpleoRepository;
@@ -26,6 +29,13 @@ public class EmpleoService {
     private final EmpleoMapper empleoMapper;
     private SecurityUtils securityUtils;
 
+    public List<EmpleoResponseDto> listarEmpleosActivos() {
+        LocalDateTime ahora = LocalDateTime.now();
+        List<Empleo> listaEmpleos = empleoRepository.findAllActivos(EstadoAviso.APROBADO, ahora);
+        return listaEmpleos.stream().map(e -> empleoMapper.toDto(e)).toList();
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
     public List<EmpleoResponseDto> listarEmpleos() {
         List<Empleo> listaEmpleos = empleoRepository.findAll();
         return listaEmpleos.stream().map(e -> empleoMapper.toDto(e)).toList();

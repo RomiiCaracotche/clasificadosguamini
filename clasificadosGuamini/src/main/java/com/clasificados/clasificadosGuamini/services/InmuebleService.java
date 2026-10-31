@@ -1,9 +1,11 @@
 package com.clasificados.clasificadosGuamini.services;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,6 +14,7 @@ import com.clasificados.clasificadosGuamini.dtos.request.InmuebleRequestDto;
 import com.clasificados.clasificadosGuamini.dtos.response.InmuebleResponseDto;
 import com.clasificados.clasificadosGuamini.entities.Inmueble;
 import com.clasificados.clasificadosGuamini.entities.Usuario;
+import com.clasificados.clasificadosGuamini.enums.EstadoAviso;
 import com.clasificados.clasificadosGuamini.mapStruct.InmuebleMapper;
 import com.clasificados.clasificadosGuamini.repositories.InmuebleRepository;
 import com.clasificados.clasificadosGuamini.repositories.UsuarioRepository;
@@ -30,6 +33,13 @@ public class InmuebleService {
     private SecurityUtils securityUtils;
     private final FileStorageUtils fileStorageUtils;
 
+    public List<InmuebleResponseDto> listarInmueblesActivos() {
+        LocalDateTime ahora = LocalDateTime.now();
+        List<Inmueble> listaInmuebles = inmuebleRepository.findAllActivos(EstadoAviso.APROBADO, ahora);
+        return listaInmuebles.stream().map(e -> inmuebleMapper.toDto(e)).toList();
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
     public List<InmuebleResponseDto> listarInmuebles() {
         List<Inmueble> listaInmuebles = inmuebleRepository.findAll();
         return listaInmuebles.stream().map(e -> inmuebleMapper.toDto(e)).toList();

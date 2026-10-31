@@ -17,13 +17,15 @@ public interface InmuebleMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "estado", ignore = true)
-    @Mapping(target = "fecha", expression = "java(java.time.LocalDateTime.now())")
+    @Mapping(target = "fechaCreacion", ignore = true)
+    @Mapping(target = "fechaExpiracion", ignore = true)
     @Mapping(target = "anunciante", source = "usuario")
     @Mapping(target = "localidad", source = "dto.localidad")
     Inmueble toEntity(InmuebleRequestDto dto, Usuario usuario);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "fecha", ignore = true)
+    @Mapping(target = "fechaCreacion", ignore = true)
+    @Mapping(target = "fechaExpiracion", ignore = true)
     @Mapping(target = "estado", ignore = true)
     @Mapping(target = "anunciante", ignore = true)
     void updateEntityFromDto(InmuebleRequestDto dto, @MappingTarget Inmueble entity);

@@ -15,6 +15,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -63,10 +64,10 @@ public class Usuario {
     private String localidad;
 
     @Column(nullable = false)
-    private LocalDateTime fechaRegistro = LocalDateTime.now();
+    private LocalDateTime fechaRegistro;
 
     @Column(nullable = false)
-    private Boolean activo = true;
+    private Boolean activo;
 
     @ManyToMany(cascade ={CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
@@ -80,7 +81,7 @@ public class Usuario {
     private List<Aviso> avisos = new ArrayList<>();
 
     @Column(nullable = false)
-    private Boolean admin = false;
+    private Boolean admin;
     
 
     public void agregarFavorito(Aviso aviso) {
@@ -89,6 +90,13 @@ public class Usuario {
 
     public void quitarFavorito(Aviso aviso) {
         this.favoritos.remove(aviso);
+    }
+
+    @PrePersist
+    public void prePersist() {
+        this.admin = false;
+        this.activo = true;
+        this.fechaRegistro = LocalDateTime.now();
     }
 
 }

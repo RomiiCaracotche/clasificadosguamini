@@ -2,6 +2,8 @@ package com.clasificados.clasificadosGuamini.services;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -9,6 +11,7 @@ import com.clasificados.clasificadosGuamini.dtos.request.CompraVentaRequestDto;
 import com.clasificados.clasificadosGuamini.dtos.response.CompraVentaResponseDto;
 import com.clasificados.clasificadosGuamini.entities.CompraVenta;
 import com.clasificados.clasificadosGuamini.entities.Usuario;
+import com.clasificados.clasificadosGuamini.enums.EstadoAviso;
 import com.clasificados.clasificadosGuamini.exception.personalizadas.ResourceNotFoundException;
 import com.clasificados.clasificadosGuamini.mapStruct.CompraVentaMapper;
 import com.clasificados.clasificadosGuamini.repositories.CompraVentaRepository;
@@ -16,6 +19,8 @@ import com.clasificados.clasificadosGuamini.repositories.UsuarioRepository;
 import com.clasificados.clasificadosGuamini.utils.FileStorageUtils;
 import com.clasificados.clasificadosGuamini.utils.SecurityUtils;
 import java.io.IOException;
+import java.time.LocalDateTime;
+
 import lombok.RequiredArgsConstructor;
 
 @Service 
@@ -30,6 +35,13 @@ public class CompraVentaService {
     private final FileStorageUtils fileStorageUtils;
     
 
+    public List<CompraVentaResponseDto> listarCompraVentasActivas() {
+        LocalDateTime ahora = LocalDateTime.now();
+        List<CompraVenta> listaCompraVenta = compraVentaRepository.findAllActivos(EstadoAviso.APROBADO, ahora);
+        return listaCompraVenta.stream().map(e -> compraVentaMapper.toDto(e)).toList();
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
     public List<CompraVentaResponseDto> listarCompraVentas() {
         List<CompraVenta> listaCompraVenta = compraVentaRepository.findAll();
         return listaCompraVenta.stream().map(e -> compraVentaMapper.toDto(e)).toList();

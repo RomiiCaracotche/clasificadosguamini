@@ -17,7 +17,8 @@ public class AvisoResponseDto {
     private Long id;
     private String titulo;
     private String descripcion;
-    private LocalDateTime fecha = LocalDateTime.now();
+    private LocalDateTime fechaCreacion;
+    private LocalDateTime fechaExpiracion;
     private String localidad;
     private EstadoAviso estado;
     private Long idAnunciante;

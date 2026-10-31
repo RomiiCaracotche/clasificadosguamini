@@ -31,6 +31,12 @@ public class InmuebleController {
     private final InmuebleService inmuebleService;
 
     @GetMapping
+    public ResponseEntity<List<InmuebleResponseDto>> listarInmueblesActivos() {
+        List<InmuebleResponseDto> listaInmuebles = inmuebleService.listarInmueblesActivos();
+        return ResponseEntity.ok().body(listaInmuebles);
+    }
+
+    @GetMapping("/todos")
     public ResponseEntity<List<InmuebleResponseDto>> listarInmuebles() {
         List<InmuebleResponseDto> listaInmuebles = inmuebleService.listarInmuebles();
         return ResponseEntity.ok().body(listaInmuebles);

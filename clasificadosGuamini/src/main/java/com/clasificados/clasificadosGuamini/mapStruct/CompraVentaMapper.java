@@ -16,14 +16,16 @@ public interface CompraVentaMapper {
     CompraVentaResponseDto toDto(CompraVenta entity);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "fecha", expression = "java(java.time.LocalDateTime.now())")
+    @Mapping(target = "fechaCreacion", ignore = true)
+    @Mapping(target = "fechaExpiracion", ignore = true)
     @Mapping(target = "localidad", source = "dto.localidad")
     @Mapping(target = "estado", ignore = true)
     @Mapping(target = "anunciante", source = "usuario")
     CompraVenta toEntity(CompraVentaRequestDto dto, Usuario usuario);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "fecha", ignore = true)
+    @Mapping(target = "fechaCreacion", ignore = true)
+    @Mapping(target = "fechaExpiracion", ignore = true)
     @Mapping(target = "estado", ignore = true)
     @Mapping(target = "anunciante", ignore = true)
     void updateEntityFromDto(CompraVentaRequestDto dto, @MappingTarget CompraVenta entity);

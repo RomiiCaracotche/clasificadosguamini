@@ -1,9 +1,11 @@
 package com.clasificados.clasificadosGuamini.dtos.request;
 
+import java.util.List;
 import com.clasificados.clasificadosGuamini.enums.Categoria;
 import com.clasificados.clasificadosGuamini.enums.CondicionProducto;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -30,5 +32,8 @@ public class CompraVentaRequestDto extends AvisoRequestDto {
     private String modelo;
 
     private String color;
+
+    @Size(min = 1, max = 5, message = "Debe subir entre 1 y 5 imágenes") 
+    private List<String> imagenes;
 
 }
