@@ -5,12 +5,11 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.clasificados.clasificadosGuamini.repositories.AvisoRepository;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-
+import lombok.RequiredArgsConstructor;
 
 @Service  
-@AllArgsConstructor 
+@RequiredArgsConstructor
 @Data 
 public class AvisoTareaService {
 
