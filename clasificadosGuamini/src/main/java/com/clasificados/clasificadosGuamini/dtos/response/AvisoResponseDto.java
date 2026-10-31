@@ -1,6 +1,7 @@
 package com.clasificados.clasificadosGuamini.dtos.response;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import com.clasificados.clasificadosGuamini.enums.EstadoAviso;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,5 +21,6 @@ public class AvisoResponseDto {
     private String localidad;
     private EstadoAviso estado;
     private Long idAnunciante;
-    
+    private List<String> imagenes;
+
 }

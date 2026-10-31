@@ -9,6 +9,7 @@ import com.clasificados.clasificadosGuamini.dtos.request.EmpleoRequestDto;
 import com.clasificados.clasificadosGuamini.dtos.response.EmpleoResponseDto;
 import com.clasificados.clasificadosGuamini.entities.Empleo;
 import com.clasificados.clasificadosGuamini.entities.Usuario;
+import com.clasificados.clasificadosGuamini.enums.TipoEmpleo;
 import com.clasificados.clasificadosGuamini.mapStruct.EmpleoMapper;
 import com.clasificados.clasificadosGuamini.repositories.EmpleoRepository;
 import com.clasificados.clasificadosGuamini.repositories.UsuarioRepository;
@@ -40,6 +41,12 @@ public class EmpleoService {
         Usuario usuario = usuarioRepository.findByNombreUsuario(nombreUsuarioActual).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
         Empleo empleo = empleoMapper.toEntity(dto, usuario);
         empleo.setAnunciante(usuario);
+
+        String imagenPorDefecto = TipoEmpleo.BUSCO_EMPLEO.equals(empleo.getTipoEmpleo())
+        ? "/uploads/defaults/busco_empleo.jpg" 
+        : "/uploads/defaults/oferta_empleo.jpg";
+
+        empleo.setImagenes(List.of(imagenPorDefecto));
         Empleo empleoGuardado = empleoRepository.save(empleo);
         return empleoMapper.toDto(empleoGuardado);
     }

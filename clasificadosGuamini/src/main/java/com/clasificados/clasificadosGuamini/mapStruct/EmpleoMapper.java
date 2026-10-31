@@ -13,6 +13,7 @@ import com.clasificados.clasificadosGuamini.entities.Usuario;
 public interface EmpleoMapper {
 
     @Mapping(source = "anunciante.id", target = "idAnunciante")
+    @Mapping(source = "imagenes", target = "imagenes")
     EmpleoResponseDto toDto(Empleo entity);
 
     @Mapping(target = "id", ignore = true)

@@ -1,9 +1,12 @@
 package com.clasificados.clasificadosGuamini.services;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import com.clasificados.clasificadosGuamini.dtos.request.InmuebleRequestDto;
 import com.clasificados.clasificadosGuamini.dtos.response.InmuebleResponseDto;
@@ -12,6 +15,7 @@ import com.clasificados.clasificadosGuamini.entities.Usuario;
 import com.clasificados.clasificadosGuamini.mapStruct.InmuebleMapper;
 import com.clasificados.clasificadosGuamini.repositories.InmuebleRepository;
 import com.clasificados.clasificadosGuamini.repositories.UsuarioRepository;
+import com.clasificados.clasificadosGuamini.utils.FileStorageUtils;
 import com.clasificados.clasificadosGuamini.utils.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 
@@ -24,6 +28,7 @@ public class InmuebleService {
     private final UsuarioRepository usuarioRepository;
     private final InmuebleMapper inmuebleMapper;
     private SecurityUtils securityUtils;
+    private final FileStorageUtils fileStorageUtils;
 
     public List<InmuebleResponseDto> listarInmuebles() {
         List<Inmueble> listaInmuebles = inmuebleRepository.findAll();
@@ -36,7 +41,20 @@ public class InmuebleService {
     }
 
     @Transactional 
-    public InmuebleResponseDto crearInmueble(String nombreUsuarioActual, InmuebleRequestDto dto){
+    public InmuebleResponseDto crearInmueble(String nombreUsuarioActual, InmuebleRequestDto dto, List<MultipartFile> archivos){
+        List<String> imagenes = new ArrayList<>();
+
+        for (MultipartFile archivo : archivos) {
+            if (!archivo.isEmpty()) {
+               try {
+                    String rutaRelativa = fileStorageUtils.guardarArchivoEnDisco(archivo);
+                    imagenes.add(rutaRelativa);
+                } catch (IOException e) {
+                    throw new RuntimeException("Error al guardar la imagen: " + e.getMessage());
+                }
+            }
+        }
+
         Usuario usuario = usuarioRepository.findByNombreUsuario(nombreUsuarioActual).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
         Inmueble inmueble = inmuebleMapper.toEntity(dto, usuario);
         inmueble.setAnunciante(usuario);

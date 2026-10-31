@@ -13,9 +13,9 @@ import com.clasificados.clasificadosGuamini.services.Admin.AvisoAdminService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/admin/avisos")
-@PreAuthorize("hasRole('ADMIN')") 
 @RequiredArgsConstructor
+@PreAuthorize("hasRole('ADMIN')") 
+@RequestMapping("/api/admin/avisos")
 public class AvisoAdminController {
 
     private final AvisoAdminService avisoAdminService;

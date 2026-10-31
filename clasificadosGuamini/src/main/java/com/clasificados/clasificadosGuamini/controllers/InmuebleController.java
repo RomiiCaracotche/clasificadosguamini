@@ -6,12 +6,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.clasificados.clasificadosGuamini.dtos.request.InmuebleRequestDto;
 import com.clasificados.clasificadosGuamini.dtos.response.InmuebleResponseDto;
 import com.clasificados.clasificadosGuamini.services.InmuebleService;
@@ -39,8 +43,8 @@ public class InmuebleController {
     }
 
     @PostMapping 
-    public ResponseEntity<InmuebleResponseDto> crearInmueble(@Valid @RequestBody InmuebleRequestDto inmueble, Principal principal){
-        InmuebleResponseDto dto = inmuebleService.crearInmueble(principal.getName(), inmueble);
+    public ResponseEntity<InmuebleResponseDto> crearInmueble(@Valid @ModelAttribute InmuebleRequestDto inmueble, @RequestParam("archivos") List<MultipartFile> archivos, Principal principal){
+        InmuebleResponseDto dto = inmuebleService.crearInmueble(principal.getName(), inmueble, archivos);
         return ResponseEntity.status(HttpStatus.CREATED).body(dto);
     }
 

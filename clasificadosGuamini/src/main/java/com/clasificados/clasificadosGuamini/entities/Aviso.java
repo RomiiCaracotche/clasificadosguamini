@@ -1,8 +1,12 @@
 package com.clasificados.clasificadosGuamini.entities;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import com.clasificados.clasificadosGuamini.enums.EstadoAviso;
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -54,5 +58,10 @@ public abstract class Aviso {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario anunciante;
+
+    @ElementCollection
+    @CollectionTable(name = "aviso_imagenes", joinColumns = @JoinColumn(name = "aviso_id"))
+    @Column(name = "url_imagen", nullable = false)
+    private List<String> imagenes = new ArrayList<>();
 
 }

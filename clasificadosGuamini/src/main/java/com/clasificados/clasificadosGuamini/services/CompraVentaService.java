@@ -1,8 +1,10 @@
 package com.clasificados.clasificadosGuamini.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import com.clasificados.clasificadosGuamini.dtos.request.CompraVentaRequestDto;
 import com.clasificados.clasificadosGuamini.dtos.response.CompraVentaResponseDto;
 import com.clasificados.clasificadosGuamini.entities.CompraVenta;
@@ -11,7 +13,9 @@ import com.clasificados.clasificadosGuamini.exception.personalizadas.ResourceNot
 import com.clasificados.clasificadosGuamini.mapStruct.CompraVentaMapper;
 import com.clasificados.clasificadosGuamini.repositories.CompraVentaRepository;
 import com.clasificados.clasificadosGuamini.repositories.UsuarioRepository;
+import com.clasificados.clasificadosGuamini.utils.FileStorageUtils;
 import com.clasificados.clasificadosGuamini.utils.SecurityUtils;
+import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 
 @Service 
@@ -23,6 +27,8 @@ public class CompraVentaService {
     private final UsuarioRepository usuarioRepository;
     private final CompraVentaMapper compraVentaMapper;
     private final SecurityUtils securityUtils;
+    private final FileStorageUtils fileStorageUtils;
+    
 
     public List<CompraVentaResponseDto> listarCompraVentas() {
         List<CompraVenta> listaCompraVenta = compraVentaRepository.findAll();
@@ -35,13 +41,28 @@ public class CompraVentaService {
     }
 
     @Transactional
-    public CompraVentaResponseDto crearCompraVenta(String nombreUsuarioActual, CompraVentaRequestDto dto) {
+    public CompraVentaResponseDto crearCompraVenta(String nombreUsuarioActual, CompraVentaRequestDto dto, List<MultipartFile> archivos) {
+        List<String> imagenes = new ArrayList<>();
+
+        for (MultipartFile archivo : archivos) {
+            if (!archivo.isEmpty()) {
+               try {
+                    String rutaRelativa = fileStorageUtils.guardarArchivoEnDisco(archivo);
+                    imagenes.add(rutaRelativa);
+                } catch (IOException e) {
+                    throw new RuntimeException("Error al guardar la imagen: " + e.getMessage());
+                }
+            }
+        }
+
         Usuario usuario = usuarioRepository.findByNombreUsuario(nombreUsuarioActual).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
         CompraVenta compraventa = compraVentaMapper.toEntity(dto, usuario);
         compraventa.setAnunciante(usuario);
+        compraventa.setImagenes(imagenes);
         CompraVenta compraVentaGuardada = compraVentaRepository.save(compraventa);
         return compraVentaMapper.toDto(compraVentaGuardada);
     }
+
 
     @Transactional
     public CompraVentaResponseDto modificarCompraVenta(String nombreUsuarioActual, Long id, CompraVentaRequestDto dtoModificado) {
@@ -59,5 +80,7 @@ public class CompraVentaService {
         compraVentaRepository.delete(compraventa);
         return "La compraventa con id " + id + " se eliminó correctamente";
     }
+
+   
 
 }

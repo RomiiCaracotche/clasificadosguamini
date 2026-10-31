@@ -13,9 +13,9 @@ import com.clasificados.clasificadosGuamini.services.Admin.UsuarioAdminService;
 import lombok.RequiredArgsConstructor;
 
 @RestController 
-@RequestMapping("/api/admin/usuarios")
-@PreAuthorize("hasRole('ADMIN')")
 @RequiredArgsConstructor
+@PreAuthorize("hasRole('ADMIN')")
+@RequestMapping("/api/admin/usuarios")
 public class UsuarioAdminController {
     
     private final UsuarioAdminService usuarioAdminService;
