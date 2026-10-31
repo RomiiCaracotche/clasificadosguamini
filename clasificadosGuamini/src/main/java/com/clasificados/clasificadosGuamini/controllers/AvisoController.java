@@ -1,5 +1,6 @@
 package com.clasificados.clasificadosGuamini.controllers;
 
+import java.security.Principal;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.clasificados.clasificadosGuamini.dtos.request.ReporteAvisoRequestDto;
 import com.clasificados.clasificadosGuamini.dtos.response.AvisoResponseDto;
 import com.clasificados.clasificadosGuamini.services.AvisoService;
-import com.clasificados.clasificadosGuamini.services.utils.ReporteAvisoService;
+import com.clasificados.clasificadosGuamini.services.ReporteAvisoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -23,10 +24,10 @@ public class AvisoController {
 
     private final AvisoService avisoService;
     private final ReporteAvisoService reporteAvisoService;
- 
+
     @GetMapping
-    public ResponseEntity<List<AvisoResponseDto>> listarTodosLosAvisos() {
-        return ResponseEntity.ok(avisoService.listarTodos());
+    public ResponseEntity<List<AvisoResponseDto>> listarAprobados() {
+        return ResponseEntity.ok().body(avisoService.listarAprobados());
     }
 
     @GetMapping("/buscar")
@@ -35,7 +36,7 @@ public class AvisoController {
     }
 
     @PostMapping("/reportar/{id}")
-    public ResponseEntity<Void> reportarAviso(@PathVariable Long id, @Valid @RequestBody ReporteAvisoRequestDto dto, java.security.Principal Principal) {
+    public ResponseEntity<Void> reportarAviso(@PathVariable Long id, @Valid @RequestBody ReporteAvisoRequestDto dto, Principal Principal) {
         reporteAvisoService.reportarAviso(id, dto, Principal.getName());
         return ResponseEntity.noContent().build();
     }

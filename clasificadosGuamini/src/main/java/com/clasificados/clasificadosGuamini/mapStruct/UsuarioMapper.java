@@ -1,5 +1,6 @@
 package com.clasificados.clasificadosGuamini.mapStruct;
 
+import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -28,5 +29,7 @@ public interface UsuarioMapper {
     @Mapping(target = "avisos", ignore = true)
     @Mapping(target = "admin", ignore = true)
     void updateEntityFromDto(UsuarioRequestDto dto, @MappingTarget Usuario entity);
+
+    List<UsuarioResponseDto> toResponseDtoList(List<Usuario> usuarios);
 }
 

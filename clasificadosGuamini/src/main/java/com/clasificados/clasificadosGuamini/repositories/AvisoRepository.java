@@ -12,7 +12,9 @@ import org.springframework.data.repository.query.Param;
 public interface AvisoRepository extends JpaRepository<Aviso,Long> {
 
     List<Aviso> findByEstado(EstadoAviso estado);
+    
     List<Aviso> findByTituloContainingIgnoreCase(String palabraClave);
+
     @Modifying
     @Query("UPDATE Aviso a SET a.estado = 'INACTIVO' WHERE a.fechaExpiracion < :ahora AND a.estado <> 'INACTIVO'")
     int expirarAvisosVencidos(@Param("ahora") LocalDateTime ahora);

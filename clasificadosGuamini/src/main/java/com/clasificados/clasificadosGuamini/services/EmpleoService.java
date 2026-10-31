@@ -32,13 +32,13 @@ public class EmpleoService {
     public List<EmpleoResponseDto> listarEmpleosActivos() {
         LocalDateTime ahora = LocalDateTime.now();
         List<Empleo> listaEmpleos = empleoRepository.findAllActivos(EstadoAviso.APROBADO, ahora);
-        return listaEmpleos.stream().map(e -> empleoMapper.toDto(e)).toList();
+        return empleoMapper.toResponseDtoList(listaEmpleos);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     public List<EmpleoResponseDto> listarEmpleos() {
         List<Empleo> listaEmpleos = empleoRepository.findAll();
-        return listaEmpleos.stream().map(e -> empleoMapper.toDto(e)).toList();
+        return empleoMapper.toResponseDtoList(listaEmpleos);
     }
 
     public EmpleoResponseDto mostrarEmpleo(Long id) {

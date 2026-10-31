@@ -4,6 +4,7 @@ public enum EstadoAviso {
     PENDIENTE, 
     APROBADO, 
     RECHAZADO,
-    INACTIVO
+    INACTIVO,
+    EN_REVISION
 }
 

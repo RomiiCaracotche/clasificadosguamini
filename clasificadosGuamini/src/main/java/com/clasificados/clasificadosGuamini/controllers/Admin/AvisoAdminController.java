@@ -3,13 +3,16 @@ package com.clasificados.clasificadosGuamini.controllers.Admin;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.clasificados.clasificadosGuamini.dtos.response.AvisoResponseDto;
+import com.clasificados.clasificadosGuamini.dtos.response.ReporteAvisoResponseDto;
 import com.clasificados.clasificadosGuamini.services.Admin.AvisoAdminService;
+import com.clasificados.clasificadosGuamini.services.ReporteAvisoService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -19,15 +22,26 @@ import lombok.RequiredArgsConstructor;
 public class AvisoAdminController {
 
     private final AvisoAdminService avisoAdminService;
+    private final ReporteAvisoService reporteAvisoService;
+
+    @GetMapping
+    public ResponseEntity<List<AvisoResponseDto>> listarAvisos() {
+        return ResponseEntity.ok().body(avisoAdminService.listarAvisos());
+    }
 
     @GetMapping("/pendientes")
     public ResponseEntity<List<AvisoResponseDto>> listarPendientes() {
         return ResponseEntity.ok().body(avisoAdminService.listarPendientes());
     }
 
-    @GetMapping("/aprobados")
-    public ResponseEntity<List<AvisoResponseDto>> listarAprobados() {
-        return ResponseEntity.ok().body(avisoAdminService.listarAprobados());
+    @GetMapping("/revision")
+    public ResponseEntity<List<AvisoResponseDto>> listarEnRevision() {
+        return ResponseEntity.ok().body(avisoAdminService.listarEnRevision());
+    }
+
+    @GetMapping("/reportados")
+    public ResponseEntity<List<ReporteAvisoResponseDto>> listarReportados() {
+        return ResponseEntity.ok().body(reporteAvisoService.listarReportados());
     }
 
     @GetMapping("/rechazados")
@@ -51,6 +65,11 @@ public class AvisoAdminController {
     public ResponseEntity<Long> cantidadAvisos() {
         Long total = avisoAdminService.cantidadAvisos();
         return ResponseEntity.ok().body(total);
+    }
+
+    @DeleteMapping("/reportado/{id}")
+    public ResponseEntity<String> eliminarReportado(@PathVariable Long id) {
+        return ResponseEntity.ok(reporteAvisoService.eliminarReportado(id));
     }
 
 }

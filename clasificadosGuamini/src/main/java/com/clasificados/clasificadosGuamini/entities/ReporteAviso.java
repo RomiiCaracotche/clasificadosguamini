@@ -26,7 +26,7 @@ public class ReporteAviso {
     @Column(nullable = false)
     private LocalDateTime fechaReporte;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "aviso_id", nullable = false)
     private Aviso aviso;
 

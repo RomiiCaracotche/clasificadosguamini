@@ -54,7 +54,6 @@ public class UsuarioService {
         Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No se encontro el Usuario con id: " + id));
         validarCamposUnicosAlModificar(dtoModificado, usuario);
         usuarioMapper.updateEntityFromDto(dtoModificado, usuario);
-        /* Usuario usuarioGuardado = usuarioRepository.save(usuarioExistente); */
         return usuarioMapper.toDto(usuario);
     }
 
@@ -76,7 +75,6 @@ public class UsuarioService {
             throw new BadRequestException("No podes agregar a favoritos un aviso tuyo");
         }
         usuario.agregarFavorito(aviso);
-        /* usuarioRepository.save(usuario); */
     }
 
     @Transactional
@@ -84,7 +82,6 @@ public class UsuarioService {
         Usuario usuario = usuarioRepository.findByNombreUsuario(nombreUsuarioActual).orElseThrow(() -> new ResourceNotFoundException("No se encontro el usuario"));
         Aviso aviso = avisoRepository.findById(idAviso).orElseThrow(() -> new ResourceNotFoundException("No se encontro el aviso con id: " + idAviso));
         usuario.quitarFavorito(aviso);
-        /* usuarioRepository.save(usuario); */
     }
 
     @Transactional(readOnly = true)

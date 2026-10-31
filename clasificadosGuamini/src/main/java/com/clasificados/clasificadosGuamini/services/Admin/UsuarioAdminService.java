@@ -41,7 +41,7 @@ public class UsuarioAdminService {
 
     public List<AvisoResponseDto> AvisosPorUsuario(Long idUsuario) {
         Usuario usuario = usuarioRepository.findById(idUsuario).orElseThrow(() -> new ResourceNotFoundException("No se encontro el Usuario con id: " + idUsuario));
-        return usuario.getAvisos().stream().map(aviso -> avisoMapper.toResponseDto(aviso)).toList();
+        return avisoMapper.toResponseDtoList(usuario.getAvisos());
     }
 
     @Transactional

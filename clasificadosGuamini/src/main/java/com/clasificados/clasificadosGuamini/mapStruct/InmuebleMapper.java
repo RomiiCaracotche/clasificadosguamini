@@ -1,5 +1,6 @@
 package com.clasificados.clasificadosGuamini.mapStruct;
 
+import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -29,5 +30,7 @@ public interface InmuebleMapper {
     @Mapping(target = "estado", ignore = true)
     @Mapping(target = "anunciante", ignore = true)
     void updateEntityFromDto(InmuebleRequestDto dto, @MappingTarget Inmueble entity);
+
+    List<InmuebleResponseDto> toResponseDtoList(List<Inmueble> inmuebles);
     
 } 

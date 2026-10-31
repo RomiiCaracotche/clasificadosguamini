@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import com.clasificados.clasificadosGuamini.enums.EstadoAviso;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -65,11 +67,12 @@ public abstract class Aviso {
     @ElementCollection
     @CollectionTable(name = "aviso_imagenes", joinColumns = @JoinColumn(name = "aviso_id"))
     @Column(name = "url_imagen", nullable = false)
+    @JsonIgnore
     private List<String> imagenes = new ArrayList<>();
 
     @PrePersist
     public void prePersist() {
-        this.estado = EstadoAviso.PENDIENTE;
+        this.estado = EstadoAviso.APROBADO;
         this.fechaCreacion = LocalDateTime.now();
         this.fechaExpiracion = LocalDateTime.now().plusDays(30);  
     }

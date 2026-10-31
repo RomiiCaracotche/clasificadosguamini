@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -70,6 +73,7 @@ public class Usuario {
     private Boolean activo;
 
     @ManyToMany(cascade ={CascadeType.PERSIST, CascadeType.MERGE})
+    @JsonIgnore
     @JoinTable(
         name="avisos_favoritos",
         joinColumns=@JoinColumn(name="usuario_id"),
@@ -78,6 +82,7 @@ public class Usuario {
     private Set<Aviso> favoritos = new HashSet<>();
 
     @OneToMany (mappedBy = "anunciante", orphanRemoval = true)
+    @JsonIgnore
     private List<Aviso> avisos = new ArrayList<>();
 
     @Column(nullable = false)

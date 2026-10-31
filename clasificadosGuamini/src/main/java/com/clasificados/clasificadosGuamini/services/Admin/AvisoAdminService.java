@@ -1,7 +1,6 @@
 package com.clasificados.clasificadosGuamini.services.Admin;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -28,22 +27,29 @@ public class AvisoAdminService {
     private final EmpleoMapper empleoMapper;
     private final CompraVentaMapper compraVentaMapper;
 
-    @Transactional(readOnly = true)
+    public List<AvisoResponseDto> listarAvisos() {
+        List<Aviso> avisos = avisoRepository.findAll();
+        return avisos.stream().map(this::mapearInstancia).toList();
+    }
+
     public List<AvisoResponseDto> listarPendientes() {
         List<Aviso> avisosPendientes = avisoRepository.findByEstado(EstadoAviso.PENDIENTE);
-        return avisosPendientes.stream().map(this::mapearInstancia).collect(Collectors.toList());
+        return avisosPendientes.stream().map(this::mapearInstancia).toList();
     }
 
-    @Transactional(readOnly = true)
-    public List<AvisoResponseDto> listarAprobados() {
-        List<Aviso> avisosAprobados = avisoRepository.findByEstado(EstadoAviso.APROBADO);
-        return avisosAprobados.stream().map(this::mapearInstancia).collect(Collectors.toList());
+    public List<AvisoResponseDto> listarEnRevision() {
+        List<Aviso> avisosEnRevision = avisoRepository.findByEstado(EstadoAviso.EN_REVISION);
+        return avisosEnRevision.stream().map(this::mapearInstancia).toList();
     }
 
-    @Transactional(readOnly = true)
+    public List<AvisoResponseDto> listarReportados() {
+        List<Aviso> avisosEnRevision = avisoRepository.findByEstado(EstadoAviso.EN_REVISION);
+        return avisosEnRevision.stream().map(this::mapearInstancia).toList();
+    }
+
     public List<AvisoResponseDto> listarRechazados() {
         List<Aviso> avisosRechazados = avisoRepository.findByEstado(EstadoAviso.RECHAZADO);
-        return avisosRechazados.stream().map(this::mapearInstancia).collect(Collectors.toList());
+        return avisosRechazados.stream().map(this::mapearInstancia).toList();
     }
 
     private AvisoResponseDto mapearInstancia(Aviso aviso) {
@@ -75,5 +81,6 @@ public class AvisoAdminService {
     public long cantidadAvisos() {
         return avisoRepository.count();
     }
+
 
 }

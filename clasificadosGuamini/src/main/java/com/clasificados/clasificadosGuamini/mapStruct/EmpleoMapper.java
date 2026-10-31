@@ -1,5 +1,6 @@
 package com.clasificados.clasificadosGuamini.mapStruct;
 
+import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -32,5 +33,7 @@ public interface EmpleoMapper {
     @Mapping(target = "estado", ignore = true)
     @Mapping(target = "anunciante", ignore = true)
     void updateEntityFromDto(EmpleoRequestDto dto, @MappingTarget Empleo entity);
+
+    List<EmpleoResponseDto> toResponseDtoList(List<Empleo> empleos);
 
 }

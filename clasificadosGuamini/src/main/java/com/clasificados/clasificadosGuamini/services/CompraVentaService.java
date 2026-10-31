@@ -2,7 +2,6 @@ package com.clasificados.clasificadosGuamini.services;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +19,6 @@ import com.clasificados.clasificadosGuamini.utils.FileStorageUtils;
 import com.clasificados.clasificadosGuamini.utils.SecurityUtils;
 import java.io.IOException;
 import java.time.LocalDateTime;
-
 import lombok.RequiredArgsConstructor;
 
 @Service 
@@ -38,13 +36,13 @@ public class CompraVentaService {
     public List<CompraVentaResponseDto> listarCompraVentasActivas() {
         LocalDateTime ahora = LocalDateTime.now();
         List<CompraVenta> listaCompraVenta = compraVentaRepository.findAllActivos(EstadoAviso.APROBADO, ahora);
-        return listaCompraVenta.stream().map(e -> compraVentaMapper.toDto(e)).toList();
+        return compraVentaMapper.toResponseDtoList(listaCompraVenta);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     public List<CompraVentaResponseDto> listarCompraVentas() {
         List<CompraVenta> listaCompraVenta = compraVentaRepository.findAll();
-        return listaCompraVenta.stream().map(e -> compraVentaMapper.toDto(e)).toList();
+        return compraVentaMapper.toResponseDtoList(listaCompraVenta);
     }
 
     public CompraVentaResponseDto mostrarCompraVenta(Long id) {
@@ -81,7 +79,6 @@ public class CompraVentaService {
         securityUtils.verificarPropietarioOAdmin(nombreUsuarioActual, id);
         CompraVenta compraventa = compraVentaRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("No se encontró la compraventa con id: " + id));
         compraVentaMapper.updateEntityFromDto(dtoModificado, compraventa);
-        /* CompraVenta compraVentaEntityGuardada = compraVentaRepository.save(compraventa); */
         return compraVentaMapper.toDto(compraventa);
     }
 

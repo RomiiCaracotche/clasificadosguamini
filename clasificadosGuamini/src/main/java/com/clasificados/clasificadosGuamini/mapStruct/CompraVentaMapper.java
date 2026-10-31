@@ -1,5 +1,6 @@
 package com.clasificados.clasificadosGuamini.mapStruct;
 
+import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
@@ -29,5 +30,7 @@ public interface CompraVentaMapper {
     @Mapping(target = "estado", ignore = true)
     @Mapping(target = "anunciante", ignore = true)
     void updateEntityFromDto(CompraVentaRequestDto dto, @MappingTarget CompraVenta entity);
+
+    List<CompraVentaResponseDto> toResponseDtoList(List<CompraVenta> avisos);
 
 }
