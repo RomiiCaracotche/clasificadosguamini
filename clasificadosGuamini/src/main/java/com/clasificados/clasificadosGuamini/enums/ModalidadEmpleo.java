@@ -1,6 +1,6 @@
 package com.clasificados.clasificadosGuamini.enums;
 
-public enum TipoEmpleo {
+public enum ModalidadEmpleo {
     BUSCO_EMPLEO, 
     OFREZCO_EMPLEO
 }

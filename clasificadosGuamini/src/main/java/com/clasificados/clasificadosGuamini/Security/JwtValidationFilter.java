@@ -1,11 +1,13 @@
 package com.clasificados.clasificadosGuamini.security;
 
-import static com.clasificados.clasificadosGuamini.security.TokenJwtConfig.*;
-import java.io.IOException;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import tools.jackson.databind.ObjectMapper;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,19 +15,20 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import tools.jackson.databind.ObjectMapper;
+import static com.clasificados.clasificadosGuamini.security.TokenJwtConfig.*;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class JwtValidationFilter extends BasicAuthenticationFilter {
 
-    public JwtValidationFilter(AuthenticationManager authenticationManager) {
+    private final JwtService jwtService; // <-- Inyectamos el servicio
+
+    public JwtValidationFilter(AuthenticationManager authenticationManager, JwtService jwtService) {
         super(authenticationManager);
+        this.jwtService = jwtService;
     }
 
     @Override
@@ -41,25 +44,27 @@ public class JwtValidationFilter extends BasicAuthenticationFilter {
         String token = header.replace(PREFIX_TOKEN, "").trim();
 
         try {
-            Claims claims = Jwts.parser().verifyWith(SECRET_KEY).build().parseSignedClaims(token).getPayload();
+            // Validamos y extraemos usando el JwtService
+            if (!jwtService.isTokenValid(token)) {
+                throw new JwtException("Token inválido o expirado");
+            }
+
+            Claims claims = jwtService.extractAllClaims(token);
             String username = claims.getSubject();
 
             @SuppressWarnings("unchecked")
-            // Suponiendo que tus authorities están en los claims como una lista de strings
             List<String> roles = claims.get("authorities", List.class);
 
-            // Mapearlas directamente sin Jackson
             Collection<? extends GrantedAuthority> authoritiesList = roles.stream()
                     .map(SimpleGrantedAuthority::new)
                     .toList();
 
-            // Crear el token de autenticación
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                     username,
                     null,
                     authoritiesList);
+            
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-
             chain.doFilter(request, response);
 
         } catch (JwtException e) {

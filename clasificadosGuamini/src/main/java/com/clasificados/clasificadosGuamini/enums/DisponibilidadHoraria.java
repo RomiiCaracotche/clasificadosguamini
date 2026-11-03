@@ -9,5 +9,6 @@ public enum DisponibilidadHoraria {
     TARDE, 
     NOCHE,        
     POR_HORA,          
-    CONVENIR 
+    A_CONVENIR,
+    OTRO 
 }

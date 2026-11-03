@@ -12,7 +12,7 @@ import com.clasificados.clasificadosGuamini.dtos.response.EmpleoResponseDto;
 import com.clasificados.clasificadosGuamini.entities.Empleo;
 import com.clasificados.clasificadosGuamini.entities.Usuario;
 import com.clasificados.clasificadosGuamini.enums.EstadoAviso;
-import com.clasificados.clasificadosGuamini.enums.TipoEmpleo;
+import com.clasificados.clasificadosGuamini.enums.ModalidadEmpleo;
 import com.clasificados.clasificadosGuamini.mapStruct.EmpleoMapper;
 import com.clasificados.clasificadosGuamini.repositories.EmpleoRepository;
 import com.clasificados.clasificadosGuamini.repositories.UsuarioRepository;
@@ -52,7 +52,7 @@ public class EmpleoService {
         Empleo empleo = empleoMapper.toEntity(dto, usuario);
         empleo.setAnunciante(usuario);
 
-        String imagenPorDefecto = TipoEmpleo.BUSCO_EMPLEO.equals(empleo.getTipoEmpleo())
+        String imagenPorDefecto = ModalidadEmpleo.BUSCO_EMPLEO.equals(empleo.getModalidadEmpleo())
         ? "/uploads/defaults/busco_empleo.jpg" 
         : "/uploads/defaults/oferta_empleo.jpg";
 

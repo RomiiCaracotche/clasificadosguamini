@@ -11,6 +11,6 @@ import com.clasificados.clasificadosGuamini.enums.EstadoAviso;
 public interface CompraVentaRepository extends JpaRepository<CompraVenta,Long>{
 
     @Query("SELECT c FROM CompraVenta c WHERE c.estado = :estado AND c.fechaExpiracion > :fecha")
-    List<CompraVenta> findAllActivos(@Param("estado") EstadoAviso estado, @Param("estado") LocalDateTime fecha);
+    List<CompraVenta> findAllActivos(@Param("estado") EstadoAviso estado, @Param("fecha") LocalDateTime fecha);
 
 }

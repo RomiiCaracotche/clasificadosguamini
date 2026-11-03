@@ -1,7 +1,7 @@
 package com.clasificados.clasificadosGuamini.dtos.response;
 
 import com.clasificados.clasificadosGuamini.enums.DisponibilidadHoraria;
-import com.clasificados.clasificadosGuamini.enums.TipoEmpleo;
+import com.clasificados.clasificadosGuamini.enums.ModalidadEmpleo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.EqualsAndHashCode;
@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class EmpleoResponseDto extends AvisoResponseDto {
 
-    private TipoEmpleo tipoEmpleo;
+    private ModalidadEmpleo modalidadEmpleo;
     
     private String rubro; 
 

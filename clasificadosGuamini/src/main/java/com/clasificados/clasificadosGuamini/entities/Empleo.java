@@ -1,7 +1,7 @@
 package com.clasificados.clasificadosGuamini.entities;
 
 import com.clasificados.clasificadosGuamini.enums.DisponibilidadHoraria;
-import com.clasificados.clasificadosGuamini.enums.TipoEmpleo;
+import com.clasificados.clasificadosGuamini.enums.ModalidadEmpleo;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -22,7 +22,7 @@ public class Empleo extends Aviso {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private TipoEmpleo tipoEmpleo;
+    private ModalidadEmpleo modalidadEmpleo;
     
     @Column(nullable = false)
     private String rubro; 

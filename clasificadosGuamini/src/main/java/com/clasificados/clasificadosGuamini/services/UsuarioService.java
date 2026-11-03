@@ -50,8 +50,8 @@ public class UsuarioService {
     }
 
     @Transactional
-    public UsuarioResponseDto modificarUsuario(Long id, UsuarioRequestDto dtoModificado){
-        Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No se encontro el Usuario con id: " + id));
+    public UsuarioResponseDto modificarUsuario(UsuarioRequestDto dtoModificado, String nombreUsuario){
+        Usuario usuario = usuarioRepository.findByNombreUsuario(nombreUsuario).orElseThrow(() -> new ResourceNotFoundException("No se encontro el usuario"));
         validarCamposUnicosAlModificar(dtoModificado, usuario);
         usuarioMapper.updateEntityFromDto(dtoModificado, usuario);
         return usuarioMapper.toDto(usuario);
@@ -90,6 +90,18 @@ public class UsuarioService {
         return usuario.getFavoritos().stream().map(aviso -> avisoMapper.toResponseDto(aviso)).collect(Collectors.toSet());
     }
 
+    @Transactional(readOnly = true)
+    public AvisoResponseDto mostrarFavorito(Long idAviso, String nombreUsuarioActual) {
+        Usuario usuario = usuarioRepository.findByNombreUsuarioWithFavoritos(nombreUsuarioActual).orElseThrow(() -> new ResourceNotFoundException("No se encontro el usuario"));
+       
+        //Buscamos el aviso directamente dentro de los favoritos del usuario
+        Aviso aviso = usuario.getFavoritos().stream()
+            .filter(a -> a.getId().equals(idAviso))
+            .findFirst()
+            .orElseThrow(() -> new ResourceNotFoundException("El aviso con id " + idAviso + " no está en tus favoritos"));
+        
+        return avisoMapper.toResponseDto(aviso);
+    }
 
     // METODOS PRIVADOS
 
@@ -109,26 +121,19 @@ public class UsuarioService {
     }
 
     private void validarCamposUnicosAlModificar(UsuarioRequestDto dtoModificado, Usuario usuarioExistente) {
+        Long id = usuarioExistente.getId();
 
-         if (!dtoModificado.getDni().equals(usuarioExistente.getDni())) {
-            if (usuarioRepository.existsByDni(dtoModificado.getDni())) {
-                throw new IllegalArgumentException("El dni ya esta registrado por otro usuario");
-            }
+        if (usuarioRepository.existsByDniAndIdNot(dtoModificado.getDni(), id)) {
+            throw new IllegalArgumentException("El dni ya esta registrado por otro usuario");
         }
-        if (!dtoModificado.getCelular().equals(usuarioExistente.getCelular())) {
-            if (usuarioRepository.existsByCelular(dtoModificado.getCelular())) {
-                throw new IllegalArgumentException("El celular ya esta registrado por otro usuario");
-            }
+        if (usuarioRepository.existsByCelularAndIdNot(dtoModificado.getCelular(), id)) {
+            throw new IllegalArgumentException("El celular ya esta registrado por otro usuario");
         }
-        if (!dtoModificado.getNombreUsuario().equals(usuarioExistente.getNombreUsuario())) {
-            if (usuarioRepository.existsByNombreUsuario(dtoModificado.getNombreUsuario())) {
-                throw new IllegalArgumentException("El nombre de usuario ya esta en uso");
-            }
+        if (usuarioRepository.existsByNombreUsuarioAndIdNot(dtoModificado.getNombreUsuario(), id)) {
+            throw new IllegalArgumentException("El nombre de usuario ya esta en uso");
         }
-        if (!dtoModificado.getEmail().equals(usuarioExistente.getEmail())) {
-            if (usuarioRepository.existsByEmail(dtoModificado.getEmail())) {
-                throw new IllegalArgumentException("El email ya esta registrado");
-            }
+        if (usuarioRepository.existsByEmailAndIdNot(dtoModificado.getEmail(), id)) {
+            throw new IllegalArgumentException("El email ya esta registrado");
         }
     }
 

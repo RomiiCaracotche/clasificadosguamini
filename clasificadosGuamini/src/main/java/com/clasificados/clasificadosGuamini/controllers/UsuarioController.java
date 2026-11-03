@@ -51,9 +51,9 @@ public class UsuarioController {
         return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.crearUsuario(dto));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<UsuarioResponseDto> modificarUsuario(@PathVariable Long id, @Valid @RequestBody UsuarioRequestDto dto) {
-        return ResponseEntity.ok(usuarioService.modificarUsuario(id, dto));
+    @PutMapping
+    public ResponseEntity<UsuarioResponseDto> modificarUsuario(@Valid @RequestBody UsuarioRequestDto dto, Principal principal) {
+        return ResponseEntity.ok(usuarioService.modificarUsuario(dto, principal.getName()));
     }
 
     @DeleteMapping("/{id}")
@@ -79,8 +79,12 @@ public class UsuarioController {
 
     @GetMapping("/favoritos")
     public ResponseEntity<Set<AvisoResponseDto>> obtenerFavoritos(Principal principal) {
-        Set<AvisoResponseDto> favoritos = usuarioService.obtenerFavoritos(principal.getName());
-        return ResponseEntity.ok(favoritos);
+        return ResponseEntity.ok(usuarioService.obtenerFavoritos(principal.getName()));
+    }
+
+    @GetMapping("/favoritos/{idAviso}")
+    public ResponseEntity<AvisoResponseDto> mostrarFavorito(@PathVariable Long idAviso, Principal principal) {
+        return ResponseEntity.ok(usuarioService.mostrarFavorito(idAviso, principal.getName()));
     }
 
     

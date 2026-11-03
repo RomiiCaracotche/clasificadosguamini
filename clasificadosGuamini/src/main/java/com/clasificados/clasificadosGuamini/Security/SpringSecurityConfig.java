@@ -1,6 +1,5 @@
 package com.clasificados.clasificadosGuamini.security;
 
-import java.util.List;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,16 +19,19 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(securedEnabled = true)
 public class SpringSecurityConfig {
 
-    private AuthenticationConfiguration authenticationConfiguration;
+    private final AuthenticationConfiguration authenticationConfiguration;
+    private final JwtService jwtService;
 
-    public SpringSecurityConfig(AuthenticationConfiguration authenticationConfiguration) {
+    public SpringSecurityConfig(AuthenticationConfiguration authenticationConfiguration, JwtService jwtService) {
         this.authenticationConfiguration = authenticationConfiguration;
+        this.jwtService = jwtService;
     }
 
     @Bean
@@ -40,14 +42,11 @@ public class SpringSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests(auth -> auth
-                .requestMatchers(HttpMethod.POST, "/api/login", "/api/usuarios", "/api/compraventas", "/api/inmuebles", "/api/empleos", "/api/usuarios/{idUsuario}/favoritos/{idAviso}").permitAll()
-                .requestMatchers(HttpMethod.PUT, "/api/usuarios/{id}", "/api/compraventas/{id}", "/api/inmuebles/{id}", "/api/empleos/{id}").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/compraventas", "/api/compraventas/{id}", "/api/inmuebles", "/api/inmuebles/{id}", "/api/empleos", "/api/empleos/{id}", "/api/usuarios/{idUsuario}/favoritos").permitAll()
-                .requestMatchers(HttpMethod.DELETE, "/api/compraventas/{id}", "/api/inmuebles/{id}", "/api/empleos/{id}", "/api/usuarios/{idUsuario}/favoritos/{idAviso}").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/login", "/api/usuarios").permitAll()
                 .anyRequest()
                 .authenticated())
-                .addFilterBefore(new JwtValidationFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class)
-                .addFilter(new JwtAuthenticationFilter(authenticationManager()))
+                .addFilterBefore(new JwtValidationFilter(authenticationManager(), jwtService), UsernamePasswordAuthenticationFilter.class)
+                .addFilter(new JwtAuthenticationFilter(authenticationManager(), jwtService))
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(config -> config.disable())
                 .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -55,7 +54,7 @@ public class SpringSecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager() {
+    public AuthenticationManager authenticationManager() throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
@@ -77,5 +76,4 @@ public class SpringSecurityConfig {
         corsBean.setOrder(Ordered.HIGHEST_PRECEDENCE);
         return corsBean;
     }
-
 }
