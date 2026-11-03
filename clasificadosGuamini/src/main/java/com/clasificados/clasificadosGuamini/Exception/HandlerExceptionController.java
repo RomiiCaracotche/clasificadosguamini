@@ -2,6 +2,7 @@ package com.clasificados.clasificadosGuamini.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.clasificados.clasificadosGuamini.exception.dtos.ErrorDto;
@@ -36,6 +37,13 @@ public class HandlerExceptionController {
  
 
     //PERSONALIZADAS
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorDto> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        String mensaje = ex.getBindingResult().getFieldError().getDefaultMessage();
+        ErrorDto error = new ErrorDto(mensaje, "400");
+        return ResponseEntity.status(400).body(error);
+    }
 
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<ErrorDto> badRequestException(BadRequestException ex) {

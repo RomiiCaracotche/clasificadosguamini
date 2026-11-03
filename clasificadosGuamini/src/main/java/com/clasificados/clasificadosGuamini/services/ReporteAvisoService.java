@@ -12,6 +12,7 @@ import com.clasificados.clasificadosGuamini.mapStruct.ReporteAvisoMapper;
 import com.clasificados.clasificadosGuamini.repositories.AvisoRepository;
 import com.clasificados.clasificadosGuamini.repositories.ReporteAvisoRepository;
 import com.clasificados.clasificadosGuamini.repositories.UsuarioRepository;
+import com.clasificados.clasificadosGuamini.utils.SecurityUtils;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import java.util.List;
@@ -26,10 +27,11 @@ public class ReporteAvisoService {
     private final UsuarioRepository usuarioRepository;
     private final ReporteAvisoRepository reporteAvisoRepository;
     private final ReporteAvisoMapper reporteAvisoMapper;
+    private final SecurityUtils securityUtils;
 
     @Transactional
-    public void reportarAviso(Long id, ReporteAvisoRequestDto dto, String nombreUsuario) {
-        Usuario usuario = usuarioRepository.findByNombreUsuario(nombreUsuario).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+    public void reportarAviso(Long id, ReporteAvisoRequestDto dto) {
+        Usuario usuario = securityUtils.obtenerUsuarioActual();
         Aviso aviso =  avisoRepository.findById(id).orElseThrow(() -> new RuntimeException("Aviso no encontrado"));
 
         if (aviso.getAnunciante().getId().equals(usuario.getId())) {

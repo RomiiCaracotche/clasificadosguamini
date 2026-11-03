@@ -22,7 +22,7 @@ public class UsuarioRequestDto {
     private String dni;
 
     @NotBlank(message = "El nombre de usuario es obligatorio")
-    @Size(min=5, max=12)
+    @Size(min=4, max=12, message = "El nombre de usuario debe tener entre 4 y 12 caracteres")
     private String nombreUsuario;
 
     @NotBlank(message = "El email es obligatorio")
@@ -30,7 +30,7 @@ public class UsuarioRequestDto {
     private String email;
 
     @NotBlank(message = "La contraseña es obligatoria")
-    @Size(min=8, max=12)
+    @Size(min=8, max=12, message = "La contraseña debe tener entre 8 y 12 caracteres")
     private String password;
 
     @NotBlank(message = "El numero de celular es obligatorio")

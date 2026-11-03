@@ -1,6 +1,5 @@
 package com.clasificados.clasificadosGuamini.controllers;
 
-import java.security.Principal;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,11 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.clasificados.clasificadosGuamini.dtos.request.InmuebleRequestDto;
 import com.clasificados.clasificadosGuamini.dtos.response.InmuebleResponseDto;
 import com.clasificados.clasificadosGuamini.services.InmuebleService;
-
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -49,20 +46,20 @@ public class InmuebleController {
     }
 
     @PostMapping 
-    public ResponseEntity<InmuebleResponseDto> crearInmueble(@Valid @ModelAttribute InmuebleRequestDto inmueble, @RequestParam("archivos") List<MultipartFile> archivos, Principal principal){
-        InmuebleResponseDto dto = inmuebleService.crearInmueble(principal.getName(), inmueble, archivos);
+    public ResponseEntity<InmuebleResponseDto> crearInmueble(@Valid @ModelAttribute InmuebleRequestDto inmueble, @RequestParam("archivos") List<MultipartFile> archivos){
+        InmuebleResponseDto dto = inmuebleService.crearInmueble(inmueble, archivos);
         return ResponseEntity.status(HttpStatus.CREATED).body(dto);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<InmuebleResponseDto> modificarInmueble(@PathVariable Long id, @RequestBody InmuebleRequestDto inmueble, Principal principal) {
-        InmuebleResponseDto dto = inmuebleService.modificarInmueble(principal.getName(), id, inmueble);
+    public ResponseEntity<InmuebleResponseDto> modificarInmueble(@PathVariable Long id, @RequestBody InmuebleRequestDto inmueble) {
+        InmuebleResponseDto dto = inmuebleService.modificarInmueble(id, inmueble);
         return ResponseEntity.ok().body(dto);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> eliminarInmueble(@PathVariable Long id, Principal principal) {
-        String inmueble = inmuebleService.eliminarInmueble(principal.getName(), id);
+    public ResponseEntity<String> eliminarInmueble(@PathVariable Long id) {
+        String inmueble = inmuebleService.eliminarInmueble(id);
         return ResponseEntity.ok().body(inmueble);
     }
 }

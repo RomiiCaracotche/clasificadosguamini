@@ -1,5 +1,6 @@
 package com.clasificados.clasificadosGuamini.utils;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import com.clasificados.clasificadosGuamini.entities.Aviso;
 import com.clasificados.clasificadosGuamini.entities.Usuario;
@@ -18,9 +19,15 @@ public class SecurityUtils {
     private final UsuarioRepository usuarioRepository;
     private final AvisoRepository avisoRepository;
 
+    public Usuario obtenerUsuarioActual() {
+        String idStr = SecurityContextHolder.getContext().getAuthentication().getName();
+        Long idUsuario = Long.parseLong(idStr);   
+        Usuario usuario = usuarioRepository.findById(idUsuario).orElseThrow(() -> new ResourceNotFoundException("No se encontró el usuario"));
+        return usuario;
+    }
 
-    public void verificarPropietarioOAdmin(String nombreUsuarioActual, Long id) {
-        Usuario usuario = usuarioRepository.findByNombreUsuario(nombreUsuarioActual).orElseThrow(() -> new ResourceNotFoundException("No se encontró el usuario con el id: " + id));
+    public void verificarPropietarioOAdmin(Long idUsuarioActual, Long id) {
+        Usuario usuario = usuarioRepository.findById(idUsuarioActual).orElseThrow(() -> new ResourceNotFoundException("No se encontró el usuario con el id: " + id));
         Aviso aviso = avisoRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("No se encontró la compraventa con id: " + id));
         
         boolean esAnunciante = aviso.getAnunciante().getId().equals(usuario.getId());

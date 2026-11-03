@@ -3,6 +3,9 @@ package com.clasificados.clasificadosGuamini.services;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +21,7 @@ import com.clasificados.clasificadosGuamini.mapStruct.AvisoMapper;
 import com.clasificados.clasificadosGuamini.mapStruct.UsuarioMapper;
 import com.clasificados.clasificadosGuamini.repositories.AvisoRepository;
 import com.clasificados.clasificadosGuamini.repositories.UsuarioRepository;
+import com.clasificados.clasificadosGuamini.utils.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -30,6 +34,7 @@ public class UsuarioService {
     private final PasswordEncoder passwordEncoder;
     private final UsuarioMapper usuarioMapper;
     private final AvisoMapper avisoMapper;
+    private final SecurityUtils securityUtils;
 
     public List<UsuarioResponseDto> listarUsuarios() {
         List<Usuario> Usuarios = usuarioRepository.findAll();
@@ -49,13 +54,36 @@ public class UsuarioService {
         return usuarioMapper.toDto(usuarioRepository.save(usuario));
     }
 
-    @Transactional
-    public UsuarioResponseDto modificarUsuario(UsuarioRequestDto dtoModificado, String nombreUsuario){
-        Usuario usuario = usuarioRepository.findByNombreUsuario(nombreUsuario).orElseThrow(() -> new ResourceNotFoundException("No se encontro el usuario"));
-        validarCamposUnicosAlModificar(dtoModificado, usuario);
-        usuarioMapper.updateEntityFromDto(dtoModificado, usuario);
-        return usuarioMapper.toDto(usuario);
+@Transactional
+public UsuarioResponseDto modificarUsuario(UsuarioRequestDto dtoModificado) {
+    // 1. Buscamos al usuario actual usando tu nuevo componente centralizado
+    Usuario usuario = securityUtils.obtenerUsuarioActual();
+
+    // 2. Validaciones y actualización de datos
+    validarCamposUnicosAlModificar(dtoModificado, usuario);
+    
+    if (dtoModificado.getPassword() != null && !dtoModificado.getPassword().isEmpty()) {
+        usuario.setPassword(passwordEncoder.encode(dtoModificado.getPassword()));
     }
+    
+    usuarioMapper.updateEntityFromDto(dtoModificado, usuario);
+
+    Usuario usuarioActualizado = usuarioRepository.save(usuario);
+
+    // 3. ACTUALIZAR EL SECURITY CONTEXT (Opcional en Stateless, pero si lo dejas, hazlo con el ID)
+    Authentication oldAuth = SecurityContextHolder.getContext().getAuthentication();
+    
+    UsernamePasswordAuthenticationToken newAuth = new UsernamePasswordAuthenticationToken(
+            usuarioActualizado.getId().toString(), // <--- Debe ser el ID en String, no el nombre de usuario
+            oldAuth.getCredentials(), 
+            oldAuth.getAuthorities()
+    );
+    newAuth.setDetails(oldAuth.getDetails());
+    
+    SecurityContextHolder.getContext().setAuthentication(newAuth);
+
+    return usuarioMapper.toDto(usuarioActualizado);
+}
 
     @Transactional
     public String eliminarUsuario(Long id){
@@ -68,8 +96,8 @@ public class UsuarioService {
     //FAVORITOS
 
     @Transactional
-    public void agregarFavorito(String nombreUsuarioActual, Long idAviso) {
-        Usuario usuario = usuarioRepository.findByNombreUsuario(nombreUsuarioActual).orElseThrow(() -> new ResourceNotFoundException("No se encontro el usuario"));
+    public void agregarFavorito(Long idAviso) {
+        Usuario usuario = securityUtils.obtenerUsuarioActual();
         Aviso aviso = avisoRepository.findById(idAviso).orElseThrow(() -> new ResourceNotFoundException("No se encontro el aviso con id: " + idAviso));
         if(usuario.getId().equals(aviso.getAnunciante().getId())) {
             throw new BadRequestException("No podes agregar a favoritos un aviso tuyo");
@@ -78,22 +106,22 @@ public class UsuarioService {
     }
 
     @Transactional
-    public void eliminarFavorito(String nombreUsuarioActual, Long idAviso) {
-        Usuario usuario = usuarioRepository.findByNombreUsuario(nombreUsuarioActual).orElseThrow(() -> new ResourceNotFoundException("No se encontro el usuario"));
+    public void eliminarFavorito(Long idAviso) {
+        Usuario usuario = securityUtils.obtenerUsuarioActual();
         Aviso aviso = avisoRepository.findById(idAviso).orElseThrow(() -> new ResourceNotFoundException("No se encontro el aviso con id: " + idAviso));
         usuario.quitarFavorito(aviso);
     }
 
     @Transactional(readOnly = true)
-    public Set<AvisoResponseDto> obtenerFavoritos(String nombreUsuarioActual) {
-        Usuario usuario = usuarioRepository.findByNombreUsuarioWithFavoritos(nombreUsuarioActual).orElseThrow(() -> new ResourceNotFoundException("No se encontro el usuario"));
+    public Set<AvisoResponseDto> obtenerFavoritos() {
+        Usuario usuario = securityUtils.obtenerUsuarioActual();
         return usuario.getFavoritos().stream().map(aviso -> avisoMapper.toResponseDto(aviso)).collect(Collectors.toSet());
     }
 
     @Transactional(readOnly = true)
-    public AvisoResponseDto mostrarFavorito(Long idAviso, String nombreUsuarioActual) {
-        Usuario usuario = usuarioRepository.findByNombreUsuarioWithFavoritos(nombreUsuarioActual).orElseThrow(() -> new ResourceNotFoundException("No se encontro el usuario"));
-       
+    public AvisoResponseDto mostrarFavorito(Long idAviso) {
+        Usuario usuario = securityUtils.obtenerUsuarioActual();  
+
         //Buscamos el aviso directamente dentro de los favoritos del usuario
         Aviso aviso = usuario.getFavoritos().stream()
             .filter(a -> a.getId().equals(idAviso))
@@ -134,7 +162,8 @@ public class UsuarioService {
         }
         if (usuarioRepository.existsByEmailAndIdNot(dtoModificado.getEmail(), id)) {
             throw new IllegalArgumentException("El email ya esta registrado");
-        }
+        }  
+
     }
 
 }

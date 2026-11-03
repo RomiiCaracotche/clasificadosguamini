@@ -1,6 +1,5 @@
 package com.clasificados.clasificadosGuamini.controllers;
 
-import java.security.Principal;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.clasificados.clasificadosGuamini.dtos.request.EmpleoRequestDto;
 import com.clasificados.clasificadosGuamini.dtos.response.EmpleoResponseDto;
 import com.clasificados.clasificadosGuamini.services.EmpleoService;
-
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -45,20 +43,20 @@ public class EmpleoController {
     }
 
     @PostMapping 
-    public ResponseEntity<EmpleoResponseDto> crearEmpleo(@Valid @RequestBody EmpleoRequestDto empleo, Principal principal){
-        EmpleoResponseDto dto = empleoService.crearEmpleo(principal.getName(), empleo);
+    public ResponseEntity<EmpleoResponseDto> crearEmpleo(@Valid @RequestBody EmpleoRequestDto empleo){
+        EmpleoResponseDto dto = empleoService.crearEmpleo(empleo);
         return ResponseEntity.status(HttpStatus.CREATED).body(dto);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<EmpleoResponseDto> modificarEmpleo(@PathVariable Long id, @RequestBody EmpleoRequestDto empleo, Principal principal) {
-        EmpleoResponseDto dto = empleoService.modificarEmpleo(principal.getName(), id, empleo);
+    public ResponseEntity<EmpleoResponseDto> modificarEmpleo(@PathVariable Long id, @RequestBody EmpleoRequestDto empleo) {
+        EmpleoResponseDto dto = empleoService.modificarEmpleo(id, empleo);
         return ResponseEntity.ok().body(dto);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> eliminarEmpleo(@PathVariable Long id, Principal principal) {
-        String empleo = empleoService.eliminarEmpleo(principal.getName(), id);
+    public ResponseEntity<String> eliminarEmpleo(@PathVariable Long id) {
+        String empleo = empleoService.eliminarEmpleo(id);
         return ResponseEntity.ok().body(empleo);
     }
 

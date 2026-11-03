@@ -14,15 +14,16 @@ public class JwtService {
 
     // 1. Generar el token a partir de la autenticación exitosa
     public String generateToken(Authentication authResult) {
+        // Obtenemos el User de Spring Security (cuyo 'username' interno ahora guarda el ID)
         User user = (User) authResult.getPrincipal();
-        String username = user.getUsername();
+        String idUsuario = user.getUsername(); // <--- Almacena el ID en formato String
         
         List<String> roles = authResult.getAuthorities().stream()
                 .map(authority -> authority.getAuthority())
                 .toList();
 
         return Jwts.builder()
-                .subject(username)
+                .subject(idUsuario) // <--- El subject del token ahora es el ID
                 .claim("authorities", roles)
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + 3600000)) // 1 hora

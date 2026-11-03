@@ -1,6 +1,5 @@
 package com.clasificados.clasificadosGuamini.controllers;
 
-import java.security.Principal;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.clasificados.clasificadosGuamini.dtos.request.CompraVentaRequestDto;
 import com.clasificados.clasificadosGuamini.dtos.response.CompraVentaResponseDto;
 import com.clasificados.clasificadosGuamini.services.CompraVentaService;
@@ -21,7 +19,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
-
 
 @RestController 
 @RequestMapping("/api/compraventas")
@@ -49,20 +46,20 @@ public class CompraVentaController {
     }
 
     @PostMapping
-    public ResponseEntity<CompraVentaResponseDto> crearCompraVenta(@Valid @ModelAttribute CompraVentaRequestDto compraventa, @RequestParam("archivos") List<MultipartFile> archivos, Principal principal) {
-        CompraVentaResponseDto dto = compraVentaService.crearCompraVenta(principal.getName(), compraventa, archivos);
+    public ResponseEntity<CompraVentaResponseDto> crearCompraVenta(@Valid @ModelAttribute CompraVentaRequestDto compraventa, @RequestParam("archivos") List<MultipartFile> archivos) {
+        CompraVentaResponseDto dto = compraVentaService.crearCompraVenta(compraventa, archivos);
         return ResponseEntity.status(HttpStatus.CREATED).body(dto);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CompraVentaResponseDto> modificarCompraVenta(@PathVariable Long id, @Valid @RequestBody CompraVentaRequestDto compraventa, Principal principal) {
-        CompraVentaResponseDto dto = compraVentaService.modificarCompraVenta(principal.getName(), id, compraventa);
+    public ResponseEntity<CompraVentaResponseDto> modificarCompraVenta(@PathVariable Long id, @Valid @RequestBody CompraVentaRequestDto compraventa) {
+        CompraVentaResponseDto dto = compraVentaService.modificarCompraVenta(id, compraventa);
         return ResponseEntity.ok(dto);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> eliminarCompraVenta(@PathVariable Long id, Principal principal){
-        String compraventa = compraVentaService.eliminarCompraVenta(principal.getName(), id);
+    public ResponseEntity<String> eliminarCompraVenta(@PathVariable Long id){
+        String compraventa = compraVentaService.eliminarCompraVenta(id);
         return ResponseEntity.ok(compraventa);
     }
     

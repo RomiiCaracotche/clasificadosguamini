@@ -4,13 +4,13 @@ import java.time.LocalDateTime;
 
 public class ErrorDto {
     
-    private String nombre;
+    private String mensaje;
     private String status;
     private LocalDateTime fecha;
 
-    public ErrorDto(String nombre, String status) {
+    public ErrorDto(String mensaje, String status) {
         this.fecha = LocalDateTime.now();
-        this.nombre = nombre;
+        this.mensaje = mensaje;
         this.status = status;
     }
 
@@ -22,12 +22,12 @@ public class ErrorDto {
         this.fecha = fecha;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getMensaje() {
+        return mensaje;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setMensaje(String mensaje) {
+        this.mensaje = mensaje;
     }
 
     public String getStatus() {

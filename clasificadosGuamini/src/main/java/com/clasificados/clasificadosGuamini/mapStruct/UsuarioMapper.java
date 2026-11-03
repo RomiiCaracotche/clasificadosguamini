@@ -28,6 +28,7 @@ public interface UsuarioMapper {
     @Mapping(target = "favoritos", ignore = true)
     @Mapping(target = "avisos", ignore = true)
     @Mapping(target = "admin", ignore = true)
+    @Mapping(target = "password", ignore = true)
     void updateEntityFromDto(UsuarioRequestDto dto, @MappingTarget Usuario entity);
 
     List<UsuarioResponseDto> toResponseDtoList(List<Usuario> usuarios);

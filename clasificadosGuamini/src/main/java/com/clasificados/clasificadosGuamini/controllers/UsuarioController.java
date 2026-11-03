@@ -1,6 +1,5 @@
 package com.clasificados.clasificadosGuamini.controllers;
 
-import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,8 +51,8 @@ public class UsuarioController {
     }
 
     @PutMapping
-    public ResponseEntity<UsuarioResponseDto> modificarUsuario(@Valid @RequestBody UsuarioRequestDto dto, Principal principal) {
-        return ResponseEntity.ok(usuarioService.modificarUsuario(dto, principal.getName()));
+    public ResponseEntity<UsuarioResponseDto> modificarUsuario(@Valid @RequestBody UsuarioRequestDto dto) {
+        return ResponseEntity.ok(usuarioService.modificarUsuario(dto));
     }
 
     @DeleteMapping("/{id}")
@@ -66,25 +65,25 @@ public class UsuarioController {
     //FAVORITOS
 
     @PostMapping("/favoritos/{idAviso}")
-    public ResponseEntity<Void> agregarFavorito(@PathVariable Long idAviso, Principal principal) {
-        usuarioService.agregarFavorito(principal.getName(), idAviso);
+    public ResponseEntity<Void> agregarFavorito(@PathVariable Long idAviso) {
+        usuarioService.agregarFavorito(idAviso);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/favoritos/{idAviso}")
-    public ResponseEntity<Void> eliminarFavorito(@PathVariable Long idAviso, Principal principal) {
-        usuarioService.eliminarFavorito(principal.getName(), idAviso);
+    public ResponseEntity<Void> eliminarFavorito(@PathVariable Long idAviso) {
+        usuarioService.eliminarFavorito(idAviso);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/favoritos")
-    public ResponseEntity<Set<AvisoResponseDto>> obtenerFavoritos(Principal principal) {
-        return ResponseEntity.ok(usuarioService.obtenerFavoritos(principal.getName()));
+    public ResponseEntity<Set<AvisoResponseDto>> obtenerFavoritos() {
+        return ResponseEntity.ok(usuarioService.obtenerFavoritos());
     }
 
     @GetMapping("/favoritos/{idAviso}")
-    public ResponseEntity<AvisoResponseDto> mostrarFavorito(@PathVariable Long idAviso, Principal principal) {
-        return ResponseEntity.ok(usuarioService.mostrarFavorito(idAviso, principal.getName()));
+    public ResponseEntity<AvisoResponseDto> mostrarFavorito(@PathVariable Long idAviso) {
+        return ResponseEntity.ok(usuarioService.mostrarFavorito(idAviso));
     }
 
     

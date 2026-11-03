@@ -15,7 +15,6 @@ import com.clasificados.clasificadosGuamini.enums.EstadoAviso;
 import com.clasificados.clasificadosGuamini.enums.ModalidadEmpleo;
 import com.clasificados.clasificadosGuamini.mapStruct.EmpleoMapper;
 import com.clasificados.clasificadosGuamini.repositories.EmpleoRepository;
-import com.clasificados.clasificadosGuamini.repositories.UsuarioRepository;
 import com.clasificados.clasificadosGuamini.utils.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 
@@ -25,7 +24,6 @@ import lombok.RequiredArgsConstructor;
 public class EmpleoService {
 
     private final EmpleoRepository empleoRepository;
-    private final UsuarioRepository usuarioRepository;
     private final EmpleoMapper empleoMapper;
     private SecurityUtils securityUtils;
 
@@ -47,8 +45,8 @@ public class EmpleoService {
     }
 
     @Transactional 
-    public EmpleoResponseDto crearEmpleo(String nombreUsuarioActual, EmpleoRequestDto dto){
-        Usuario usuario = usuarioRepository.findByNombreUsuario(nombreUsuarioActual).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+    public EmpleoResponseDto crearEmpleo(EmpleoRequestDto dto){
+        Usuario usuario = securityUtils.obtenerUsuarioActual();
         Empleo empleo = empleoMapper.toEntity(dto, usuario);
         empleo.setAnunciante(usuario);
 
@@ -62,8 +60,9 @@ public class EmpleoService {
     }
 
     @Transactional 
-    public EmpleoResponseDto modificarEmpleo(String nombreUsuarioActual, Long id, EmpleoRequestDto dtoModificado) {
-        securityUtils.verificarPropietarioOAdmin(nombreUsuarioActual, id);
+    public EmpleoResponseDto modificarEmpleo(Long id, EmpleoRequestDto dtoModificado) {
+        Usuario usuario = securityUtils.obtenerUsuarioActual();
+        securityUtils.verificarPropietarioOAdmin(usuario.getId(), id);
         Empleo empleo = empleoRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No se encontró el empleo con id: " + id));
         empleoMapper.updateEntityFromDto(dtoModificado, empleo);
         /* Empleo empleoGuardado = empleoRepository.save(empleo); */
@@ -71,11 +70,14 @@ public class EmpleoService {
     }
 
     @Transactional 
-    public String eliminarEmpleo(String nombreUsuarioActual, Long id) {
-        securityUtils.verificarPropietarioOAdmin(nombreUsuarioActual, id);        
+    public String eliminarEmpleo(Long id) {
+        Usuario usuario = securityUtils.obtenerUsuarioActual();
+        securityUtils.verificarPropietarioOAdmin(usuario.getId(), id);        
         Empleo empleo = empleoRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No se encontró el empleo con id: " + id));
         empleoRepository.delete(empleo);
         return "El empleo con id " + id + " se elimino correctamente";
     }
+
+   
 
 }

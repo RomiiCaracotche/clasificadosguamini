@@ -17,7 +17,6 @@ import com.clasificados.clasificadosGuamini.entities.Usuario;
 import com.clasificados.clasificadosGuamini.enums.EstadoAviso;
 import com.clasificados.clasificadosGuamini.mapStruct.InmuebleMapper;
 import com.clasificados.clasificadosGuamini.repositories.InmuebleRepository;
-import com.clasificados.clasificadosGuamini.repositories.UsuarioRepository;
 import com.clasificados.clasificadosGuamini.utils.FileStorageUtils;
 import com.clasificados.clasificadosGuamini.utils.SecurityUtils;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +27,6 @@ import lombok.RequiredArgsConstructor;
 public class InmuebleService {
 
     private final InmuebleRepository inmuebleRepository;
-    private final UsuarioRepository usuarioRepository;
     private final InmuebleMapper inmuebleMapper;
     private SecurityUtils securityUtils;
     private final FileStorageUtils fileStorageUtils;
@@ -51,7 +49,8 @@ public class InmuebleService {
     }
 
     @Transactional 
-    public InmuebleResponseDto crearInmueble(String nombreUsuarioActual, InmuebleRequestDto dto, List<MultipartFile> archivos){
+    public InmuebleResponseDto crearInmueble(InmuebleRequestDto dto, List<MultipartFile> archivos){
+        Usuario usuario = securityUtils.obtenerUsuarioActual();
         List<String> imagenes = new ArrayList<>();
 
         for (MultipartFile archivo : archivos) {
@@ -65,7 +64,6 @@ public class InmuebleService {
             }
         }
 
-        Usuario usuario = usuarioRepository.findByNombreUsuario(nombreUsuarioActual).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
         Inmueble inmueble = inmuebleMapper.toEntity(dto, usuario);
         inmueble.setAnunciante(usuario);
         Inmueble inmuebleGuardado = inmuebleRepository.save(inmueble);
@@ -73,17 +71,18 @@ public class InmuebleService {
     }
 
     @Transactional 
-    public InmuebleResponseDto modificarInmueble(String nombreUsuarioActual, Long id, InmuebleRequestDto dtoModificado) {
-        securityUtils.verificarPropietarioOAdmin(nombreUsuarioActual, id);
+    public InmuebleResponseDto modificarInmueble(Long id, InmuebleRequestDto dtoModificado) {
+        Usuario usuario = securityUtils.obtenerUsuarioActual();
+        securityUtils.verificarPropietarioOAdmin(usuario.getId(), id);
         Inmueble inmueble = inmuebleRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No se encontró el inmueble con id: " + id));
         inmuebleMapper.updateEntityFromDto(dtoModificado, inmueble);
-        /* Inmueble inmuebleGuardado = inmuebleRepository.save(inmueble); */
         return inmuebleMapper.toDto(inmueble);
     }
 
     @Transactional 
-    public String eliminarInmueble(String nombreUsuarioActual, Long id) {
-        securityUtils.verificarPropietarioOAdmin(nombreUsuarioActual, id);
+    public String eliminarInmueble(Long id) {
+        Usuario usuario = securityUtils.obtenerUsuarioActual();
+        securityUtils.verificarPropietarioOAdmin(usuario.getId(), id);
         Inmueble inmueble = inmuebleRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No se encontró el inmueble con id: " + id));
         inmuebleRepository.delete(inmueble);
         return "El inmueble con id " + id + " se elimino correctamente";
