@@ -72,8 +72,7 @@ public class InmuebleService {
 
     @Transactional 
     public InmuebleResponseDto modificarInmueble(Long id, InmuebleRequestDto dtoModificado) {
-        Usuario usuario = securityUtils.obtenerUsuarioActual();
-        securityUtils.verificarPropietarioOAdmin(usuario.getId(), id);
+        securityUtils.verificarPropietarioOAdmin(id);
         Inmueble inmueble = inmuebleRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No se encontró el inmueble con id: " + id));
         inmuebleMapper.updateEntityFromDto(dtoModificado, inmueble);
         return inmuebleMapper.toDto(inmueble);
@@ -81,8 +80,7 @@ public class InmuebleService {
 
     @Transactional 
     public String eliminarInmueble(Long id) {
-        Usuario usuario = securityUtils.obtenerUsuarioActual();
-        securityUtils.verificarPropietarioOAdmin(usuario.getId(), id);
+        securityUtils.verificarPropietarioOAdmin(id);
         Inmueble inmueble = inmuebleRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No se encontró el inmueble con id: " + id));
         inmuebleRepository.delete(inmueble);
         return "El inmueble con id " + id + " se elimino correctamente";

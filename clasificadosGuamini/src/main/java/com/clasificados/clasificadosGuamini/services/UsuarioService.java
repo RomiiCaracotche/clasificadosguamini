@@ -3,12 +3,11 @@ package com.clasificados.clasificadosGuamini.services;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.clasificados.clasificadosGuamini.dtos.request.UsuarioActualizadoRequestDto;
 import com.clasificados.clasificadosGuamini.dtos.request.UsuarioRequestDto;
 import com.clasificados.clasificadosGuamini.dtos.response.AvisoResponseDto;
 import com.clasificados.clasificadosGuamini.dtos.response.UsuarioResponseDto;
@@ -54,36 +53,34 @@ public class UsuarioService {
         return usuarioMapper.toDto(usuarioRepository.save(usuario));
     }
 
-@Transactional
-public UsuarioResponseDto modificarUsuario(UsuarioRequestDto dtoModificado) {
-    // 1. Buscamos al usuario actual usando tu nuevo componente centralizado
-    Usuario usuario = securityUtils.obtenerUsuarioActual();
+    @Transactional
+    public UsuarioResponseDto modificarUsuario(UsuarioActualizadoRequestDto dto) {
+        Usuario usuario = securityUtils.obtenerUsuarioActual();
 
-    // 2. Validaciones y actualización de datos
-    validarCamposUnicosAlModificar(dtoModificado, usuario);
-    
-    if (dtoModificado.getPassword() != null && !dtoModificado.getPassword().isEmpty()) {
-        usuario.setPassword(passwordEncoder.encode(dtoModificado.getPassword()));
+        if (dto.getPasswordNueva() != null && !dto.getPasswordNueva().isBlank()) {
+            if (dto.getPasswordActual() == null || !passwordEncoder.matches(dto.getPasswordActual(), usuario.getPassword())) {
+                throw new BadCredentialsException("La contraseña actual es incorrecta");
+            }
+            usuario.setPassword(passwordEncoder.encode(dto.getPasswordNueva()));
+        }
+
+        if (dto.getCelular() != null && !dto.getCelular().equals(usuario.getCelular())) {
+            if (usuarioRepository.existsByCelularAndIdNot(dto.getCelular(), usuario.getId())) {
+                throw new IllegalArgumentException("El número de celular ya está registrado por otro usuario");
+            }
+        }
+
+        if (dto.getEmail() != null && !dto.getEmail().equalsIgnoreCase(usuario.getEmail())) {
+            if (usuarioRepository.existsByEmailAndIdNot(dto.getEmail(), usuario.getId())) {
+                throw new IllegalArgumentException("El correo electrónico ya está registrado por otro usuario");
+            }
+        }  
+
+        usuarioMapper.updateEntityFromDto(dto, usuario);
+        Usuario usuarioActualizado = usuarioRepository.save(usuario);
+
+        return usuarioMapper.toDto(usuarioActualizado);
     }
-    
-    usuarioMapper.updateEntityFromDto(dtoModificado, usuario);
-
-    Usuario usuarioActualizado = usuarioRepository.save(usuario);
-
-    // 3. ACTUALIZAR EL SECURITY CONTEXT (Opcional en Stateless, pero si lo dejas, hazlo con el ID)
-    Authentication oldAuth = SecurityContextHolder.getContext().getAuthentication();
-    
-    UsernamePasswordAuthenticationToken newAuth = new UsernamePasswordAuthenticationToken(
-            usuarioActualizado.getId().toString(), // <--- Debe ser el ID en String, no el nombre de usuario
-            oldAuth.getCredentials(), 
-            oldAuth.getAuthorities()
-    );
-    newAuth.setDetails(oldAuth.getDetails());
-    
-    SecurityContextHolder.getContext().setAuthentication(newAuth);
-
-    return usuarioMapper.toDto(usuarioActualizado);
-}
 
     @Transactional
     public String eliminarUsuario(Long id){
@@ -148,23 +145,6 @@ public UsuarioResponseDto modificarUsuario(UsuarioRequestDto dtoModificado) {
         }
     }
 
-    private void validarCamposUnicosAlModificar(UsuarioRequestDto dtoModificado, Usuario usuarioExistente) {
-        Long id = usuarioExistente.getId();
-
-        if (usuarioRepository.existsByDniAndIdNot(dtoModificado.getDni(), id)) {
-            throw new IllegalArgumentException("El dni ya esta registrado por otro usuario");
-        }
-        if (usuarioRepository.existsByCelularAndIdNot(dtoModificado.getCelular(), id)) {
-            throw new IllegalArgumentException("El celular ya esta registrado por otro usuario");
-        }
-        if (usuarioRepository.existsByNombreUsuarioAndIdNot(dtoModificado.getNombreUsuario(), id)) {
-            throw new IllegalArgumentException("El nombre de usuario ya esta en uso");
-        }
-        if (usuarioRepository.existsByEmailAndIdNot(dtoModificado.getEmail(), id)) {
-            throw new IllegalArgumentException("El email ya esta registrado");
-        }  
-
-    }
 
 }
 

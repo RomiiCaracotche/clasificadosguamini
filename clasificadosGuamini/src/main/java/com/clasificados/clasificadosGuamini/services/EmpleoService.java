@@ -61,8 +61,7 @@ public class EmpleoService {
 
     @Transactional 
     public EmpleoResponseDto modificarEmpleo(Long id, EmpleoRequestDto dtoModificado) {
-        Usuario usuario = securityUtils.obtenerUsuarioActual();
-        securityUtils.verificarPropietarioOAdmin(usuario.getId(), id);
+        securityUtils.verificarPropietarioOAdmin(id);
         Empleo empleo = empleoRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No se encontró el empleo con id: " + id));
         empleoMapper.updateEntityFromDto(dtoModificado, empleo);
         /* Empleo empleoGuardado = empleoRepository.save(empleo); */
@@ -71,8 +70,7 @@ public class EmpleoService {
 
     @Transactional 
     public String eliminarEmpleo(Long id) {
-        Usuario usuario = securityUtils.obtenerUsuarioActual();
-        securityUtils.verificarPropietarioOAdmin(usuario.getId(), id);        
+        securityUtils.verificarPropietarioOAdmin(id);        
         Empleo empleo = empleoRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No se encontró el empleo con id: " + id));
         empleoRepository.delete(empleo);
         return "El empleo con id " + id + " se elimino correctamente";

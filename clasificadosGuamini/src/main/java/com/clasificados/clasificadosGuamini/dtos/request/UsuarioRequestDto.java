@@ -39,6 +39,4 @@ public class UsuarioRequestDto {
     @NotBlank(message = "La localidad es obligatoria")
     private String localidad;
 
-    private Boolean admin = false;
-
 }

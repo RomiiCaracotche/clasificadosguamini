@@ -74,8 +74,7 @@ public class CompraVentaService {
 
     @Transactional
     public CompraVentaResponseDto modificarCompraVenta(Long id, CompraVentaRequestDto dtoModificado) {
-        Usuario usuario = securityUtils.obtenerUsuarioActual();
-        securityUtils.verificarPropietarioOAdmin(usuario.getId(), id);
+        securityUtils.verificarPropietarioOAdmin(id);
         CompraVenta compraventa = compraVentaRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("No se encontró la compraventa con id: " + id));
         compraVentaMapper.updateEntityFromDto(dtoModificado, compraventa);
         return compraVentaMapper.toDto(compraventa);
@@ -83,8 +82,7 @@ public class CompraVentaService {
 
     @Transactional
     public String eliminarCompraVenta(Long id){
-        Usuario usuario = securityUtils.obtenerUsuarioActual();
-        securityUtils.verificarPropietarioOAdmin(usuario.getId(), id);
+        securityUtils.verificarPropietarioOAdmin(id);
         CompraVenta compraventa = compraVentaRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("No se encontró la compraventa con id: " + id));
         compraVentaRepository.delete(compraventa);
         return "La compraventa con id " + id + " se eliminó correctamente";

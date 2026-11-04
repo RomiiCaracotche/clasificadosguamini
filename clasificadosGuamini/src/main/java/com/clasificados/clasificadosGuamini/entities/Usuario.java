@@ -48,10 +48,10 @@ public class Usuario {
     @Column(nullable = false)
     private String apellido;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true, updatable = false)
     private String dni;
 
-    @Column(name="nombre_usuario", nullable = false, unique = true)
+    @Column(nullable = false, unique = true, updatable = false)
     private String nombreUsuario;
 
     @Column(nullable = false, unique = true)

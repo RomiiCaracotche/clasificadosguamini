@@ -11,6 +11,8 @@ import com.clasificados.clasificadosGuamini.exception.personalizadas.DuplicateRe
 import com.clasificados.clasificadosGuamini.exception.personalizadas.ForbiddenException;
 import com.clasificados.clasificadosGuamini.exception.personalizadas.InternalServerException;
 import com.clasificados.clasificadosGuamini.exception.personalizadas.ResourceNotFoundException;
+
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 
 @RestControllerAdvice 
@@ -50,6 +52,13 @@ public class HandlerExceptionController {
         ErrorDto error = new ErrorDto(ex.getMessage(), "400");
         return ResponseEntity.status(400).body(error);
     }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ErrorDto> badCredentialsException(BadCredentialsException ex) {
+        ErrorDto error = new ErrorDto(ex.getMessage(), "401");
+        return ResponseEntity.status(401).body(error);
+    }
+    
 
     @ExceptionHandler(ForbiddenException.class)
     public ResponseEntity<ErrorDto> accessDeniedException(ForbiddenException ex) {
