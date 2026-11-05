@@ -1,15 +1,14 @@
 package com.clasificados.clasificadosGuamini.mapStruct;
 
 import java.util.List;
-
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.MappingConstants;
-import com.clasificados.clasificadosGuamini.dtos.request.UsuarioActualizadoRequestDto;
-import com.clasificados.clasificadosGuamini.dtos.request.UsuarioRequestDto;
+import com.clasificados.clasificadosGuamini.dtos.request.Usuario.UsuarioActualizadoRequestDto;
+import com.clasificados.clasificadosGuamini.dtos.request.Usuario.UsuarioRequestDto;
 import com.clasificados.clasificadosGuamini.dtos.response.UsuarioResponseDto;
 import com.clasificados.clasificadosGuamini.entities.Usuario;
 

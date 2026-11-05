@@ -20,9 +20,8 @@ public class SecurityUtils {
 
     @Transactional(readOnly = true)
     public Usuario obtenerUsuarioActual() {
-        String idStr = SecurityContextHolder.getContext().getAuthentication().getName();
-        Long idUsuario = Long.parseLong(idStr);    
-        return usuarioRepository.findById(idUsuario).orElseThrow(() -> new ResourceNotFoundException("No se encontró el usuario en el sistema"));
+        String nombreUsuario = SecurityContextHolder.getContext().getAuthentication().getName(); 
+        return usuarioRepository.findByNombreUsuario(nombreUsuario).orElseThrow(() -> new ResourceNotFoundException("No se encontró el usuario en el sistema"));
     }
 
     @Transactional(readOnly = true)
@@ -37,4 +36,5 @@ public class SecurityUtils {
             throw new ForbiddenException("No tienes permiso para modificar este aviso");
         }
     }
+    
 }

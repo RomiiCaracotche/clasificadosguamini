@@ -45,8 +45,7 @@ public class UsuarioAdminController {
     
     @GetMapping("/cantidad")
     public ResponseEntity<Long> cantidadUsuarios() {
-       Long total = usuarioAdminService.cantidadUsuarios();
-        return ResponseEntity.ok().body(total);
+        return ResponseEntity.ok().body(usuarioAdminService.cantidadUsuarios());
     }
 
 }

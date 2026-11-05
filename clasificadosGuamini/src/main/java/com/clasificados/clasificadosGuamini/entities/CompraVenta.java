@@ -36,5 +36,7 @@ public class CompraVenta extends Aviso {
     private String modelo;
 
     private String color;
+
+    
     
 }

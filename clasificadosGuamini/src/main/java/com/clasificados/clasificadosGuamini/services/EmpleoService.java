@@ -7,7 +7,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-import com.clasificados.clasificadosGuamini.dtos.request.EmpleoRequestDto;
+import com.clasificados.clasificadosGuamini.dtos.request.Empleo.EmpleoRequestDto;
 import com.clasificados.clasificadosGuamini.dtos.response.EmpleoResponseDto;
 import com.clasificados.clasificadosGuamini.entities.Empleo;
 import com.clasificados.clasificadosGuamini.entities.Usuario;
@@ -64,7 +64,6 @@ public class EmpleoService {
         securityUtils.verificarPropietarioOAdmin(id);
         Empleo empleo = empleoRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No se encontró el empleo con id: " + id));
         empleoMapper.updateEntityFromDto(dtoModificado, empleo);
-        /* Empleo empleoGuardado = empleoRepository.save(empleo); */
         return empleoMapper.toDto(empleo);
     }
 

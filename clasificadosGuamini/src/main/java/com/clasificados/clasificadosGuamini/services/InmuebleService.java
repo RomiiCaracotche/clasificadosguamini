@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
-import com.clasificados.clasificadosGuamini.dtos.request.InmuebleRequestDto;
+import com.clasificados.clasificadosGuamini.dtos.request.Inmueble.InmuebleRequestDto;
 import com.clasificados.clasificadosGuamini.dtos.response.InmuebleResponseDto;
 import com.clasificados.clasificadosGuamini.entities.Inmueble;
 import com.clasificados.clasificadosGuamini.entities.Usuario;
@@ -53,19 +53,22 @@ public class InmuebleService {
         Usuario usuario = securityUtils.obtenerUsuarioActual();
         List<String> imagenes = new ArrayList<>();
 
-        for (MultipartFile archivo : archivos) {
-            if (!archivo.isEmpty()) {
-               try {
-                    String rutaRelativa = fileStorageUtils.guardarArchivoEnDisco(archivo);
-                    imagenes.add(rutaRelativa);
-                } catch (IOException e) {
-                    throw new RuntimeException("Error al guardar la imagen: " + e.getMessage());
+        if (archivos != null && !archivos.isEmpty()) {
+            for (MultipartFile archivo : archivos) {
+                if (!archivo.isEmpty()) {
+                try {
+                        String rutaRelativa = fileStorageUtils.guardarArchivoEnDisco(archivo);
+                        imagenes.add(rutaRelativa);
+                    } catch (IOException e) {
+                        throw new RuntimeException("Error al guardar la imagen: " + e.getMessage());
+                    }
                 }
             }
         }
 
         Inmueble inmueble = inmuebleMapper.toEntity(dto, usuario);
         inmueble.setAnunciante(usuario);
+        inmueble.setImagenes(imagenes);
         Inmueble inmuebleGuardado = inmuebleRepository.save(inmueble);
         return inmuebleMapper.toDto(inmuebleGuardado);
     }

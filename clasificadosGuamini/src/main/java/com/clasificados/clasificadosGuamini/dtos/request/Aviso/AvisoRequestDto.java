@@ -1,4 +1,4 @@
-package com.clasificados.clasificadosGuamini.dtos.request;
+package com.clasificados.clasificadosGuamini.dtos.request.Aviso;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

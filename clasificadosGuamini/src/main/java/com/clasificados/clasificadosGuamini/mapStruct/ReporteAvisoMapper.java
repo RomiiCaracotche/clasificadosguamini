@@ -5,7 +5,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.MappingTarget;
-import com.clasificados.clasificadosGuamini.dtos.request.ReporteAvisoRequestDto;
+import com.clasificados.clasificadosGuamini.dtos.request.Aviso.ReporteAvisoRequestDto;
 import com.clasificados.clasificadosGuamini.dtos.response.ReporteAvisoResponseDto;
 import com.clasificados.clasificadosGuamini.entities.ReporteAviso;
 

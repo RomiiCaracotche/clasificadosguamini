@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.clasificados.clasificadosGuamini.dtos.request.ReporteAvisoRequestDto;
+import com.clasificados.clasificadosGuamini.dtos.request.Aviso.ReporteAvisoRequestDto;
 import com.clasificados.clasificadosGuamini.dtos.response.AvisoResponseDto;
 import com.clasificados.clasificadosGuamini.services.AvisoService;
 import com.clasificados.clasificadosGuamini.services.ReporteAvisoService;

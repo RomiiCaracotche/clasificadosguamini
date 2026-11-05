@@ -1,8 +1,8 @@
-package com.clasificados.clasificadosGuamini.dtos.request;
+package com.clasificados.clasificadosGuamini.dtos.request.Empleo;
 
+import com.clasificados.clasificadosGuamini.dtos.request.Aviso.AvisoRequestDto;
 import com.clasificados.clasificadosGuamini.enums.DisponibilidadHoraria;
 import com.clasificados.clasificadosGuamini.enums.ModalidadEmpleo;
-
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;

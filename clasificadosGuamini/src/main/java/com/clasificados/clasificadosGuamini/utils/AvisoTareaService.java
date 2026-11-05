@@ -1,4 +1,4 @@
-package com.clasificados.clasificadosGuamini.services.utils;
+package com.clasificados.clasificadosGuamini.utils;
 
 import java.time.LocalDateTime;
 import org.springframework.scheduling.annotation.Scheduled;

@@ -1,6 +1,10 @@
-package com.clasificados.clasificadosGuamini.dtos.request;
+package com.clasificados.clasificadosGuamini.dtos.request.CompraVenta;
 
 import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
+
+import com.clasificados.clasificadosGuamini.dtos.request.Aviso.AvisoRequestDto;
 import com.clasificados.clasificadosGuamini.enums.Categoria;
 import com.clasificados.clasificadosGuamini.enums.CondicionProducto;
 import jakarta.validation.constraints.NotNull;
@@ -34,6 +38,6 @@ public class CompraVentaRequestDto extends AvisoRequestDto {
     private String color;
 
     @Size(min = 1, max = 5, message = "Debe subir entre 1 y 5 imágenes") 
-    private List<String> imagenes;
+    private List<MultipartFile> imagenes;
 
 }

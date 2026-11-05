@@ -1,11 +1,14 @@
 package com.clasificados.clasificadosGuamini.mapStruct;
 
 import java.util.List;
+
+import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.MappingConstants;
-import com.clasificados.clasificadosGuamini.dtos.request.EmpleoRequestDto;
+import com.clasificados.clasificadosGuamini.dtos.request.Empleo.EmpleoRequestDto;
 import com.clasificados.clasificadosGuamini.dtos.response.EmpleoResponseDto;
 import com.clasificados.clasificadosGuamini.entities.Empleo;
 import com.clasificados.clasificadosGuamini.entities.Usuario;
@@ -26,6 +29,7 @@ public interface EmpleoMapper {
     @Mapping(target = "localidad", source = "dto.localidad")
     Empleo toEntity(EmpleoRequestDto dto, Usuario usuario);
 
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "fechaCreacion", ignore = true)
     @Mapping(target = "fechaExpiracion", ignore = true)

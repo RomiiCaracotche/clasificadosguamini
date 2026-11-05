@@ -2,7 +2,7 @@ package com.clasificados.clasificadosGuamini.services;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.clasificados.clasificadosGuamini.dtos.request.ReporteAvisoRequestDto;
+import com.clasificados.clasificadosGuamini.dtos.request.Aviso.ReporteAvisoRequestDto;
 import com.clasificados.clasificadosGuamini.dtos.response.ReporteAvisoResponseDto;
 import com.clasificados.clasificadosGuamini.entities.Aviso;
 import com.clasificados.clasificadosGuamini.entities.ReporteAviso;

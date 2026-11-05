@@ -2,19 +2,20 @@ package com.clasificados.clasificadosGuamini.controllers;
 
 import java.util.List;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import com.clasificados.clasificadosGuamini.dtos.request.InmuebleRequestDto;
+import com.clasificados.clasificadosGuamini.dtos.request.Inmueble.InmuebleRequestDto;
 import com.clasificados.clasificadosGuamini.dtos.response.InmuebleResponseDto;
 import com.clasificados.clasificadosGuamini.services.InmuebleService;
 import jakarta.validation.Valid;
@@ -29,37 +30,31 @@ public class InmuebleController {
 
     @GetMapping
     public ResponseEntity<List<InmuebleResponseDto>> listarInmueblesActivos() {
-        List<InmuebleResponseDto> listaInmuebles = inmuebleService.listarInmueblesActivos();
-        return ResponseEntity.ok().body(listaInmuebles);
+        return ResponseEntity.ok().body(inmuebleService.listarInmueblesActivos());
     }
 
     @GetMapping("/todos")
     public ResponseEntity<List<InmuebleResponseDto>> listarInmuebles() {
-        List<InmuebleResponseDto> listaInmuebles = inmuebleService.listarInmuebles();
-        return ResponseEntity.ok().body(listaInmuebles);
+        return ResponseEntity.ok().body(inmuebleService.listarInmuebles());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<InmuebleResponseDto> mostrarInmueble(@PathVariable Long id) {
-        InmuebleResponseDto dto = inmuebleService.mostrarInmueble(id);
-        return ResponseEntity.ok().body(dto);
+        return ResponseEntity.ok().body(inmuebleService.mostrarInmueble(id));
     }
 
-    @PostMapping 
-    public ResponseEntity<InmuebleResponseDto> crearInmueble(@Valid @ModelAttribute InmuebleRequestDto inmueble, @RequestParam("archivos") List<MultipartFile> archivos){
-        InmuebleResponseDto dto = inmuebleService.crearInmueble(inmueble, archivos);
-        return ResponseEntity.status(HttpStatus.CREATED).body(dto);
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<InmuebleResponseDto> crearInmueble(@Valid @RequestPart("inmueble") InmuebleRequestDto dto, @RequestParam(value = "imagenes") List<MultipartFile> archivos){
+        return ResponseEntity.status(HttpStatus.CREATED).body(inmuebleService.crearInmueble(dto, archivos));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<InmuebleResponseDto> modificarInmueble(@PathVariable Long id, @RequestBody InmuebleRequestDto inmueble) {
-        InmuebleResponseDto dto = inmuebleService.modificarInmueble(id, inmueble);
-        return ResponseEntity.ok().body(dto);
+    @PatchMapping("/{id}")
+    public ResponseEntity<InmuebleResponseDto> modificarInmueble(@PathVariable Long id, @RequestBody InmuebleRequestDto dto) {
+        return ResponseEntity.ok().body(inmuebleService.modificarInmueble(id, dto));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> eliminarInmueble(@PathVariable Long id) {
-        String inmueble = inmuebleService.eliminarInmueble(id);
-        return ResponseEntity.ok().body(inmueble);
+        return ResponseEntity.ok().body(inmuebleService.eliminarInmueble(id));
     }
 }

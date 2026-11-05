@@ -63,8 +63,7 @@ public class AvisoAdminController {
 
     @GetMapping("/cantidad")
     public ResponseEntity<Long> cantidadAvisos() {
-        Long total = avisoAdminService.cantidadAvisos();
-        return ResponseEntity.ok().body(total);
+        return ResponseEntity.ok().body(avisoAdminService.cantidadAvisos());
     }
 
     @DeleteMapping("/reportado/{id}")

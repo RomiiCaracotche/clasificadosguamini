@@ -30,9 +30,8 @@ public class UsuarioSecurityService implements UserDetailsService {
         
         List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority(rol));
 
-        // IMPORTANTE: Pasamos el ID como primer parámetro (username para Spring Security)
         return new org.springframework.security.core.userdetails.User(
-                usuarioExiste.getId().toString(), // <--- Usamos el ID inmutable
+                usuarioExiste.getNombreUsuario(),
                 usuarioExiste.getPassword(), 
                 usuarioExiste.getActivo(), 
                 true, true, true, 

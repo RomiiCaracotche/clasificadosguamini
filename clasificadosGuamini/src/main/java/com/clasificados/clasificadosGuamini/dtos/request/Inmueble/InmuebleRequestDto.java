@@ -1,6 +1,10 @@
-package com.clasificados.clasificadosGuamini.dtos.request;
+package com.clasificados.clasificadosGuamini.dtos.request.Inmueble;
 
 import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
+
+import com.clasificados.clasificadosGuamini.dtos.request.Aviso.AvisoRequestDto;
 import com.clasificados.clasificadosGuamini.enums.TipoOperacion;
 import com.clasificados.clasificadosGuamini.enums.TipoVivienda;
 import jakarta.validation.constraints.NotNull;
@@ -54,6 +58,6 @@ public class InmuebleRequestDto extends AvisoRequestDto {
     private String direccion;
 
     @Size(min = 1, max = 5, message = "Debe subir entre 1 y 5 imágenes") 
-    private List<String> imagenes;
+    private List<MultipartFile> imagenes;
 
 }

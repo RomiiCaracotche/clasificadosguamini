@@ -5,13 +5,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.clasificados.clasificadosGuamini.dtos.request.EmpleoRequestDto;
+import com.clasificados.clasificadosGuamini.dtos.request.Empleo.EmpleoRequestDto;
 import com.clasificados.clasificadosGuamini.dtos.response.EmpleoResponseDto;
 import com.clasificados.clasificadosGuamini.services.EmpleoService;
 import jakarta.validation.Valid;
@@ -26,38 +26,32 @@ public class EmpleoController {
 
     @GetMapping
     public ResponseEntity<List<EmpleoResponseDto>> listarEmpleosActivos() {
-        List<EmpleoResponseDto> listaEmpleados = empleoService.listarEmpleosActivos();
-        return ResponseEntity.ok().body(listaEmpleados);
+        return ResponseEntity.ok().body(empleoService.listarEmpleosActivos());
     }
 
     @GetMapping("/todos")
     public ResponseEntity<List<EmpleoResponseDto>> listarEmpleos() {
-        List<EmpleoResponseDto> listaEmpleados = empleoService.listarEmpleos();
-        return ResponseEntity.ok().body(listaEmpleados);
+        return ResponseEntity.ok().body(empleoService.listarEmpleos());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<EmpleoResponseDto> mostrarEmpleo(@PathVariable Long id) {
-        EmpleoResponseDto dto = empleoService.mostrarEmpleo(id);
-        return ResponseEntity.ok().body(dto);
+        return ResponseEntity.ok().body(empleoService.mostrarEmpleo(id));
     }
 
     @PostMapping 
-    public ResponseEntity<EmpleoResponseDto> crearEmpleo(@Valid @RequestBody EmpleoRequestDto empleo){
-        EmpleoResponseDto dto = empleoService.crearEmpleo(empleo);
-        return ResponseEntity.status(HttpStatus.CREATED).body(dto);
+    public ResponseEntity<EmpleoResponseDto> crearEmpleo(@Valid @RequestBody EmpleoRequestDto dto){
+        return ResponseEntity.status(HttpStatus.CREATED).body(empleoService.crearEmpleo(dto));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<EmpleoResponseDto> modificarEmpleo(@PathVariable Long id, @RequestBody EmpleoRequestDto empleo) {
-        EmpleoResponseDto dto = empleoService.modificarEmpleo(id, empleo);
-        return ResponseEntity.ok().body(dto);
+    @PatchMapping("/{id}")
+    public ResponseEntity<EmpleoResponseDto> modificarEmpleo(@PathVariable Long id, @RequestBody EmpleoRequestDto dto) {
+        return ResponseEntity.ok().body(empleoService.modificarEmpleo(id, dto));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> eliminarEmpleo(@PathVariable Long id) {
-        String empleo = empleoService.eliminarEmpleo(id);
-        return ResponseEntity.ok().body(empleo);
+        return ResponseEntity.ok().body(empleoService.eliminarEmpleo(id));
     }
 
 }
