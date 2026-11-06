@@ -1,13 +1,13 @@
 package com.clasificados.clasificadosGuamini.mapStruct;
 
 import java.util.List;
-
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.MappingConstants;
+import com.clasificados.clasificadosGuamini.dtos.request.Inmueble.InmuebleActualizadoRequestDto;
 import com.clasificados.clasificadosGuamini.dtos.request.Inmueble.InmuebleRequestDto;
 import com.clasificados.clasificadosGuamini.dtos.response.InmuebleResponseDto;
 import com.clasificados.clasificadosGuamini.entities.Inmueble;
@@ -35,7 +35,7 @@ public interface InmuebleMapper {
     @Mapping(target = "estado", ignore = true)
     @Mapping(target = "anunciante", ignore = true)
     @Mapping(target = "imagenes", ignore = true)
-    void updateEntityFromDto(InmuebleRequestDto dto, @MappingTarget Inmueble entity);
+    void updateEntityFromDto(InmuebleActualizadoRequestDto dto, @MappingTarget Inmueble entity);
 
     List<InmuebleResponseDto> toResponseDtoList(List<Inmueble> inmuebles);
     

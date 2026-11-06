@@ -11,6 +11,6 @@ import org.springframework.data.repository.query.Param;
 public interface InmuebleRepository extends JpaRepository<Inmueble,Long> {
 
     @Query("SELECT i FROM Inmueble i WHERE i.estado = :estado AND i.fechaExpiracion > :fecha")
-    List<Inmueble> findAllActivos(@Param("estado") EstadoAviso estado, @Param("estado") LocalDateTime fecha);
+    List<Inmueble> findAllActivos(@Param("estado") EstadoAviso estado, @Param("fecha") LocalDateTime fecha);
 
 }

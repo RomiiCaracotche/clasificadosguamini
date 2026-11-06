@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.clasificados.clasificadosGuamini.dtos.request.Inmueble.InmuebleActualizadoRequestDto;
 import com.clasificados.clasificadosGuamini.dtos.request.Inmueble.InmuebleRequestDto;
 import com.clasificados.clasificadosGuamini.dtos.response.InmuebleResponseDto;
 import com.clasificados.clasificadosGuamini.services.InmuebleService;
@@ -44,13 +44,13 @@ public class InmuebleController {
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<InmuebleResponseDto> crearInmueble(@Valid @RequestPart("inmueble") InmuebleRequestDto dto, @RequestParam(value = "imagenes") List<MultipartFile> archivos){
+    public ResponseEntity<InmuebleResponseDto> crearInmueble(@Valid @RequestPart("inmueble") InmuebleRequestDto dto, @RequestPart(value = "imagenes") List<MultipartFile> archivos){
         return ResponseEntity.status(HttpStatus.CREATED).body(inmuebleService.crearInmueble(dto, archivos));
     }
 
-    @PatchMapping("/{id}")
-    public ResponseEntity<InmuebleResponseDto> modificarInmueble(@PathVariable Long id, @RequestBody InmuebleRequestDto dto) {
-        return ResponseEntity.ok().body(inmuebleService.modificarInmueble(id, dto));
+    @PatchMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<InmuebleResponseDto> modificarInmueble(@PathVariable Long id, @Valid @RequestPart("inmueble") InmuebleActualizadoRequestDto dto, @RequestPart(value = "imagenes", required = false) List<MultipartFile> archivos) {
+        return ResponseEntity.ok().body(inmuebleService.modificarInmueble(id, dto, archivos));
     }
 
     @DeleteMapping("/{id}")

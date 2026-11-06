@@ -25,7 +25,7 @@ public class EmpleoService {
 
     private final EmpleoRepository empleoRepository;
     private final EmpleoMapper empleoMapper;
-    private SecurityUtils securityUtils;
+    private final SecurityUtils securityUtils;
 
     public List<EmpleoResponseDto> listarEmpleosActivos() {
         LocalDateTime ahora = LocalDateTime.now();
@@ -46,23 +46,22 @@ public class EmpleoService {
 
     @Transactional 
     public EmpleoResponseDto crearEmpleo(EmpleoRequestDto dto){
-        Usuario usuario = securityUtils.obtenerUsuarioActual();
-        Empleo empleo = empleoMapper.toEntity(dto, usuario);
-        empleo.setAnunciante(usuario);
+        Usuario usuarioActual = securityUtils.obtenerUsuarioActual();
+        Empleo empleo = empleoMapper.toEntity(dto, usuarioActual);
+        empleo.setAnunciante(usuarioActual);
 
         String imagenPorDefecto = ModalidadEmpleo.BUSCO_EMPLEO.equals(empleo.getModalidadEmpleo())
         ? "/uploads/defaults/busco_empleo.jpg" 
         : "/uploads/defaults/oferta_empleo.jpg";
 
         empleo.setImagenes(List.of(imagenPorDefecto));
-        Empleo empleoGuardado = empleoRepository.save(empleo);
-        return empleoMapper.toDto(empleoGuardado);
+        return empleoMapper.toDto(empleoRepository.save(empleo));
     }
 
     @Transactional 
-    public EmpleoResponseDto modificarEmpleo(Long id, EmpleoRequestDto dtoModificado) {
-        securityUtils.verificarPropietarioOAdmin(id);
-        Empleo empleo = empleoRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No se encontró el empleo con id: " + id));
+    public EmpleoResponseDto modificarEmpleo(Long idAviso, EmpleoRequestDto dtoModificado) {
+        securityUtils.verificarPropietarioOAdmin(idAviso);
+        Empleo empleo = empleoRepository.findById(idAviso).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No se encontró el empleo con id: " + idAviso));
         empleoMapper.updateEntityFromDto(dtoModificado, empleo);
         return empleoMapper.toDto(empleo);
     }

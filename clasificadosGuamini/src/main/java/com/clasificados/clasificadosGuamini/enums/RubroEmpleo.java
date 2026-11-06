@@ -15,5 +15,6 @@ public enum RubroEmpleo {
     MECANICA_Y_AUTOMOTOR,
     BELLEZA_Y_ESTETICA,
     SEGURIDAD,
-    PROFESIONALES
+    PROFESIONALES,
+    OTROS
 }

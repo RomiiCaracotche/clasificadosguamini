@@ -11,6 +11,6 @@ import com.clasificados.clasificadosGuamini.enums.EstadoAviso;
 public interface EmpleoRepository extends JpaRepository<Empleo,Long> {
 
     @Query("SELECT e FROM Empleo e WHERE e.estado = :estado AND e.fechaExpiracion > :fecha")
-    List<Empleo> findAllActivos(@Param("estado") EstadoAviso estado, @Param("estado") LocalDateTime fecha);
+    List<Empleo> findAllActivos(@Param("estado") EstadoAviso estado, @Param("fecha") LocalDateTime fecha);
 
 }

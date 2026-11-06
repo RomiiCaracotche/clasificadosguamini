@@ -55,20 +55,20 @@ public class CompraVentaService {
     public CompraVentaResponseDto crearCompraVenta(CompraVentaRequestDto dto, List<MultipartFile> archivos) {
         Usuario usuarioActual = securityUtils.obtenerUsuarioActual();
 
-        if (archivos == null || archivos.isEmpty()) {
-            throw new BadRequestException("Debe subir al menos una imagen para crear la compraventa.");
+        if (archivos == null || archivos.isEmpty() || archivos.size() > 5) {
+            throw new BadRequestException("Debes subir entre 1 y 5 imagenes");
         }
         List<String> imagenes = new ArrayList<>();
-            for (MultipartFile archivo : archivos) {
-                if (!archivo.isEmpty()) {
-                try {
-                        String rutaRelativa = fileStorageUtils.guardarArchivoEnDisco(archivo);
-                        imagenes.add(rutaRelativa);
-                    } catch (IOException e) {
-                        throw new RuntimeException("Error al guardar la imagen: " + e.getMessage());
-                    }
+        for (MultipartFile archivo : archivos) {
+            if (!archivo.isEmpty()) {
+            try {
+                    String rutaRelativa = fileStorageUtils.guardarArchivoEnDisco(archivo);
+                    imagenes.add(rutaRelativa);
+                } catch (IOException e) {
+                    throw new RuntimeException("Error al guardar la imagen: " + e.getMessage());
                 }
             }
+        }
 
         CompraVenta compraventa = compraVentaMapper.toEntity(dto, usuarioActual);
         compraventa.setAnunciante(usuarioActual);
@@ -86,6 +86,9 @@ public class CompraVentaService {
     
         // Solo si el usuario envió nuevos archivos, actualizamos la lista de imágenes.
         if (archivos != null && !archivos.isEmpty()) {
+            if(archivos.size() > 5) {
+                throw new BadRequestException("No puedes subir mas de 5 imagenes");
+            }
             List<String> nuevasImagenes = new ArrayList<>();
             for (MultipartFile archivo : archivos) {
                 if (!archivo.isEmpty()) {
